@@ -1,11 +1,58 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { supabase } from '../lib/supabase';
 
 const BlogNews = () => {
     const [isVisible, setIsVisible] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
     const [hoveredIndex, setHoveredIndex] = useState(null);
     const [selectedPost, setSelectedPost] = useState(null);
+    const [posts, setPosts] = useState([]);
+    const [loading, setLoading] = useState(true);
     const sectionRef = useRef(null);
+
+    // Fallback posts if database is empty
+    const fallbackPosts = [
+        {
+            id: 1,
+            category: "ANNOUNCEMENT",
+            title: "SEA Expo 2025 Registration Now Open",
+            excerpt: "Join us for the biggest student entrepreneurship event of the year.",
+            content: "The SEA Expo 2025 is set to be our largest event yet...",
+            image_url: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800",
+            author: "SEA Team",
+            created_at: new Date().toISOString()
+        },
+        {
+            id: 2,
+            category: "B-LABS",
+            title: "Cohort 3 Applications Open",
+            excerpt: "Ready to turn your idea into a startup? Apply for our next cohort.",
+            content: "B-Labs Cohort 3 is officially accepting applications...",
+            image_url: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800",
+            author: "B-Labs Team",
+            created_at: new Date().toISOString()
+        },
+        {
+            id: 3,
+            category: "SUCCESS STORY",
+            title: "How DormMe Raised Their Pre-Seed",
+            excerpt: "From B-Labs to funded startup: the journey of our first cohort's success story.",
+            content: "DormMe has successfully closed their pre-seed funding...",
+            image_url: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800",
+            author: "SEA Editorial",
+            created_at: new Date().toISOString()
+        },
+        {
+            id: 4,
+            category: "EVENT RECAP",
+            title: "AI Genesis x SEA Highlights",
+            excerpt: "A look back at our collaboration with AI Genesis.",
+            content: "SEA partnered with AI Genesis for an unforgettable evening...",
+            image_url: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800",
+            author: "Events Team",
+            created_at: new Date().toISOString()
+        }
+    ];
 
     useEffect(() => {
         const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -14,129 +61,25 @@ const BlogNews = () => {
         return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
-    const posts = [
-        {
-            id: 1,
-            category: "ANNOUNCEMENT",
-            title: "SEA Expo 2025 Registration Now Open",
-            excerpt: "Join us for the biggest student entrepreneurship event of the year. Connect with investors, mentors, and fellow founders.",
-            date: "Feb 2025",
-            featured: true,
-            content: `The SEA Expo 2025 is set to be our largest event yet, bringing together student entrepreneurs, industry leaders, investors, and mentors from across the globe.
+    useEffect(() => {
+        const fetchPosts = async () => {
+            try {
+                const { data, error } = await supabase
+                    .from('blog_posts')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(4);
 
-**What to Expect:**
-- Keynote speeches from successful founders
-- Pitch competition with £5,000 in prizes
-- Networking sessions with VCs and angel investors
-- Workshop tracks on fundraising, product, and growth
-- Demo booths from B-Labs startups
-
-**Who Should Attend:**
-Whether you're just starting with an idea or already building your startup, SEA Expo offers something for everyone. Meet potential co-founders, get feedback on your pitch, and learn from those who've been there.
-
-Registration is now open and spots are limited. Early bird tickets available until January 15th.`,
-            images: [
-                "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800",
-                "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800",
-                "https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=800"
-            ],
-            author: "SEA Team"
-        },
-        {
-            id: 2,
-            category: "B-LABS",
-            title: "Cohort 3 Applications Open",
-            excerpt: "Ready to turn your idea into a startup? Apply for our next cohort and get hands-on support.",
-            date: "Jan 2025",
-            featured: false,
-            content: `B-Labs Cohort 3 is officially accepting applications! Our 12-week incubator program has helped launch some of the most promising student startups, and now it's your turn.
-
-**What You'll Get:**
-- Weekly mentorship sessions with industry experts
-- £500 initial grant to kickstart your venture
-- Access to co-working space and resources
-- Legal and accounting support
-- Demo Day pitch to real investors
-
-**Program Timeline:**
-- Applications Open: January 2025
-- Application Deadline: February 15th
-- Cohort Starts: March 2025
-- Demo Day: June 2025
-
-**Eligibility:**
-- Current UoB students or recent graduates (within 2 years)
-- Have a startup idea or early-stage venture
-- Commitment to attend weekly sessions
-
-Don't miss your chance to be part of the next cohort of student founders.`,
-            images: [
-                "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800",
-                "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800"
-            ],
-            author: "B-Labs Team"
-        },
-        {
-            id: 3,
-            category: "SUCCESS STORY",
-            title: "How DormMe Raised Their Pre-Seed",
-            excerpt: "From B-Labs to funded startup: the journey of our first cohort's success story.",
-            date: "Dec 2024",
-            featured: false,
-            content: `DormMe, a student housing marketplace that emerged from B-Labs Cohort 1, has successfully closed their pre-seed funding round of £150,000.
-
-**The Journey:**
-When Alex Chen and Maya Patel joined B-Labs with just an idea, they had no idea they'd be raising funding within a year. "The mentorship was invaluable," says Alex. "We went from a rough concept to a validated product with real users."
-
-**Key Milestones:**
-- 500+ verified listings on platform
-- 2,000+ active student users
-- Partnerships with 3 major letting agencies
-- Featured in TechCrunch and The Guardian
-
-**Advice for Future Founders:**
-"Start before you're ready," Maya advises. "The B-Labs program gave us the structure we needed, but the real learning happened when we started talking to users."
-
-DormMe is now expanding to 5 additional UK universities and hiring their first employees.`,
-            images: [
-                "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800",
-                "https://images.unsplash.com/photo-1553028826-f4804a6dba3b?w=800"
-            ],
-            author: "SEA Editorial"
-        },
-        {
-            id: 4,
-            category: "EVENT RECAP",
-            title: "AI Genesis x SEA Highlights",
-            excerpt: "A look back at our collaboration with AI Genesis and the innovations showcased.",
-            date: "Dec 2024",
-            featured: false,
-            content: `Last month, SEA partnered with AI Genesis for an unforgettable evening of innovation, featuring cutting-edge AI demos and thought-provoking discussions on the future of technology.
-
-**Event Highlights:**
-Over 200 attendees gathered to witness student-built AI projects, network with industry professionals, and explore the intersection of entrepreneurship and artificial intelligence.
-
-**Featured Demos:**
-- AI-powered tutoring assistant by NavAI
-- Automated research tool by Kejue.ai
-- Natural language processing app for accessibility
-
-**Keynote Speakers:**
-- Dr. Sarah Mitchell on "AI in Healthcare Startups"
-- James Rodriguez on "Building AI Products That Scale"
-
-**Community Feedback:**
-"This was exactly what the student tech community needed," said one attendee. "Seeing what other students are building with AI was incredibly inspiring."
-
-Stay tuned for more AI-focused events in 2025!`,
-            images: [
-                "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800",
-                "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800",
-                "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800"
-            ],
-            author: "Events Team"
-        }
-    ];
+                if (error) throw error;
+                setPosts(data && data.length > 0 ? data : fallbackPosts);
+            } catch (err) {
+                console.log('Using fallback posts');
+                setPosts(fallbackPosts);
+            }
+            setLoading(false);
+        };
+        fetchPosts();
+    }, []);
 
     useEffect(() => {
         const observer = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) setIsVisible(true); }, { threshold: 0.1 });
@@ -265,8 +208,6 @@ Stay tuned for more AI-focused events in 2025!`,
 };
 
 const ArticleModal = ({ post, onClose, isMobile }) => {
-    const [currentImage, setCurrentImage] = useState(0);
-
     // Prevent body scroll when modal is open
     useEffect(() => {
         document.body.style.overflow = 'hidden';
@@ -275,14 +216,14 @@ const ArticleModal = ({ post, onClose, isMobile }) => {
 
     // Keyboard navigation
     useEffect(() => {
-        const handleKeyDown = (e) => {
-            if (e.key === 'Escape') onClose();
-            if (e.key === 'ArrowRight') setCurrentImage(prev => (prev + 1) % post.images.length);
-            if (e.key === 'ArrowLeft') setCurrentImage(prev => (prev - 1 + post.images.length) % post.images.length);
-        };
+        const handleKeyDown = (e) => { if (e.key === 'Escape') onClose(); };
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [onClose, post.images.length]);
+    }, [onClose]);
+
+    const formatDate = (dateString) => {
+        return new Date(dateString).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+    };
 
     return (
         <div
@@ -312,100 +253,58 @@ const ArticleModal = ({ post, onClose, isMobile }) => {
                 }}
                 onClick={e => e.stopPropagation()}
             >
-                {/* Header Image Carousel */}
-                <div style={{ position: 'relative', width: '100%', height: isMobile ? '250px' : '400px', overflow: 'hidden' }}>
-                    {post.images.map((img, i) => (
-                        <div
-                            key={i}
+                {/* Header Image */}
+                {post.image_url && (
+                    <div style={{
+                        width: '100%',
+                        height: isMobile ? '250px' : '400px',
+                        backgroundImage: `url(${post.image_url})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        position: 'relative'
+                    }}>
+                        {/* Close button */}
+                        <button
+                            onClick={onClose}
                             style={{
                                 position: 'absolute',
-                                top: 0,
-                                left: 0,
-                                width: '100%',
-                                height: '100%',
-                                backgroundImage: `url(${img})`,
-                                backgroundSize: 'cover',
-                                backgroundPosition: 'center',
-                                opacity: currentImage === i ? 1 : 0,
-                                transition: 'opacity 0.5s ease'
+                                top: '15px',
+                                right: '15px',
+                                background: 'rgba(0,0,0,0.7)',
+                                color: '#FFF',
+                                border: 'none',
+                                width: '40px',
+                                height: '40px',
+                                borderRadius: '50%',
+                                cursor: 'pointer',
+                                fontSize: '20px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center'
                             }}
-                        />
-                    ))}
+                        >×</button>
 
-                    {/* Image navigation */}
-                    {post.images.length > 1 && (
-                        <>
-                            <button
-                                onClick={(e) => { e.stopPropagation(); setCurrentImage(prev => (prev - 1 + post.images.length) % post.images.length); }}
-                                style={{ position: 'absolute', left: '15px', top: '50%', transform: 'translateY(-50%)', background: 'rgba(0,0,0,0.7)', color: '#FFF', border: 'none', width: '40px', height: '40px', borderRadius: '50%', cursor: 'pointer', fontSize: '18px' }}
-                            >←</button>
-                            <button
-                                onClick={(e) => { e.stopPropagation(); setCurrentImage(prev => (prev + 1) % post.images.length); }}
-                                style={{ position: 'absolute', right: '15px', top: '50%', transform: 'translateY(-50%)', background: 'rgba(0,0,0,0.7)', color: '#FFF', border: 'none', width: '40px', height: '40px', borderRadius: '50%', cursor: 'pointer', fontSize: '18px' }}
-                            >→</button>
-                        </>
-                    )}
-
-                    {/* Image dots */}
-                    <div style={{ position: 'absolute', bottom: '15px', left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: '8px' }}>
-                        {post.images.map((_, i) => (
-                            <button
-                                key={i}
-                                onClick={(e) => { e.stopPropagation(); setCurrentImage(i); }}
-                                style={{
-                                    width: currentImage === i ? '20px' : '8px',
-                                    height: '8px',
-                                    borderRadius: '4px',
-                                    background: currentImage === i ? '#CC0000' : 'rgba(255,255,255,0.5)',
-                                    border: 'none',
-                                    cursor: 'pointer',
-                                    transition: 'all 0.3s ease'
-                                }}
-                            />
-                        ))}
-                    </div>
-
-                    {/* Close button */}
-                    <button
-                        onClick={onClose}
-                        style={{
+                        {/* Category badge */}
+                        <div style={{
                             position: 'absolute',
                             top: '15px',
-                            right: '15px',
-                            background: 'rgba(0,0,0,0.7)',
+                            left: '15px',
+                            background: post.category === 'ANNOUNCEMENT' ? '#CC0000' : '#000',
                             color: '#FFF',
-                            border: 'none',
-                            width: '40px',
-                            height: '40px',
-                            borderRadius: '50%',
-                            cursor: 'pointer',
-                            fontSize: '20px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}
-                    >×</button>
-
-                    {/* Category badge */}
-                    <div style={{
-                        position: 'absolute',
-                        top: '15px',
-                        left: '15px',
-                        background: post.category === 'ANNOUNCEMENT' ? '#CC0000' : '#000',
-                        color: '#FFF',
-                        padding: '6px 12px',
-                        fontSize: '10px',
-                        fontWeight: '700',
-                        letterSpacing: '1px'
-                    }}>
-                        {post.category}
+                            padding: '6px 12px',
+                            fontSize: '10px',
+                            fontWeight: '700',
+                            letterSpacing: '1px'
+                        }}>
+                            {post.category}
+                        </div>
                     </div>
-                </div>
+                )}
 
                 {/* Content */}
                 <div style={{ padding: isMobile ? '30px 25px 50px' : '50px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '20px', color: '#666', fontSize: '12px' }}>
-                        <span>{post.date}</span>
+                        <span>{formatDate(post.created_at)}</span>
                         <span>•</span>
                         <span>By {post.author}</span>
                     </div>
@@ -427,31 +326,6 @@ const ArticleModal = ({ post, onClose, isMobile }) => {
                         whiteSpace: 'pre-line'
                     }}>
                         {post.content}
-                    </div>
-
-                    {/* Image Gallery */}
-                    <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
-                        gap: '10px',
-                        marginTop: '40px'
-                    }}>
-                        {post.images.map((img, i) => (
-                            <div
-                                key={i}
-                                onClick={() => setCurrentImage(i)}
-                                style={{
-                                    aspectRatio: '16/10',
-                                    backgroundImage: `url(${img})`,
-                                    backgroundSize: 'cover',
-                                    backgroundPosition: 'center',
-                                    cursor: 'pointer',
-                                    opacity: currentImage === i ? 1 : 0.6,
-                                    border: currentImage === i ? '2px solid #CC0000' : '2px solid transparent',
-                                    transition: 'all 0.3s ease'
-                                }}
-                            />
-                        ))}
                     </div>
 
                     {/* Back button */}
@@ -481,3 +355,4 @@ const ArticleModal = ({ post, onClose, isMobile }) => {
 };
 
 export default BlogNews;
+

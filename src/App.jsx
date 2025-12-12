@@ -15,6 +15,7 @@ import Partners from './components/Partners';
 import BlogNews from './components/BlogNews';
 import TerminalFooter from './components/TerminalFooter';
 import NotFound from './components/NotFound';
+import AdminDashboard from './components/AdminDashboard';
 import './styles/index.css';
 
 const HomePage = () => {
@@ -77,6 +78,7 @@ function App() {
         <Router>
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/admin" element={<AdminDashboard />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>
