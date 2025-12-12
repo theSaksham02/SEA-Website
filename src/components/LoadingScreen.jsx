@@ -10,10 +10,18 @@ const LoadingScreen = ({ onComplete }) => {
     }, []);
 
     useEffect(() => {
+        // Failsafe: ensure loading completes within 3 seconds max
+        const failsafe = setTimeout(() => {
+            setProgress(100);
+            setPhase(1);
+            setTimeout(() => { setPhase(2); onComplete(); }, 500);
+        }, 3000);
+
         const interval = setInterval(() => {
             setProgress(prev => {
                 if (prev >= 100) {
                     clearInterval(interval);
+                    clearTimeout(failsafe);
                     setTimeout(() => setPhase(1), 200);
                     setTimeout(() => { setPhase(2); onComplete(); }, 1200);
                     return 100;
@@ -21,7 +29,11 @@ const LoadingScreen = ({ onComplete }) => {
                 return prev + Math.random() * 15 + 5;
             });
         }, 80);
-        return () => clearInterval(interval);
+
+        return () => {
+            clearInterval(interval);
+            clearTimeout(failsafe);
+        };
     }, [onComplete]);
 
     if (phase === 2) return null;
