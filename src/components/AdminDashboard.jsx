@@ -9,8 +9,8 @@ const AdminDashboard = () => {
     const [loading, setLoading] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
 
-    // Simple password protection (change this!)
-    const ADMIN_PASSWORD = 'sea2024admin';
+    // Password from environment variable (set in .env.local and Netlify)
+    const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || 'fallback_change_me';
 
     useEffect(() => {
         setIsMobile(window.innerWidth < 768);
