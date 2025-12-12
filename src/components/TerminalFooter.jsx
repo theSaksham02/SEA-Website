@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { submitNewsletterSubscription } from '../lib/supabase';
 
 const TerminalFooter = () => {
     const [email, setEmail] = useState('');
@@ -19,13 +20,14 @@ const TerminalFooter = () => {
         if (!email || !email.includes('@')) { setStatus('error'); setMessage('Please enter a valid email'); return; }
         setStatus('loading');
         try {
-            const response = await fetch('https://formspree.io/f/xpwzgkjv', {
-                method: 'POST', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, type: 'newsletter_signup' })
-            });
-            if (response.ok) { setStatus('success'); setMessage('Welcome to SEA!'); setEmail(''); }
-            else throw new Error();
-        } catch { setStatus('error'); setMessage('Something went wrong.'); }
+            const result = await submitNewsletterSubscription(email);
+            setStatus('success');
+            setMessage(result.message || 'Welcome to SEA!');
+            setEmail('');
+        } catch (err) {
+            setStatus('error');
+            setMessage('Something went wrong.');
+        }
     };
 
     const socialLinks = [

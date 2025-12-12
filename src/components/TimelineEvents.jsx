@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { submitEventRegistration } from '../lib/supabase';
 
 const TimelineEvents = () => {
     const [isVisible, setIsVisible] = useState(false);
@@ -39,10 +40,20 @@ const TimelineEvents = () => {
         e.preventDefault();
         setFormStatus('loading');
         try {
-            const response = await fetch('https://formspree.io/f/xpwzgkjv', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...formData, event: selectedEvent?.title }) });
-            if (response.ok) { setFormStatus('success'); setTimeout(() => { setShowModal(false); setFormData({ name: '', email: '' }); setFormStatus('idle'); }, 2000); }
-            else throw new Error();
-        } catch { setFormStatus('error'); }
+            await submitEventRegistration({
+                name: formData.name,
+                email: formData.email,
+                eventName: selectedEvent?.title
+            });
+            setFormStatus('success');
+            setTimeout(() => {
+                setShowModal(false);
+                setFormData({ name: '', email: '' });
+                setFormStatus('idle');
+            }, 2000);
+        } catch (err) {
+            setFormStatus('error');
+        }
     };
 
     return (

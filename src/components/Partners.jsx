@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { submitSponsorInquiry } from '../lib/supabase';
 
 const Partners = () => {
     const [isVisible, setIsVisible] = useState(false);
@@ -210,9 +211,12 @@ const SponsorModal = ({ onClose, isMobile }) => {
         e.preventDefault();
         setStatus('loading');
         try {
-            const response = await fetch('https://formspree.io/f/xpwzgkjv', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...formData, form_type: 'sponsor_inquiry' }) });
-            if (response.ok) { setStatus('success'); setTimeout(onClose, 2000); } else throw new Error();
-        } catch { setStatus('error'); }
+            await submitSponsorInquiry(formData);
+            setStatus('success');
+            setTimeout(onClose, 2000);
+        } catch (err) {
+            setStatus('error');
+        }
     };
 
     const inputStyle = (field) => ({

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { submitStartupTeamApplication, submitStartupApplication } from '../lib/supabase';
 
 const CohortTicker = () => {
     const [activeTab, setActiveTab] = useState('COHORT 1');
@@ -119,9 +120,25 @@ const JoinModal = ({ type, onClose, isMobile }) => {
         e.preventDefault();
         setStatus('loading');
         try {
-            const response = await fetch('https://formspree.io/f/xpwzgkjv', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...formData, type: isStartup ? 'join_startup' : 'join_with_idea' }) });
-            if (response.ok) { setStatus('success'); setTimeout(onClose, 2000); } else throw new Error();
-        } catch { setStatus('error'); }
+            if (isStartup) {
+                await submitStartupTeamApplication({
+                    name: formData.name,
+                    email: formData.email,
+                    skills: formData.extra
+                });
+            } else {
+                await submitStartupApplication({
+                    name: formData.name,
+                    email: formData.email,
+                    description: formData.extra,
+                    stage: 'Idea'
+                });
+            }
+            setStatus('success');
+            setTimeout(onClose, 2000);
+        } catch (err) {
+            setStatus('error');
+        }
     };
 
     return (
