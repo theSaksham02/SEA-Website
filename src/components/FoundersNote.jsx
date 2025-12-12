@@ -44,15 +44,18 @@ const FoundersNote = () => {
                         transition: 'all 0.8s ease 0.3s'
                     }}>
                         {founders.map((f, i) => (
-                            <div key={i} style={{ flex: 1, position: 'relative', aspectRatio: isMobile ? '1' : '3/4', overflow: 'hidden' }}>
-                                <div style={{
-                                    width: '100%',
-                                    height: '100%',
-                                    backgroundImage: `url(${f.img})`,
-                                    backgroundSize: 'cover',
-                                    backgroundPosition: 'center top',
-                                    filter: 'grayscale(30%)'
-                                }} />
+                            <div key={i} style={{ flex: 1, position: 'relative', aspectRatio: isMobile ? '4/5' : '3/4', overflow: 'hidden', minHeight: isMobile ? '180px' : 'auto' }}>
+                                <img
+                                    src={f.img}
+                                    alt={f.name}
+                                    style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        objectFit: 'cover',
+                                        objectPosition: 'center top',
+                                        filter: 'grayscale(30%)'
+                                    }}
+                                />
                                 <div style={{
                                     position: 'absolute',
                                     bottom: 0,
