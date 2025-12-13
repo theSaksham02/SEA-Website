@@ -20,6 +20,8 @@ const MasonryTeam = () => {
         { name: "Ameer Alhashemi", role: "Co-Chair", img: "/team/Co-Chair.png", linkedin: "https://www.linkedin.com/in/ameer-alhashemi/" },
         { name: "Ryaan Khan", role: "Co-Head B-Labs", img: "/team/Co-head-Blabs.png", linkedin: "https://www.linkedin.com/in/ryaan-khan-014a01249/" },
         { name: "Hamza El Gindy", role: "Co-Head B-Labs", img: "/team/Co-head-BLabs123.png", linkedin: "https://www.linkedin.com/in/hamzagindy/" },
+        { name: "Nidal Al Jabi", role: "B-Labs Head of Outreach", img: "/team/Nidal.png", linkedin: "https://www.linkedin.com/in/nidal-al-jabi-8695101b8/" },
+        { name: "Smrithi Seshachalam", role: "B-Labs Sr. Analyst", img: "/team/Smrithi.png", linkedin: "https://www.linkedin.com/in/smrithiseshachalam/" },
         { name: "Shahad Al Shebli", role: "Head of Events", img: "/team/Head-of-Events.png", linkedin: "https://www.linkedin.com/in/shahad-al-shebli-06a2b6311/" },
         { name: "Zainab Ali", role: "Head of Events", img: "/team/head-of-events123.png", linkedin: "https://www.linkedin.com/in/zainab-ali-286058260/" },
         { name: "Diyora Mirzaeva", role: "Event Coordinator", img: "/team/Event-coordinator.png", linkedin: "https://www.linkedin.com/in/diyora-mirzaeva-9b05b8249/" },
