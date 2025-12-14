@@ -15,6 +15,7 @@ const MasonryTeam = () => {
     const team = [
         { name: "Merna Meligy", role: "President", img: "/team/President.png", linkedin: "https://www.linkedin.com/in/mernameligy/" },
         { name: "Saksham Mishra", role: "Vice President", img: "/team/Vice-President.png", linkedin: "https://www.linkedin.com/in/saksham-mishra-7b1930345/" },
+        { name: "Amir Hossein K.", role: "Head of Community", img: "/team/Head-of-community.png", linkedin: "https://www.linkedin.com/in/amir-hossein-kazemkhani-/" },
         { name: "Nirmal Sudhir", role: "Chief of Staff", img: "/team/Chief_of_Staff.png", linkedin: "https://www.linkedin.com/in/nirmalsudhir/" },
         { name: "Adham Sameh", role: "Chair", img: "/team/Chair.png", linkedin: "https://www.linkedin.com/in/adham-sameh/" },
         { name: "Ameer Alhashemi", role: "Co-Chair", img: "/team/Co-Chair.png", linkedin: "https://www.linkedin.com/in/ameer-alhashemi/" },
@@ -25,7 +26,6 @@ const MasonryTeam = () => {
         { name: "Shahad Al Shebli", role: "Head of Events", img: "/team/Head-of-Events.png", linkedin: "https://www.linkedin.com/in/shahad-al-shebli-06a2b6311/" },
         { name: "Zainab Ali", role: "Head of Events", img: "/team/head-of-events123.png", linkedin: "https://www.linkedin.com/in/zainab-ali-286058260/" },
         { name: "Diyora Mirzaeva", role: "Event Coordinator", img: "/team/Event-coordinator.png", linkedin: "https://www.linkedin.com/in/diyora-mirzaeva-9b05b8249/" },
-        { name: "Amir Hossein K.", role: "Head of Community", img: "/team/Head-of-community.png", linkedin: "https://www.linkedin.com/in/amir-hossein-kazemkhani-/" },
         { name: "Hams Abouelela", role: "Head of Marketing", img: "/team/Head-of-markerting.png", linkedin: "https://www.linkedin.com/in/hamsabouelela/" },
     ];
 
