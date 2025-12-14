@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 
 const SwissHero = () => {
     const images = [
-        "/hero-images/image.png",
-        "/hero-images/image copy.png",
-        "/hero-images/image copy 2.png",
-        "/hero-images/image copy 3.png",
-        "/hero-images/image copy 4.png",
-        "/hero-images/image copy 5.png",
-        "/hero-images/image copy 6.png",
+        "/hero-images/hero1.png",
+        "/hero-images/hero2.png",
+        "/hero-images/hero3.png",
+        "/hero-images/hero4.png",
+        "/hero-images/hero5.png",
+        "/hero-images/hero6.png",
+        "/hero-images/hero7.png",
     ];
 
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
