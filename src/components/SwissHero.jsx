@@ -2,9 +2,13 @@ import React, { useState, useEffect } from 'react';
 
 const SwissHero = () => {
     const images = [
-        "https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80",
-        "https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80",
-        "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80",
+        "/Hero Images/image.png",
+        "/Hero Images/image copy.png",
+        "/Hero Images/image copy 2.png",
+        "/Hero Images/image copy 3.png",
+        "/Hero Images/image copy 4.png",
+        "/Hero Images/image copy 5.png",
+        "/Hero Images/image copy 6.png",
     ];
 
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
