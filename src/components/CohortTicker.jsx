@@ -102,7 +102,30 @@ const CohortTicker = () => {
         },
     ];
 
-    const data = activeTab === 'COHORT 1' ? cohort1 : cohort2;
+    const exclusive = [
+        {
+            ticker: "AINM",
+            name: "AI Nigma",
+            tagline: "AI-Powered Tier-0 SOC Analyst",
+            desc: "An AI-powered cybersecurity workflow that automates SOC intake, analysis, risk scoring, and reporting. Built on Opus, it extracts IoCs, enriches data with threat context, and uses AI review for high-risk cases while generating automated reports for routine alerts.",
+            founders: "Exclusive Cohort",
+            stage: "Development",
+            problem: "SOC teams face alert fatigue and slow manual triage as cyberattacks rise",
+            solution: "Automated Tier-0 analyst with IoC extraction, RAG classification, severity scoring, and AI review"
+        },
+        {
+            ticker: "TRNV",
+            name: "TriNOVA",
+            tagline: "Coming Soon",
+            desc: "Details coming soon. Stay tuned for more information about this exciting venture.",
+            founders: "Exclusive Cohort",
+            stage: "Stealth",
+            problem: "Coming soon",
+            solution: "Coming soon"
+        },
+    ];
+
+    const data = activeTab === 'COHORT 1' ? cohort1 : activeTab === 'COHORT 2' ? cohort2 : exclusive;
 
     useEffect(() => {
         const observer = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) setIsVisible(true); }, { threshold: 0.1 });
@@ -118,7 +141,7 @@ const CohortTicker = () => {
                 <h1 style={{ fontSize: isMobile ? '28px' : 'clamp(36px, 5vw, 56px)', fontWeight: '900', marginTop: '12px' }}>THE <span style={{ color: '#CC0000' }}>PORTFOLIO.</span></h1>
 
                 <div style={{ display: 'flex', gap: '20px', marginTop: '20px' }}>
-                    {['COHORT 1', 'COHORT 2'].map(tab => (
+                    {['COHORT 1', 'COHORT 2', 'EXCLUSIVE'].map(tab => (
                         <button key={tab} onClick={() => { setActiveTab(tab); setSelectedStartup(null); }}
                             style={{ background: 'transparent', border: 'none', borderBottom: activeTab === tab ? '3px solid #CC0000' : '3px solid transparent', paddingBottom: '8px', fontSize: isMobile ? '13px' : '14px', fontWeight: '800', color: activeTab === tab ? '#000' : '#888', cursor: 'pointer' }}
                         >{tab}</button>
