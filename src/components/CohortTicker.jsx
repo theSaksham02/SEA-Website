@@ -17,9 +17,36 @@ const CohortTicker = () => {
     }, []);
 
     const cohort1 = [
-        { ticker: "DORM", name: "DormMe", tagline: "Student Housing Reimagined", desc: "A marketplace connecting students with verified housing.", founders: "Alex Chen, Maya Patel", stage: "Seed", problem: "Students struggle to find safe housing", solution: "Verified listings + AI matching" },
-        { ticker: "RGNV", name: "Regenova", tagline: "Sustainable Fashion Tech", desc: "AI-powered supply chain tracking for fashion.", founders: "Sarah Kim", stage: "Pre-Seed", problem: "Fashion brands can't verify claims", solution: "Blockchain supply chain" },
-        { ticker: "SPKV", name: "Speak Volumes", tagline: "AI Public Speaking Coach", desc: "Real-time AI coaching for presentations.", founders: "James Wright", stage: "Seed", problem: "Fear of public speaking", solution: "AI coach with biometric feedback" },
+        { 
+            ticker: "DORM", 
+            name: "DormMe", 
+            tagline: "Student Housing Reimagined", 
+            desc: "DormMe is a student-housing marketplace with integrated dorm management and community discussions, solving the scattered search and communication gap by listing verified dorms with live availability, instant booking, and in-app support for students and operators.", 
+            founders: "B-Labs Cohort 1", 
+            stage: "Phase 1", 
+            problem: "Students struggle with scattered housing searches and poor communication with operators", 
+            solution: "Verified dorm listings with live availability, instant booking, and in-app support" 
+        },
+        { 
+            ticker: "RGNV", 
+            name: "Regenova", 
+            tagline: "AI-Driven Regenerative Medicine", 
+            desc: "An AI-driven platform that automates stem cell differentiation analysis using deep learning. Using CNNs for feature extraction, LSTMs for temporal tracking, and U-Net for image segmentation, with Grad-CAM for interpretability.", 
+            founders: "B-Labs Cohort 1", 
+            stage: "Development", 
+            problem: "Manual stem cell analysis is time-consuming and error-prone", 
+            solution: "Deep learning automation reducing analysis time by 60% with improved accuracy" 
+        },
+        { 
+            ticker: "SPKV", 
+            name: "SpeakVolumes", 
+            tagline: "AI Public Speaking Coach", 
+            desc: "An AI-powered platform that empowers individuals to enhance their public speaking and communication skills through interactive learning modules, real-time analytics, personalized feedback, and gamified experiences.", 
+            founders: "B-Labs Cohort 1", 
+            stage: "Developed", 
+            problem: "Fear of public speaking and lack of personalized feedback", 
+            solution: "AI-driven insights with advanced learning paths and gamified practice tools" 
+        },
     ];
 
     const cohort2 = [
