@@ -17,42 +17,89 @@ const CohortTicker = () => {
     }, []);
 
     const cohort1 = [
-        { 
-            ticker: "DORM", 
-            name: "DormMe", 
-            tagline: "Student Housing Reimagined", 
-            desc: "DormMe is a student-housing marketplace with integrated dorm management and community discussions, solving the scattered search and communication gap by listing verified dorms with live availability, instant booking, and in-app support for students and operators.", 
-            founders: "B-Labs Cohort 1", 
-            stage: "Phase 1", 
-            problem: "Students struggle with scattered housing searches and poor communication with operators", 
-            solution: "Verified dorm listings with live availability, instant booking, and in-app support" 
+        {
+            ticker: "DORM",
+            name: "DormMe",
+            tagline: "Student Housing Reimagined",
+            desc: "DormMe is a student-housing marketplace with integrated dorm management and community discussions, solving the scattered search and communication gap by listing verified dorms with live availability, instant booking, and in-app support for students and operators.",
+            founders: "B-Labs Cohort 1",
+            stage: "Phase 1",
+            problem: "Students struggle with scattered housing searches and poor communication with operators",
+            solution: "Verified dorm listings with live availability, instant booking, and in-app support"
         },
-        { 
-            ticker: "RGNV", 
-            name: "Regenova", 
-            tagline: "AI-Driven Regenerative Medicine", 
-            desc: "An AI-driven platform that automates stem cell differentiation analysis using deep learning. Using CNNs for feature extraction, LSTMs for temporal tracking, and U-Net for image segmentation, with Grad-CAM for interpretability.", 
-            founders: "B-Labs Cohort 1", 
-            stage: "Development", 
-            problem: "Manual stem cell analysis is time-consuming and error-prone", 
-            solution: "Deep learning automation reducing analysis time by 60% with improved accuracy" 
+        {
+            ticker: "RGNV",
+            name: "Regenova",
+            tagline: "AI-Driven Regenerative Medicine",
+            desc: "An AI-driven platform that automates stem cell differentiation analysis using deep learning. Using CNNs for feature extraction, LSTMs for temporal tracking, and U-Net for image segmentation, with Grad-CAM for interpretability.",
+            founders: "B-Labs Cohort 1",
+            stage: "Development",
+            problem: "Manual stem cell analysis is time-consuming and error-prone",
+            solution: "Deep learning automation reducing analysis time by 60% with improved accuracy"
         },
-        { 
-            ticker: "SPKV", 
-            name: "SpeakVolumes", 
-            tagline: "AI Public Speaking Coach", 
-            desc: "An AI-powered platform that empowers individuals to enhance their public speaking and communication skills through interactive learning modules, real-time analytics, personalized feedback, and gamified experiences.", 
-            founders: "B-Labs Cohort 1", 
-            stage: "Developed", 
-            problem: "Fear of public speaking and lack of personalized feedback", 
-            solution: "AI-driven insights with advanced learning paths and gamified practice tools" 
+        {
+            ticker: "SPKV",
+            name: "SpeakVolumes",
+            tagline: "AI Public Speaking Coach",
+            desc: "An AI-powered platform that empowers individuals to enhance their public speaking and communication skills through interactive learning modules, real-time analytics, personalized feedback, and gamified experiences.",
+            founders: "B-Labs Cohort 1",
+            stage: "Developed",
+            problem: "Fear of public speaking and lack of personalized feedback",
+            solution: "AI-driven insights with advanced learning paths and gamified practice tools"
         },
     ];
 
     const cohort2 = [
-        { ticker: "UPTD", name: "Uptrade", tagline: "Campus Marketplace", desc: "P2P marketplace for textbooks. Zero fees.", founders: "Daniel Lee", stage: "Pre-Seed", problem: "Students waste money on textbooks", solution: "Free P2P marketplace" },
-        { ticker: "NVAI", name: "NavAI", tagline: "AR Campus Navigation", desc: "Indoor navigation using AR.", founders: "Emma Davis", stage: "Seed", problem: "Large campuses hard to navigate", solution: "AR-powered indoor maps" },
-        { ticker: "KJAI", name: "Kejue.ai", tagline: "Research Assistant", desc: "Automated literature review.", founders: "Wei Zhang", stage: "Pre-Seed", problem: "Literature reviews take weeks", solution: "AI research automation" },
+        {
+            ticker: "KJAI",
+            name: "Kejue.ai",
+            tagline: "Multilingual Voice AI Router",
+            desc: "An intelligent routing layer that automatically directs calls to the best voice AI provider for each language through a single integration point, solving the complexity of integrating with multiple providers.",
+            founders: "B-Labs Cohort 2",
+            stage: "Development",
+            problem: "Enterprises need voice AI across 10+ languages but integrating 5-10 providers is complex and costly",
+            solution: "Single integration point that routes calls to the best provider for each language"
+        },
+        {
+            ticker: "NOVA",
+            name: "Nova.ai",
+            tagline: "AI Go-To-Market Engine",
+            desc: "An AI-powered GTM engine that autonomously handles ad creation, optimization, content generation, CRM sync, voice lead qualification, and omnichannel deployment — replacing traditional marketing teams with AI-first automation.",
+            founders: "B-Labs Cohort 2",
+            stage: "Development",
+            problem: "Marketing teams are expensive and slow to adapt",
+            solution: "Real-time AI automation replacing agency services"
+        },
+        {
+            ticker: "MUNI",
+            name: "MUNI",
+            tagline: "Your Entire Net Worth in One Place",
+            desc: "A mobile app showing your entire net worth — stocks, crypto, real estate, watches, number plates — with performance analytics for smarter investment decisions, built with read-only integrations for security.",
+            founders: "B-Labs Cohort 2",
+            stage: "Development",
+            problem: "Assets are scattered across platforms with no unified view",
+            solution: "Single dashboard for all assets with performance analytics"
+        },
+        {
+            ticker: "UPTD",
+            name: "Uptrade",
+            tagline: "AI Investment Intelligence",
+            desc: "AI-powered platform that analyzes financial reports and news instantly, provides sentiment analysis, paper trading, and a Portfolio Twin AI manager to help investors make smarter decisions.",
+            founders: "B-Labs Cohort 2",
+            stage: "Development",
+            problem: "Investors drown in disconnected data across charts, news, and 100-page reports",
+            solution: "Paper trading, Portfolio Twin, AI chatbot, TradeX and VisualX tools"
+        },
+        {
+            ticker: "NVAI",
+            name: "Nav.ai",
+            tagline: "AI Visa Application Assistant",
+            desc: "AI-powered platform that analyzes visa documents, catches rejection risks before submission, and provides country-specific guidance — reducing rejections by 70% at a fraction of agency costs.",
+            founders: "B-Labs Cohort 2",
+            stage: "Development",
+            problem: "30-40% of Uzbekistan visa applications get rejected due to document errors, costing $160-500",
+            solution: "AI document analysis and guidance at $10-20 vs $200-500 for agencies"
+        },
     ];
 
     const data = activeTab === 'COHORT 1' ? cohort1 : cohort2;
