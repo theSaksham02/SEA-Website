@@ -1,16 +1,55 @@
-# React + Vite
+# SEA Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Marketing site for the **Student Entrepreneurship Association (SEA)** at the University of Birmingham / UoB Dubai.
 
-Currently, two official plugins are available:
+**Educate → Incubate (B-Labs) → Accelerate**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+| | |
+|---|---|
+| Live preview | https://sea-website-blush.vercel.app/ |
+| Stack | Vite 7 · React 19 · React Router 7 · plain CSS |
+| Backend | Supabase (forms + blog CMS) |
+| Host | Vercel |
 
-## React Compiler
+For full architecture, env vars, RLS checklist, and known risks, see **[HANDOVER.md](./HANDOVER.md)**.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Quick start
 
-## Expanding the ESLint configuration
+```bash
+npm ci
+cp .env.example .env.local   # fill in VITE_* values
+npm run dev
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+| Script | Command |
+|--------|---------|
+| Dev | `npm run dev` |
+| Build | `npm run build` |
+| Preview build | `npm run preview` |
+| Lint | `npm run lint` |
+
+## Environment
+
+Copy `.env.example` to `.env.local` and set:
+
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_ANON_KEY`
+- `VITE_ADMIN_PASSWORD` (interim admin gate — **not a real secret** once built into the client bundle)
+
+Configure the same variables in the Vercel project dashboard. Redeploy after env changes.
+
+## Routes
+
+| Path | Description |
+|------|-------------|
+| `/` | Landing page (anchor sections) |
+| `/admin` | CMS / submissions dashboard (password-gated) |
+
+## Content updates
+
+- **Blog & form submissions** — `/admin` (backed by Supabase)
+- **Team, events, cohorts, partners, hero** — hardcoded in React components under `src/components/` plus assets in `public/`
+
+## Deploy
+
+Push to `main`. Vercel serves the SPA; `vercel.json` rewrites all routes to `index.html`.
