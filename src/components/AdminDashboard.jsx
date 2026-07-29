@@ -3,36 +3,66 @@ import { supabase } from '../lib/supabase';
 
 const AdminDashboard = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [authChecking, setAuthChecking] = useState(true);
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loginError, setLoginError] = useState('');
+    const [loginLoading, setLoginLoading] = useState(false);
     const [activeTab, setActiveTab] = useState('newsletter');
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [isMobile, setIsMobile] = useState(false);
-
-    // Password from environment variable (set in .env.local and Netlify)
-    const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || 'fallback_change_me';
 
     useEffect(() => {
-        setIsMobile(window.innerWidth < 768);
-        // Check if already logged in
-        if (sessionStorage.getItem('sea_admin') === 'true') {
-            setIsAuthenticated(true);
-        }
+        let mounted = true;
+
+        const initAuth = async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (mounted) {
+                setIsAuthenticated(!!session);
+                setAuthChecking(false);
+            }
+        };
+
+        initAuth();
+
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+            if (mounted) {
+                setIsAuthenticated(!!session);
+                setAuthChecking(false);
+            }
+        });
+
+        return () => {
+            mounted = false;
+            subscription.unsubscribe();
+        };
     }, []);
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
-        if (password === ADMIN_PASSWORD) {
-            setIsAuthenticated(true);
-            sessionStorage.setItem('sea_admin', 'true');
-        } else {
-            alert('Incorrect password');
+        setLoginError('');
+        setLoginLoading(true);
+
+        const { error } = await supabase.auth.signInWithPassword({
+            email: email.trim(),
+            password,
+        });
+
+        if (error) {
+            setLoginError(error.message || 'Sign-in failed');
+            setLoginLoading(false);
+            return;
         }
+
+        setLoginLoading(false);
+        // isAuthenticated updates via onAuthStateChange
     };
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
+        await supabase.auth.signOut();
         setIsAuthenticated(false);
-        sessionStorage.removeItem('sea_admin');
+        setEmail('');
+        setPassword('');
     };
 
     const tabs = [
@@ -71,21 +101,47 @@ const AdminDashboard = () => {
         fetchData();
     };
 
+    if (authChecking) {
+        return (
+            <div style={{ minHeight: '100vh', background: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#888' }}>
+                Checking session…
+            </div>
+        );
+    }
+
     if (!isAuthenticated) {
         return (
             <div style={{ minHeight: '100vh', background: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
                 <form onSubmit={handleLogin} style={{ background: '#111', padding: '50px', maxWidth: '400px', width: '100%' }}>
                     <h1 style={{ color: '#FFF', fontSize: '28px', fontWeight: '900', marginBottom: '10px' }}>SEA Admin</h1>
-                    <p style={{ color: '#666', marginBottom: '30px' }}>Enter password to continue</p>
+                    <p style={{ color: '#666', marginBottom: '30px' }}>Sign in with your Supabase admin account</p>
+                    <input
+                        type="email"
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
+                        placeholder="Email"
+                        required
+                        autoComplete="username"
+                        style={{ width: '100%', padding: '16px', background: '#222', border: '1px solid #333', color: '#FFF', fontSize: '16px', marginBottom: '15px' }}
+                    />
                     <input
                         type="password"
                         value={password}
                         onChange={e => setPassword(e.target.value)}
                         placeholder="Password"
+                        required
+                        autoComplete="current-password"
                         style={{ width: '100%', padding: '16px', background: '#222', border: '1px solid #333', color: '#FFF', fontSize: '16px', marginBottom: '15px' }}
                     />
-                    <button type="submit" style={{ width: '100%', padding: '16px', background: '#CC0000', color: '#FFF', border: 'none', fontSize: '14px', fontWeight: '800', cursor: 'pointer' }}>
-                        LOGIN
+                    {loginError && (
+                        <p style={{ color: '#CC0000', fontSize: '13px', marginBottom: '15px' }}>{loginError}</p>
+                    )}
+                    <button
+                        type="submit"
+                        disabled={loginLoading}
+                        style={{ width: '100%', padding: '16px', background: '#CC0000', color: '#FFF', border: 'none', fontSize: '14px', fontWeight: '800', cursor: loginLoading ? 'wait' : 'pointer', opacity: loginLoading ? 0.7 : 1 }}
+                    >
+                        {loginLoading ? 'SIGNING IN…' : 'LOGIN'}
                     </button>
                     <a href="/" style={{ display: 'block', textAlign: 'center', marginTop: '20px', color: '#666', fontSize: '13px' }}>← Back to website</a>
                 </form>
@@ -135,7 +191,7 @@ const AdminDashboard = () => {
             {/* Content */}
             <div style={{ padding: '30px' }}>
                 {activeTab === 'blog' ? (
-                    <BlogCMS onRefresh={fetchData} />
+                    <BlogCMS />
                 ) : (
                     <>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
@@ -199,6 +255,7 @@ const BlogCMS = ({ onRefresh }) => {
         author: 'SEA Team',
         image_url: ''
     });
+    const [saveError, setSaveError] = useState('');
 
     useEffect(() => {
         fetchPosts();
@@ -217,17 +274,25 @@ const BlogCMS = ({ onRefresh }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setSaveError('');
 
+        let error;
         if (editingPost) {
-            await supabase.from('blog_posts').update(formData).eq('id', editingPost.id);
+            ({ error } = await supabase.from('blog_posts').update(formData).eq('id', editingPost.id));
         } else {
-            await supabase.from('blog_posts').insert([formData]);
+            ({ error } = await supabase.from('blog_posts').insert([formData]));
+        }
+
+        if (error) {
+            setSaveError(error.message || 'Failed to save post');
+            return;
         }
 
         setShowEditor(false);
         setEditingPost(null);
         setFormData({ title: '', excerpt: '', content: '', category: 'ANNOUNCEMENT', author: 'SEA Team', image_url: '' });
         fetchPosts();
+        onRefresh?.();
     };
 
     const editPost = (post) => {
@@ -247,6 +312,7 @@ const BlogCMS = ({ onRefresh }) => {
         if (!confirm('Delete this post?')) return;
         await supabase.from('blog_posts').delete().eq('id', id);
         fetchPosts();
+        onRefresh?.();
     };
 
     const categories = ['ANNOUNCEMENT', 'B-LABS', 'SUCCESS STORY', 'EVENT RECAP', 'NEWS'];
@@ -282,11 +348,14 @@ const BlogCMS = ({ onRefresh }) => {
                         <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', marginBottom: '8px', color: '#666' }}>AUTHOR</label>
                         <input type="text" value={formData.author} onChange={e => setFormData({ ...formData, author: e.target.value })} style={{ width: '100%', padding: '12px', border: '1px solid #DDD', fontSize: '16px' }} />
                     </div>
+                    {saveError && (
+                        <p style={{ color: '#C00', fontSize: '13px', marginBottom: '15px' }}>{saveError}</p>
+                    )}
                     <div style={{ display: 'flex', gap: '10px' }}>
                         <button type="submit" style={{ padding: '14px 30px', background: '#CC0000', color: '#FFF', border: 'none', fontSize: '14px', fontWeight: '700', cursor: 'pointer' }}>
                             {editingPost ? 'Update Post' : 'Publish Post'}
                         </button>
-                        <button type="button" onClick={() => { setShowEditor(false); setEditingPost(null); }} style={{ padding: '14px 30px', background: '#EEE', color: '#333', border: 'none', fontSize: '14px', cursor: 'pointer' }}>
+                        <button type="button" onClick={() => { setShowEditor(false); setEditingPost(null); setSaveError(''); }} style={{ padding: '14px 30px', background: '#EEE', color: '#333', border: 'none', fontSize: '14px', cursor: 'pointer' }}>
                             Cancel
                         </button>
                     </div>

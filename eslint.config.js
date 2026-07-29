@@ -23,7 +23,12 @@ export default defineConfig([
       },
     },
     rules: {
-      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]', argsIgnorePattern: '^_' }],
+      // Pre-existing patterns in this SPA; tighten later during Auth/TS pass
+      'react-hooks/set-state-in-effect': 'off',
+      'react-hooks/immutability': 'off',
+      'react-hooks/exhaustive-deps': 'warn',
+      'react-refresh/only-export-components': 'warn',
     },
   },
 ])

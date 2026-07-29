@@ -131,7 +131,7 @@ const LoadingScreen = ({ onComplete }) => {
                 letterSpacing: '1px'
             }}>
                 <span>SEA</span>
-                <span>BIRMINGHAM © 2024</span>
+                <span>BIRMINGHAM © 2026</span>
             </div>
 
             {/* Keyframes */}

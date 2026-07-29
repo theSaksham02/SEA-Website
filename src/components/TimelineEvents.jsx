@@ -17,13 +17,15 @@ const TimelineEvents = () => {
         return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
+    // Update dates/status when the calendar is confirmed. Past events stay for history.
     const events = [
         { id: 1, title: "Global AI Summit", date: "Oct '24", status: "past", loc: "Main Hall" },
         { id: 2, title: "SEA Entrepreneurship Day", date: "Nov '24", status: "past", loc: "Campus" },
         { id: 3, title: "AI Genesis x SEA", date: "Dec '24", status: "past", loc: "Innovation Lab" },
         { id: 4, title: "SEA x ACM", date: "Jan '25", status: "past", loc: "G12" },
-        { id: 5, title: "SEA Expo", date: "Feb '25", status: "upcoming", loc: "Campus Center" },
-        { id: 6, title: "Demo Day", date: "Mar '25", status: "future", loc: "TBD" },
+        { id: 5, title: "SEA Expo", date: "Feb '25", status: "past", loc: "Campus Center" },
+        { id: 6, title: "Demo Day", date: "Mar '25", status: "past", loc: "TBD" },
+        { id: 7, title: "Next SEA Event", date: "TBA", status: "upcoming", loc: "TBA" },
     ];
 
     useEffect(() => {
@@ -51,7 +53,7 @@ const TimelineEvents = () => {
                 setFormData({ name: '', email: '' });
                 setFormStatus('idle');
             }, 2000);
-        } catch (err) {
+        } catch {
             setFormStatus('error');
         }
     };

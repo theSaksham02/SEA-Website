@@ -24,7 +24,7 @@ const TerminalFooter = () => {
             setStatus('success');
             setMessage(result.message || 'Welcome to SEA!');
             setEmail('');
-        } catch (err) {
+        } catch {
             setStatus('error');
             setMessage('Something went wrong.');
         }
@@ -127,7 +127,7 @@ const TerminalFooter = () => {
                     gap: isMobile ? '25px' : '20px',
                     textAlign: 'center'
                 }}>
-                    <div style={{ fontSize: '12px', color: '#555', letterSpacing: '1px' }}>© 2024 SEA</div>
+                    <div style={{ fontSize: '12px', color: '#555', letterSpacing: '1px' }}>© 2026 SEA</div>
                     <div style={{ fontSize: '12px', color: '#555', letterSpacing: '1px' }}>University of Birmingham</div>
 
                     {/* Social Icons - Larger */}
