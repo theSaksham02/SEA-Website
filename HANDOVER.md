@@ -190,3 +190,5 @@ Mirror the same on `staging` if desired.
 - Production branch: `main`
 - Staging alias: `sea-uobd-staging.vercel.app` (re-point after major staging deploys if needed: `vercel alias set <deployment-url> sea-uobd-staging.vercel.app`)
 - After each push to `staging`, Git also creates `sea-uobd-git-staging-….vercel.app`
+
+**Deployment Protection:** Preview/staging may redirect to Vercel SSO. Add teammates to the Vercel project/team, or in Project Settings → Deployment Protection allow the staging alias / disable SSO for Preview if the team needs an open testing URL.
