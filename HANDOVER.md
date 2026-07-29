@@ -10,7 +10,7 @@
 | Stack | Vite 7 + React 19 SPA, plain CSS, React Router 7 |
 | Backend | Supabase (forms + blog CMS) via anon key + Auth for `/admin` |
 | Hosting | Vercel (`vercel.json` SPA rewrite) |
-| Preview | https://sea-website-blush.vercel.app/ |
+| Preview | https://seauobd.vercel.app/ |
 | Repo | https://github.com/theSaksham02/SEA-Website.git · branch `main` |
 | Routes | `/` landing (anchor sections), `/admin` CMS/dashboard (Supabase Auth), client `NotFound` |
 
