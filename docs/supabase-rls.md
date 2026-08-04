@@ -2,7 +2,9 @@
 
 The SPA uses the **anon** key in the browser. Real protection is Row Level Security — not the UI login alone.
 
-**Apply the SQL migration:** [`supabase/migrations/20260729120000_rls_policies.sql`](../supabase/migrations/20260729120000_rls_policies.sql) in the Supabase SQL Editor (or `supabase db push`).
+Apply [`supabase/migrations/20260804120000_create_app_tables_and_rls.sql`](../supabase/migrations/20260804120000_create_app_tables_and_rls.sql) (creates tables + RLS). Older file `20260729120000_rls_policies.sql` only works **after** tables exist.
+
+**Already applied** on Supabase project **SEA-website** (`znzguinpxfywepsyxnbv`). Re-run only if spinning up a new project.
 
 ## Access model (after migration)
 

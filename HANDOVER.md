@@ -89,7 +89,7 @@ Set both on Vercel for **Production** and **Preview**. Redeploy after env change
 
 ### 5.2 RLS (blocking)
 
-Apply [`supabase/migrations/20260729120000_rls_policies.sql`](./supabase/migrations/20260729120000_rls_policies.sql) in the Supabase SQL Editor.
+Apply [`supabase/migrations/20260804120000_create_app_tables_and_rls.sql`](./supabase/migrations/20260804120000_create_app_tables_and_rls.sql) in the Supabase SQL Editor (creates the 6 app tables + RLS). Already applied on project **SEA-website** (`https://znzguinpxfywepsyxnbv.supabase.co`). The older RLS-only file fails if tables are missing.
 
 | Table | Anon | Authenticated |
 |-------|------|----------------|
