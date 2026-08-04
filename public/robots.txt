@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Admin is client-routed; still discourage crawling
+Disallow: /admin
+
+Sitemap: https://seauobd.vercel.app/sitemap.xml

@@ -233,7 +233,7 @@ const JoinModal = ({ type, onClose, isMobile }) => {
             }
             setStatus('success');
             setTimeout(onClose, 2000);
-        } catch (err) {
+        } catch {
             setStatus('error');
         }
     };

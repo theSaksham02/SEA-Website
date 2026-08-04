@@ -7,7 +7,7 @@ const BlogNews = () => {
     const [hoveredIndex, setHoveredIndex] = useState(null);
     const [selectedPost, setSelectedPost] = useState(null);
     const [posts, setPosts] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [_loading, setLoading] = useState(true);
     const sectionRef = useRef(null);
 
     // Fallback posts if database is empty
@@ -72,7 +72,7 @@ const BlogNews = () => {
 
                 if (error) throw error;
                 setPosts(data && data.length > 0 ? data : fallbackPosts);
-            } catch (err) {
+            } catch {
                 console.log('Using fallback posts');
                 setPosts(fallbackPosts);
             }

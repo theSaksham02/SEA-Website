@@ -8,11 +8,13 @@
 |------|--------|
 | Audience | Students, founders, sponsors, partners |
 | Stack | Vite 7 + React 19 SPA, plain CSS, React Router 7 |
-| Backend | Supabase (forms + blog CMS) via anon key |
-| Hosting | Vercel (`vercel.json` SPA rewrite) |
-| Preview | https://sea-website-blush.vercel.app/ |
-| Repo | https://github.com/theSaksham02/SEA-Website.git · branch `main` |
-| Routes | `/` landing (anchor sections), `/admin` CMS/dashboard, client `NotFound` |
+| Backend | Supabase (forms + blog CMS) via anon key + Auth for `/admin` |
+| Hosting | Vercel project `sea-uobd` (`vercel.json` SPA rewrite) |
+| **Production** | https://seauobd.vercel.app/ |
+| **Staging (testing site)** | https://sea-uobd-staging.vercel.app/ |
+| Repo | https://github.com/theSaksham02/SEA-Website.git |
+| Branches | `main` = production · `staging` = shared testing |
+| Routes | `/` landing, `/admin` (Supabase Auth), client `NotFound` |
 
 ---
 
@@ -21,10 +23,9 @@
 ```
 Browser → Vite SPA on Vercel → Supabase
                 ↑
-         /admin password gate
+         /admin (Supabase Auth session)
                 ↑
-    Forms (Event / Apply / Sponsor / Newsletter)
-    Blog (BlogNews + CMS)
+    Forms — anon INSERT · Blog — anon SELECT + auth CMS
 ```
 
 | Area | File(s) |
@@ -34,10 +35,11 @@ Browser → Vite SPA on Vercel → Supabase
 | Admin CMS / dashboard | `src/components/AdminDashboard.jsx` |
 | Hardcoded content | `MasonryTeam`, `TimelineEvents`, `CohortTicker`, `Partners`, `SwissHero` |
 | SPA fallback (required) | `vercel.json` |
+| CI | `.github/workflows/ci.yml` |
+| RLS policies (apply in Supabase) | `supabase/migrations/20260729120000_rls_policies.sql` |
+| RLS checklist | `docs/supabase-rls.md` |
 
-**Landing sections** (in order): Navbar → SwissHero → ProcessAbout → FoundersNote → MasonryTeam → TimelineEvents → CohortTicker → Partners → BlogNews → TerminalFooter.
-
-**Hardcoded in components:** team, events, cohorts, partners, hero copy.
+**Landing sections:** Navbar → SwissHero → ProcessAbout → FoundersNote → MasonryTeam → TimelineEvents → CohortTicker → Partners → BlogNews → TerminalFooter.
 
 **Supabase tables:** `event_registrations`, `startup_team_applications`, `startup_applications`, `sponsor_inquiries`, `newsletter_subscribers`, `blog_posts`.
 
@@ -47,7 +49,7 @@ Browser → Vite SPA on Vercel → Supabase
 
 ```bash
 npm ci
-cp .env.example .env.local   # fill VITE_* vars
+cp .env.example .env.local   # fill VITE_SUPABASE_URL + VITE_SUPABASE_ANON_KEY
 npm run dev
 npm run build && npm run preview
 ```
@@ -63,29 +65,40 @@ npm run build && npm run preview
 
 ## 4. Environment variables (Vercel + local)
 
-All `VITE_*` variables are **embedded in the client bundle** at build time. Treat them as public to the browser.
+All `VITE_*` values are **embedded in the client bundle**. Protect data with RLS.
 
 | Var | Purpose | Sensitivity |
 |-----|---------|-------------|
 | `VITE_SUPABASE_URL` | Supabase project URL | Public (client) |
 | `VITE_SUPABASE_ANON_KEY` | Supabase anon key | Public; protect via RLS |
-| `VITE_ADMIN_PASSWORD` | Interim admin gate | **Not a secret** once shipped in JS — migrate off ASAP |
 
-Set the same three vars in the Vercel project (Production / Preview / Development as needed). After changing env vars, trigger a redeploy so the build picks them up.
+Set both on Vercel for **Production** and **Preview**. Redeploy after env changes.
 
-Local: copy `.env.example` → `.env.local` (gitignored). Do not commit real keys.
+`VITE_ADMIN_PASSWORD` is **removed**. `/admin` uses Supabase Auth only.
 
 ---
 
 ## 5. Supabase ownership checklist
 
-- [ ] Confirm project URL and keys match Vercel + local env
-- [ ] Document table schemas for the six tables listed above
-- [ ] **RLS audit (blocking):**
-  - Anon can **INSERT** on form tables only
-  - Anon **cannot** SELECT / UPDATE / DELETE others’ submission rows
-  - Blog writes restricted to authenticated admins (today admin is client-password only — Auth migration needed)
-- [ ] No migrations in this repo yet — schema lives in the Supabase dashboard; export SQL into `supabase/migrations/` when possible
+### 5.1 Keys & users
+
+- [ ] Confirm project URL/keys match Vercel + local
+- [ ] Create admin user(s): Dashboard → Authentication → Users
+- [ ] **Disable public sign-ups**
+- [ ] Apply RLS SQL (below)
+
+### 5.2 RLS (blocking)
+
+Apply [`supabase/migrations/20260804120000_create_app_tables_and_rls.sql`](./supabase/migrations/20260804120000_create_app_tables_and_rls.sql) in the Supabase SQL Editor (creates the 6 app tables + RLS). Already applied on project **SEA-website** (`https://znzguinpxfywepsyxnbv.supabase.co`). The older RLS-only file fails if tables are missing.
+
+| Table | Anon | Authenticated |
+|-------|------|----------------|
+| Form tables | INSERT only | SELECT + DELETE |
+| `blog_posts` | SELECT | full CRUD |
+
+See [`docs/supabase-rls.md`](./docs/supabase-rls.md).
+
+**Staging shares the same Supabase project** unless Preview env points at a separate project — use fake test emails.
 
 ---
 
@@ -93,39 +106,90 @@ Local: copy `.env.example` → `.env.local` (gitignored). Do not commit real key
 
 | Content | Where |
 |---------|--------|
-| Blog posts | `/admin` → Blog CMS → `blog_posts` |
-| Form submissions | `/admin` tabs (newsletter, events, apps, sponsors) |
-| Team / events / cohorts / partners | Edit component JS arrays + assets under `public/` |
-| Deploy | Push `main` → Vercel (confirm project link + env) |
+| Blog / submissions | `/admin` after Auth login |
+| Events timeline (homepage cards) | `/admin` → **Events Timeline** (`timeline_events`) |
+| Team / cohorts / partners | Component arrays + `public/` assets |
+| Deploy | See §10 — **never** push straight to production |
 
 ---
 
 ## 7. Known risks & tech debt
 
-- Client-side admin password (`VITE_ADMIN_PASSWORD`) is bundled into JS; insecure fallback exists in code — replace with Supabase Auth (or Edge Function + service role) ASAP
-- No CI, no tests, no TypeScript
-- Stale event dates / copyright year; relative OG URLs; large unoptimized `public/` assets (~36MB)
-- Dead Formspree components (`JoinIdea`, `JoinStartup`); GA placeholder in `App.jsx`
-- Possible form field ↔ schema mismatches (`studentId`, `linkedin`, `startupName`, etc.)
-- Out of scope for this handover pass (future backlog): full TypeScript rewrite, Next.js SSR migration, redesign
+- RLS SQL is in-repo but **must be applied** in the live Supabase project
+- Any authenticated user is an admin — keep sign-ups closed
+- CI = lint + build only (no e2e yet)
+- Large `public/` images still need WebP/compression
+- TriNOVA “Coming Soon” is intentional until announced
+- Possible form field ↔ schema mismatches
+- Backlog: TypeScript, Next.js, separate staging Supabase, Dependabot
 
 ---
 
-## 8. Pre-deploy acceptance checklist
+## 8. Promote checklist (staging → production)
 
-- [ ] RLS verified on all six tables
-- [ ] Vercel env set; production domain / canonical decided
-- [ ] `npm run build` + `npm run lint` green
-- [ ] Smoke-test: home load, one form submit, blog load, admin login, 404
-- [ ] OG preview (absolute image) checked
-- [ ] Access: who owns Vercel, Supabase, GitHub, analytics, WhatsApp invite
+- [ ] RLS applied and verified
+- [ ] Admin user created; public sign-up disabled
+- [ ] CI green on the PR
+- [ ] Smoke-test on **https://sea-uobd-staging.vercel.app/**: home, form, blog, `/admin`, 404
+- [ ] OG absolute image OK
+- [ ] Owners confirmed: Vercel · Supabase · GitHub
+- [ ] Then open PR `staging` → `main` (production updates)
 
 ---
 
-## 9. Contacts / open questions for tech team
+## 9. Open questions
 
-- Production custom domain?
-- Who has Supabase owner access (for RLS + Auth migration)?
-- Keep interim password admin or block `/admin` until Auth ships?
-- Analytics ID?
-- Form spam policy (honeypot / CAPTCHA)?
+- Custom production domain?
+- Who owns Supabase (RLS + Auth users)?
+- Analytics measurement ID?
+- Form spam policy?
+- Separate Supabase project for staging?
+
+---
+
+## 10. Staging site & CI/CD (required reading for new team)
+
+Mistakes stay in **PRs and staging**. Production only updates from protected `main`.
+
+### Environments
+
+| Env | Git | URL |
+|-----|-----|-----|
+| Local | any | `localhost:5173` |
+| PR Preview | every PR | Unique `*.vercel.app` on the PR |
+| **Staging** | `staging` | **https://sea-uobd-staging.vercel.app/** |
+| **Production** | `main` | **https://seauobd.vercel.app/** |
+
+### Team workflow
+
+```text
+1. git checkout -b feature/my-change
+2. Push + open PR into staging
+3. Wait for CI (Lint & Build) + Vercel Preview on the PR
+4. Review → merge to staging → test https://sea-uobd-staging.vercel.app/
+5. Sign-off → PR staging → main → production
+```
+
+**Do not** run `vercel --prod` from laptops. **Do not** push directly to `main`.
+
+### CI
+
+[`.github/workflows/ci.yml`](./.github/workflows/ci.yml) runs `npm ci` → `lint` → `build` on PRs and pushes to `main` / `staging`.
+
+### Branch protection (`main` — enabled)
+
+- Pull request required
+- Status check required: **Lint & Build**
+- 1 approving review
+- Enforce for admins; no force pushes
+
+Mirror the same on `staging` if desired.
+
+### Vercel
+
+- Project: `sea-uobd`
+- Production branch: `main`
+- Staging alias: `sea-uobd-staging.vercel.app` (re-point after major staging deploys if needed: `vercel alias set <deployment-url> sea-uobd-staging.vercel.app`)
+- After each push to `staging`, Git also creates `sea-uobd-git-staging-….vercel.app`
+
+**Deployment Protection:** Preview/staging may redirect to Vercel SSO. Add teammates to the Vercel project/team, or in Project Settings → Deployment Protection allow the staging alias / disable SSO for Preview if the team needs an open testing URL.

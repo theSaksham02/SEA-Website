@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { ThemeProvider, ThemeToggle } from './context/ThemeContext';
+import { ThemeProvider } from './context/ThemeContext';
 import LoadingScreen from './components/LoadingScreen';
 import CursorTrail from './components/CursorTrail';
 import BackToTop from './components/BackToTop';
@@ -90,16 +90,7 @@ function App() {
         {!isMobile && <CursorTrail />}
       </div>
 
-      {/* Google Analytics - replace UA-XXXXX with your tracking ID */}
-      {/* 
-      <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
-      <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'GA_MEASUREMENT_ID');
-      </script>
-      */}
+      {/* Analytics: add a real measurement ID in index.html or a dedicated loader when ready. */}
     </ThemeProvider>
   );
 }

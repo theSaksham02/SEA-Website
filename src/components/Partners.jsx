@@ -214,7 +214,7 @@ const SponsorModal = ({ onClose, isMobile }) => {
             await submitSponsorInquiry(formData);
             setStatus('success');
             setTimeout(onClose, 2000);
-        } catch (err) {
+        } catch {
             setStatus('error');
         }
     };

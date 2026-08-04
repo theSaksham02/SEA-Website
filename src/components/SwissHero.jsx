@@ -118,7 +118,7 @@ const SwissHero = () => {
                     transition: 'all 1s ease 0.8s'
                 }}>
                     <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#CC0000', animation: 'pulse 2s infinite' }}></div>
-                    <span style={{ color: '#FFF', fontSize: isMobile ? '10px' : '12px', fontWeight: '700', letterSpacing: '1px' }}>NEXT: SEA EXPO - FEB '25</span>
+                    <span style={{ color: '#FFF', fontSize: isMobile ? '10px' : '12px', fontWeight: '700', letterSpacing: '1px' }}>NEXT EVENT — TBA</span>
                 </div>
 
                 {/* Dots */}

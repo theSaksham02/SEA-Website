@@ -72,7 +72,7 @@ const TeamCard = ({ member, delay, isVisible, isMobile }) => {
     const [isHovered, setIsHovered] = useState(false);
     const [showInfo, setShowInfo] = useState(false);
 
-    const handleClick = (e) => {
+    const handleClick = () => {
         if (isMobile) {
             if (showInfo && member.linkedin) {
                 // Second tap opens LinkedIn
