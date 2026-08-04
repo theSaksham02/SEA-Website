@@ -411,6 +411,10 @@ const emptyEventForm = {
     location: '',
     status: 'upcoming',
     sort_order: 0,
+    description: '',
+    image_url_1: '',
+    image_url_2: '',
+    image_url_3: '',
 };
 
 const EventsTimelineCMS = () => {
@@ -451,6 +455,10 @@ const EventsTimelineCMS = () => {
             location: ev.location || '',
             status: ev.status || 'upcoming',
             sort_order: ev.sort_order ?? 0,
+            description: ev.description || '',
+            image_url_1: ev.image_url_1 || '',
+            image_url_2: ev.image_url_2 || '',
+            image_url_3: ev.image_url_3 || '',
         });
         setSaveError('');
         setShowEditor(true);
@@ -516,6 +524,28 @@ const EventsTimelineCMS = () => {
                     <div style={{ marginBottom: '20px' }}>
                         <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', marginBottom: '8px', color: '#666' }}>LOCATION</label>
                         <input type="text" value={formData.location} onChange={e => setFormData({ ...formData, location: e.target.value })} placeholder="Campus Center" style={{ width: '100%', padding: '12px', border: '1px solid #DDD', fontSize: '16px' }} />
+                    </div>
+                    <div style={{ marginBottom: '20px' }}>
+                        <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', marginBottom: '8px', color: '#666' }}>SHORT DESCRIPTION</label>
+                        <textarea
+                            value={formData.description}
+                            onChange={e => setFormData({ ...formData, description: e.target.value })}
+                            placeholder="Shown when visitors click View More…"
+                            rows={4}
+                            style={{ width: '100%', padding: '12px', border: '1px solid #DDD', fontSize: '16px', resize: 'vertical' }}
+                        />
+                    </div>
+                    <div style={{ marginBottom: '20px' }}>
+                        <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', marginBottom: '8px', color: '#666' }}>IMAGE URL 1</label>
+                        <input type="url" value={formData.image_url_1} onChange={e => setFormData({ ...formData, image_url_1: e.target.value })} placeholder="https://…" style={{ width: '100%', padding: '12px', border: '1px solid #DDD', fontSize: '16px' }} />
+                    </div>
+                    <div style={{ marginBottom: '20px' }}>
+                        <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', marginBottom: '8px', color: '#666' }}>IMAGE URL 2</label>
+                        <input type="url" value={formData.image_url_2} onChange={e => setFormData({ ...formData, image_url_2: e.target.value })} placeholder="https://…" style={{ width: '100%', padding: '12px', border: '1px solid #DDD', fontSize: '16px' }} />
+                    </div>
+                    <div style={{ marginBottom: '20px' }}>
+                        <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', marginBottom: '8px', color: '#666' }}>IMAGE URL 3</label>
+                        <input type="url" value={formData.image_url_3} onChange={e => setFormData({ ...formData, image_url_3: e.target.value })} placeholder="https://…" style={{ width: '100%', padding: '12px', border: '1px solid #DDD', fontSize: '16px' }} />
                     </div>
                     <div style={{ marginBottom: '20px' }}>
                         <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', marginBottom: '8px', color: '#666' }}>STATUS</label>
