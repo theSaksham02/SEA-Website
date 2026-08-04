@@ -1,5 +1,22 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { submitEventRegistration } from '../lib/supabase';
+import { supabase, submitEventRegistration } from '../lib/supabase';
+
+const FALLBACK_EVENTS = [
+    { id: '1', title: 'Global AI Summit', date: "Oct '24", status: 'past', loc: 'Main Hall' },
+    { id: '2', title: 'SEA Entrepreneurship Day', date: "Nov '24", status: 'past', loc: 'Campus' },
+    { id: '3', title: 'AI Genesis x SEA', date: "Dec '24", status: 'past', loc: 'Innovation Lab' },
+    { id: '4', title: 'SEA x ACM', date: "Jan '25", status: 'past', loc: 'G12' },
+    { id: '5', title: 'SEA Expo', date: "Feb '25", status: 'upcoming', loc: 'Campus Center' },
+    { id: '6', title: 'Demo Day', date: "Mar '25", status: 'future', loc: 'TBD' },
+];
+
+const mapRow = (row) => ({
+    id: row.id,
+    title: row.title,
+    date: row.date_label,
+    status: row.status,
+    loc: row.location || 'TBD',
+});
 
 const TimelineEvents = () => {
     const [isVisible, setIsVisible] = useState(false);
@@ -8,6 +25,7 @@ const TimelineEvents = () => {
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [formData, setFormData] = useState({ name: '', email: '' });
     const [formStatus, setFormStatus] = useState('idle');
+    const [events, setEvents] = useState(FALLBACK_EVENTS);
     const sectionRef = useRef(null);
 
     useEffect(() => {
@@ -17,16 +35,19 @@ const TimelineEvents = () => {
         return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
-    // Update dates/status when the calendar is confirmed. Past events stay for history.
-    const events = [
-        { id: 1, title: "Global AI Summit", date: "Oct '24", status: "past", loc: "Main Hall" },
-        { id: 2, title: "SEA Entrepreneurship Day", date: "Nov '24", status: "past", loc: "Campus" },
-        { id: 3, title: "AI Genesis x SEA", date: "Dec '24", status: "past", loc: "Innovation Lab" },
-        { id: 4, title: "SEA x ACM", date: "Jan '25", status: "past", loc: "G12" },
-        { id: 5, title: "SEA Expo", date: "Feb '25", status: "past", loc: "Campus Center" },
-        { id: 6, title: "Demo Day", date: "Mar '25", status: "past", loc: "TBD" },
-        { id: 7, title: "Next SEA Event", date: "TBA", status: "upcoming", loc: "TBA" },
-    ];
+    useEffect(() => {
+        const load = async () => {
+            const { data, error } = await supabase
+                .from('timeline_events')
+                .select('*')
+                .order('sort_order', { ascending: true });
+
+            if (!error && data?.length) {
+                setEvents(data.map(mapRow));
+            }
+        };
+        load();
+    }, []);
 
     useEffect(() => {
         const observer = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) setIsVisible(true); }, { threshold: 0.1 });
@@ -34,8 +55,12 @@ const TimelineEvents = () => {
         return () => { if (sectionRef.current) observer.unobserve(sectionRef.current); };
     }, []);
 
+    const featured = events.find(e => e.status === 'upcoming') || events.find(e => e.status !== 'past');
+
     const openRegister = (event) => {
-        if (event.status !== 'past') { setSelectedEvent(event); setShowModal(true); }
+        if (!event || event.status === 'past') return;
+        setSelectedEvent(event);
+        setShowModal(true);
     };
 
     const handleRegister = async (e) => {
@@ -60,7 +85,6 @@ const TimelineEvents = () => {
 
     return (
         <section id="events" ref={sectionRef} style={{ background: '#000', color: '#FFF', padding: isMobile ? '50px 20px' : '80px 50px' }}>
-            {/* Header */}
             <div style={{
                 display: 'flex',
                 flexDirection: isMobile ? 'column' : 'row',
@@ -78,20 +102,38 @@ const TimelineEvents = () => {
                         EVENTS <span style={{ color: '#CC0000' }}>ECOSYSTEM</span>
                     </h1>
                 </div>
-                <button onClick={() => openRegister(events.find(e => e.status === 'upcoming'))}
-                    style={{ background: '#CC0000', color: '#FFF', border: 'none', padding: isMobile ? '15px 30px' : '16px 30px', fontSize: '12px', fontWeight: '800', cursor: 'pointer', width: isMobile ? '100%' : 'auto' }}>
+                <button
+                    type="button"
+                    onClick={() => openRegister(featured)}
+                    disabled={!featured}
+                    style={{
+                        background: '#CC0000',
+                        color: '#FFF',
+                        border: 'none',
+                        padding: isMobile ? '15px 30px' : '16px 30px',
+                        fontSize: '12px',
+                        fontWeight: '800',
+                        cursor: featured ? 'pointer' : 'not-allowed',
+                        opacity: featured ? 1 : 0.5,
+                        width: isMobile ? '100%' : 'auto'
+                    }}
+                >
                     PRE-REGISTER →
                 </button>
             </div>
 
-            {/* Events Grid - Simple cards for mobile */}
             <div style={{
                 display: 'grid',
-                gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : `repeat(${events.length}, 1fr)`,
+                gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : `repeat(${Math.max(events.length, 1)}, 1fr)`,
                 gap: isMobile ? '12px' : '15px'
             }}>
                 {events.map((ev, i) => (
-                    <div key={ev.id} onClick={() => openRegister(ev)}
+                    <div
+                        key={ev.id}
+                        onClick={() => openRegister(ev)}
+                        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') openRegister(ev); }}
+                        role={ev.status !== 'past' ? 'button' : undefined}
+                        tabIndex={ev.status !== 'past' ? 0 : undefined}
                         style={{
                             background: ev.status === 'upcoming' ? '#CC0000' : '#111',
                             padding: isMobile ? '20px 15px' : '25px 20px',
@@ -100,7 +142,8 @@ const TimelineEvents = () => {
                             transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
                             transition: `all 0.5s ease ${0.1 + (i * 0.08)}s`,
                             border: ev.status === 'upcoming' ? 'none' : '1px solid #222'
-                        }}>
+                        }}
+                    >
                         <div style={{ fontSize: isMobile ? '10px' : '11px', color: ev.status === 'upcoming' ? '#FFF' : '#CC0000', fontWeight: '700', marginBottom: '8px', opacity: ev.status === 'upcoming' ? 0.8 : 1 }}>
                             {ev.date}
                         </div>
@@ -119,7 +162,6 @@ const TimelineEvents = () => {
                 ))}
             </div>
 
-            {/* Registration Modal */}
             {showModal && (
                 <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.95)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '20px' }} onClick={() => setShowModal(false)}>
                     <div style={{ background: '#FFF', color: '#000', padding: isMobile ? '35px 25px' : '50px', maxWidth: '420px', width: '100%' }} onClick={e => e.stopPropagation()}>
@@ -131,10 +173,13 @@ const TimelineEvents = () => {
                             <form onSubmit={handleRegister}>
                                 <input type="text" placeholder="Full Name" required value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} style={{ width: '100%', padding: '14px', border: '2px solid #EEE', marginBottom: '12px', fontSize: '16px', outline: 'none' }} />
                                 <input type="email" placeholder="Email" required value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} style={{ width: '100%', padding: '14px', border: '2px solid #EEE', marginBottom: '20px', fontSize: '16px', outline: 'none' }} />
+                                {formStatus === 'error' && (
+                                    <p style={{ color: '#C00', fontSize: '13px', marginBottom: '12px' }}>Registration failed. Try again.</p>
+                                )}
                                 <button type="submit" disabled={formStatus === 'loading'} style={{ width: '100%', background: '#CC0000', color: '#FFF', border: 'none', padding: '16px', fontSize: '13px', fontWeight: '800', cursor: 'pointer' }}>{formStatus === 'loading' ? 'REGISTERING...' : 'CONFIRM'}</button>
                             </form>
                         )}
-                        <button onClick={() => setShowModal(false)} style={{ background: 'none', border: 'none', marginTop: '15px', cursor: 'pointer', fontSize: '12px', color: '#888' }}>← Back</button>
+                        <button type="button" onClick={() => setShowModal(false)} style={{ background: 'none', border: 'none', marginTop: '15px', cursor: 'pointer', fontSize: '12px', color: '#888' }}>← Back</button>
                     </div>
                 </div>
             )}

@@ -107,7 +107,8 @@ See [`docs/supabase-rls.md`](./docs/supabase-rls.md).
 | Content | Where |
 |---------|--------|
 | Blog / submissions | `/admin` after Auth login |
-| Team / events / cohorts / partners | Component arrays + `public/` assets |
+| Events timeline (homepage cards) | `/admin` → **Events Timeline** (`timeline_events`) |
+| Team / cohorts / partners | Component arrays + `public/` assets |
 | Deploy | See §10 — **never** push straight to production |
 
 ---
