@@ -5,6 +5,7 @@ import LoadingScreen from './components/LoadingScreen';
 import CursorTrail from './components/CursorTrail';
 import BackToTop from './components/BackToTop';
 import Navbar from './components/Navbar';
+import OpeningNotification from './components/OpeningNotification';
 import SwissHero from './components/SwissHero';
 import ProcessAbout from './components/ProcessAbout';
 import FoundersNote from './components/FoundersNote';
@@ -73,6 +74,9 @@ function App() {
   return (
     <ThemeProvider>
       {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
+
+      {/* Outside opacity wrapper so the popup is never stuck at opacity 0 */}
+      {!isLoading && <OpeningNotification ready />}
 
       <div style={{ opacity: isLoading ? 0 : 1, transition: 'opacity 0.5s ease', minHeight: '100vh' }}>
         <Router>
