@@ -16,6 +16,19 @@ const CohortTicker = () => {
         return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
+    // Allow OpeningNotification (and other CTAs) to open Join modals globally
+    useEffect(() => {
+        const openJoin = (event) => {
+            const type = event.detail?.type;
+            if (type === 'startup' || type === 'idea') {
+                setShowJoinModal(type);
+                setSelectedStartup(null);
+            }
+        };
+        window.addEventListener('sea-open-join-modal', openJoin);
+        return () => window.removeEventListener('sea-open-join-modal', openJoin);
+    }, []);
+
     const cohort1 = [
         {
             ticker: "DORM",

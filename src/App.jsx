@@ -19,13 +19,13 @@ import NotFound from './components/NotFound';
 import AdminDashboard from './components/AdminDashboard';
 import './styles/index.css';
 
-const HomePage = () => {
+const HomePage = ({ siteReady }) => {
   return (
     <>
       {/* Skip to content link for accessibility */}
       <a href="#about" className="skip-link">Skip to content</a>
 
-      <OpeningNotification />
+      <OpeningNotification ready={siteReady} />
       <Navbar />
       <main>
         <SwissHero />
@@ -79,7 +79,7 @@ function App() {
       <div style={{ opacity: isLoading ? 0 : 1, transition: 'opacity 0.5s ease', minHeight: '100vh' }}>
         <Router>
           <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/" element={<HomePage siteReady={!isLoading} />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-const STORAGE_KEY = 'sea-dismiss-cohort3-apps-banner';
+const POPUP_DISMISSED_KEY = 'sea-cohort3-popup-dismissed';
+const LAUNCHER_KEY = 'sea-cohort3-launcher';
+const OPEN_DELAY_MS = 2500;
 
 function isStagingHost() {
     if (typeof window === 'undefined') return false;
@@ -8,98 +10,238 @@ function isStagingHost() {
     return host.includes('staging') || host === 'localhost' || host === '127.0.0.1';
 }
 
+/** Opens the same Join modal as the B-Labs “JOIN A STARTUP” CTA. */
+export function openJoinStartupModal() {
+    window.dispatchEvent(
+        new CustomEvent('sea-open-join-modal', { detail: { type: 'startup' } })
+    );
+}
+
 /**
- * Staging-only opening banner for Cohort 3 applications.
- * Does not render on production hostnames.
+ * Staging-only Cohort 3 opening experience:
+ * 1) ~2.5s after the site is ready → modal popup
+ * 2) Dismiss keeps a floating launcher (mobile + desktop)
+ * 3) CTA opens the Join a Startup application modal
  */
-const OpeningNotification = () => {
-    const [visible, setVisible] = useState(false);
+const OpeningNotification = ({ ready = true }) => {
+    const [showPopup, setShowPopup] = useState(false);
+    const [showLauncher, setShowLauncher] = useState(false);
+    const [isNarrow, setIsNarrow] = useState(false);
 
     useEffect(() => {
-        if (!isStagingHost()) return;
-        if (sessionStorage.getItem(STORAGE_KEY) === '1') return;
-        setVisible(true);
-        document.documentElement.style.setProperty('--opening-banner-height', '44px');
-        return () => {
-            document.documentElement.style.setProperty('--opening-banner-height', '0px');
-        };
+        const check = () => setIsNarrow(window.innerWidth < 768);
+        check();
+        window.addEventListener('resize', check);
+        return () => window.removeEventListener('resize', check);
     }, []);
 
-    if (!visible) return null;
+    useEffect(() => {
+        if (!isStagingHost() || !ready) return;
 
-    const dismiss = () => {
-        sessionStorage.setItem(STORAGE_KEY, '1');
-        document.documentElement.style.setProperty('--opening-banner-height', '0px');
-        setVisible(false);
+        const dismissed = sessionStorage.getItem(POPUP_DISMISSED_KEY) === '1';
+        const keepLauncher = sessionStorage.getItem(LAUNCHER_KEY) === '1' || dismissed;
+
+        if (keepLauncher) {
+            setShowLauncher(true);
+            return undefined;
+        }
+
+        const timer = window.setTimeout(() => {
+            setShowPopup(true);
+            sessionStorage.setItem(LAUNCHER_KEY, '1');
+        }, OPEN_DELAY_MS);
+
+        return () => window.clearTimeout(timer);
+    }, [ready]);
+
+    if (!isStagingHost()) return null;
+
+    const dismissPopup = () => {
+        sessionStorage.setItem(POPUP_DISMISSED_KEY, '1');
+        sessionStorage.setItem(LAUNCHER_KEY, '1');
+        setShowPopup(false);
+        setShowLauncher(true);
     };
 
-    const goToPortfolio = (e) => {
-        e.preventDefault();
-        const el = document.querySelector('#ventures');
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
+    const applyNow = () => {
+        sessionStorage.setItem(POPUP_DISMISSED_KEY, '1');
+        sessionStorage.setItem(LAUNCHER_KEY, '1');
+        setShowPopup(false);
+        setShowLauncher(true);
+        openJoinStartupModal();
     };
 
     return (
-        <div
-            role="status"
-            aria-live="polite"
-            style={{
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                right: 0,
-                zIndex: 1100,
-                background: '#CC0000',
-                color: '#FFF',
-                padding: '10px 16px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '12px',
-                flexWrap: 'wrap',
-                fontFamily: 'inherit',
-                boxShadow: '0 2px 12px rgba(0,0,0,0.25)',
-            }}
-        >
-            <span style={{ fontSize: '13px', fontWeight: 700, letterSpacing: '0.04em', textAlign: 'center' }}>
-                Cohort 3 applications are now out
-            </span>
-            <a
-                href="#ventures"
-                onClick={goToPortfolio}
-                style={{
-                    fontSize: '12px',
-                    fontWeight: 800,
-                    color: '#FFF',
-                    textDecoration: 'underline',
-                    textUnderlineOffset: '3px',
-                    whiteSpace: 'nowrap',
-                }}
-            >
-                View portfolio →
-            </a>
-            <button
-                type="button"
-                onClick={dismiss}
-                aria-label="Dismiss notification"
-                style={{
-                    position: 'absolute',
-                    right: '12px',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    background: 'transparent',
-                    border: 'none',
-                    color: '#FFF',
-                    fontSize: '18px',
-                    lineHeight: 1,
-                    cursor: 'pointer',
-                    padding: '4px 8px',
-                    opacity: 0.9,
-                }}
-            >
-                ×
-            </button>
-        </div>
+        <>
+            {showPopup && (
+                <div
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="cohort3-popup-title"
+                    style={{
+                        position: 'fixed',
+                        inset: 0,
+                        zIndex: 1200,
+                        background: 'rgba(0,0,0,0.72)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: isNarrow ? '16px' : '24px',
+                        WebkitOverflowScrolling: 'touch',
+                    }}
+                    onClick={dismissPopup}
+                >
+                    <div
+                        onClick={(e) => e.stopPropagation()}
+                        style={{
+                            position: 'relative',
+                            width: '100%',
+                            maxWidth: isNarrow ? '100%' : '420px',
+                            background: '#FFF',
+                            color: '#000',
+                            boxShadow: '0 24px 60px rgba(0,0,0,0.45)',
+                            maxHeight: '90vh',
+                            overflowY: 'auto',
+                        }}
+                    >
+                        <div style={{ background: '#CC0000', color: '#FFF', padding: isNarrow ? '28px 22px' : '36px 32px' }}>
+                            <p style={{ fontSize: '11px', letterSpacing: '2px', fontWeight: 700, opacity: 0.85, margin: 0 }}>
+                                B-LABS · COHORT 3
+                            </p>
+                            <h2
+                                id="cohort3-popup-title"
+                                style={{
+                                    fontSize: isNarrow ? '26px' : '32px',
+                                    fontWeight: 900,
+                                    margin: '10px 0 0',
+                                    lineHeight: 1.15,
+                                }}
+                            >
+                                Cohort 3 applications are now out
+                            </h2>
+                        </div>
+
+                        <div style={{ padding: isNarrow ? '22px' : '28px 32px' }}>
+                            <p style={{ fontSize: isNarrow ? '15px' : '16px', color: '#444', lineHeight: 1.55, margin: '0 0 22px' }}>
+                                Applications for the next B-Labs wave are open. Join a startup team — or come back anytime via the Cohort 3 button on this page.
+                            </p>
+
+                            <button
+                                type="button"
+                                onClick={applyNow}
+                                style={{
+                                    width: '100%',
+                                    background: '#CC0000',
+                                    color: '#FFF',
+                                    border: 'none',
+                                    padding: isNarrow ? '16px' : '18px',
+                                    fontSize: '13px',
+                                    fontWeight: 800,
+                                    letterSpacing: '1px',
+                                    cursor: 'pointer',
+                                    minHeight: '48px',
+                                    touchAction: 'manipulation',
+                                }}
+                            >
+                                JOIN A STARTUP →
+                            </button>
+
+                            <button
+                                type="button"
+                                onClick={dismissPopup}
+                                style={{
+                                    width: '100%',
+                                    background: 'transparent',
+                                    color: '#888',
+                                    border: 'none',
+                                    padding: '14px',
+                                    marginTop: '8px',
+                                    fontSize: '12px',
+                                    fontWeight: 600,
+                                    cursor: 'pointer',
+                                    minHeight: '44px',
+                                    touchAction: 'manipulation',
+                                }}
+                            >
+                                Not now
+                            </button>
+                        </div>
+
+                        <button
+                            type="button"
+                            onClick={dismissPopup}
+                            aria-label="Close notification"
+                            style={{
+                                position: 'absolute',
+                                top: '10px',
+                                right: '10px',
+                                width: '40px',
+                                height: '40px',
+                                border: 'none',
+                                background: 'rgba(0,0,0,0.2)',
+                                color: '#FFF',
+                                fontSize: '22px',
+                                lineHeight: 1,
+                                cursor: 'pointer',
+                                touchAction: 'manipulation',
+                            }}
+                        >
+                            ×
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            {showLauncher && !showPopup && (
+                <button
+                    type="button"
+                    onClick={applyNow}
+                    aria-label="Cohort 3 applications — Join a Startup"
+                    style={{
+                        position: 'fixed',
+                        zIndex: 1090,
+                        right: isNarrow ? '14px' : '22px',
+                        bottom: isNarrow ? '88px' : '28px',
+                        left: 'auto',
+                        background: '#CC0000',
+                        color: '#FFF',
+                        border: 'none',
+                        borderRadius: '999px',
+                        padding: isNarrow ? '12px 16px' : '14px 20px',
+                        fontSize: isNarrow ? '12px' : '13px',
+                        fontWeight: 800,
+                        letterSpacing: '0.04em',
+                        cursor: 'pointer',
+                        boxShadow: '0 8px 28px rgba(204,0,0,0.45)',
+                        maxWidth: isNarrow ? 'calc(100vw - 28px)' : 'none',
+                        minHeight: '44px',
+                        touchAction: 'manipulation',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                    }}
+                >
+                    <span
+                        style={{
+                            width: '8px',
+                            height: '8px',
+                            borderRadius: '50%',
+                            background: '#FFF',
+                            flexShrink: 0,
+                            animation: 'sea-pulse 1.6s ease-in-out infinite',
+                        }}
+                    />
+                    Cohort 3 apps open
+                </button>
+            )}
+
+            <style>{`
+                @keyframes sea-pulse {
+                    0%, 100% { opacity: 1; transform: scale(1); }
+                    50% { opacity: 0.45; transform: scale(0.85); }
+                }
+            `}</style>
+        </>
     );
 };
 

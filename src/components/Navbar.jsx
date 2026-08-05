@@ -41,7 +41,7 @@ const Navbar = () => {
         <>
             <nav style={{
                 position: 'fixed',
-                top: 'var(--opening-banner-height, 0px)',
+                top: 0,
                 left: 0,
                 right: 0,
                 zIndex: 999,
