@@ -232,20 +232,185 @@ const CohortTicker = () => {
             )}
 
             {/* CTA Blocks */}
-            <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', marginTop: isMobile ? '40px' : '60px', gap: isMobile ? '15px' : '0' }}>
-                <div onClick={() => setShowJoinModal('startup')}
-                    style={{ flex: 1, background: '#FFF', border: '2px solid #CC0000', padding: isMobile ? '35px 25px' : '50px 40px', textAlign: 'center', cursor: 'pointer', transition: 'all 0.3s' }}>
-                    <h3 style={{ fontSize: isMobile ? '22px' : '26px', fontWeight: '900' }}>JOIN A STARTUP</h3>
-                    <p style={{ marginTop: '10px', fontSize: '14px', color: '#666' }}>Find your next role.</p>
-                    <span style={{ display: 'block', marginTop: '15px', fontSize: '18px', color: '#CC0000' }}>→</span>
-                </div>
-                <div onClick={() => setShowJoinModal('idea')}
-                    style={{ flex: 1, background: '#CC0000', color: '#FFF', padding: isMobile ? '35px 25px' : '50px 40px', textAlign: 'center', cursor: 'pointer', transition: 'all 0.3s' }}>
-                    <h3 style={{ fontSize: isMobile ? '22px' : '26px', fontWeight: '900' }}>JOIN WITH AN IDEA</h3>
-                    <p style={{ marginTop: '10px', fontSize: '14px', opacity: 0.85 }}>Apply for Cohort 3.</p>
-                    <span style={{ display: 'block', marginTop: '15px', fontSize: '18px' }}>→</span>
-                </div>
+            <div
+                className="sea-join-cta-row"
+                style={{
+                    display: 'flex',
+                    flexDirection: isMobile ? 'column' : 'row',
+                    marginTop: isMobile ? '40px' : '60px',
+                    gap: isMobile ? '12px' : '0',
+                }}
+            >
+                <button
+                    type="button"
+                    className="sea-join-cta sea-join-cta--talent"
+                    onClick={() => setShowJoinModal('startup')}
+                >
+                    <span className="sea-join-cta-kicker">TALENT</span>
+                    <span className="sea-join-cta-title">Join a startup</span>
+                    <span className="sea-join-cta-sub">Find your next role on a B-Labs team.</span>
+                    <span className="sea-join-cta-go" aria-hidden="true">→</span>
+                </button>
+
+                <button
+                    type="button"
+                    className="sea-join-cta sea-join-cta--idea"
+                    onClick={() => setShowJoinModal('idea')}
+                >
+                    <span className="sea-join-cta-mark" aria-hidden="true">03</span>
+                    <span className="sea-join-cta-kicker">COHORT 3 · OPEN</span>
+                    <span className="sea-join-cta-title">
+                        Join with
+                        <br />
+                        an idea
+                    </span>
+                    <span className="sea-join-cta-sub">Pitch your venture into the next B-Labs wave.</span>
+                    <span className="sea-join-cta-action">
+                        Apply now
+                        <span className="sea-join-cta-go" aria-hidden="true">→</span>
+                    </span>
+                </button>
             </div>
+
+            <style>{`
+                .sea-join-cta {
+                    position: relative;
+                    flex: 1;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    text-align: left;
+                    border: none;
+                    cursor: pointer;
+                    overflow: hidden;
+                    padding: ${isMobile ? '28px 22px' : '40px 36px'};
+                    min-height: ${isMobile ? 'auto' : '220px'};
+                    font-family: inherit;
+                    transition: transform 220ms cubic-bezier(0.25, 1, 0.5, 1), background 220ms cubic-bezier(0.25, 1, 0.5, 1), border-color 220ms cubic-bezier(0.25, 1, 0.5, 1);
+                    touch-action: manipulation;
+                }
+                .sea-join-cta--talent {
+                    background: #FFF;
+                    color: #000;
+                    border: 2px solid #CC0000;
+                }
+                .sea-join-cta--talent:hover {
+                    background: #FAFAFA;
+                    transform: translateY(-2px);
+                }
+                .sea-join-cta--idea {
+                    background: #0A0A0A;
+                    color: #FFF;
+                    border: 2px solid #0A0A0A;
+                    border-left: ${isMobile ? '2px solid #0A0A0A' : 'none'};
+                }
+                .sea-join-cta--idea::before {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    bottom: 0;
+                    width: 6px;
+                    background: #CC0000;
+                }
+                .sea-join-cta--idea:hover {
+                    transform: translateY(-2px);
+                    border-color: #CC0000;
+                }
+                .sea-join-cta-mark {
+                    position: absolute;
+                    right: 8px;
+                    bottom: -12px;
+                    font-size: ${isMobile ? '96px' : '128px'};
+                    font-weight: 900;
+                    line-height: 0.8;
+                    letter-spacing: -0.06em;
+                    color: rgba(204, 0, 0, 0.18);
+                    pointer-events: none;
+                    user-select: none;
+                    transition: color 220ms cubic-bezier(0.25, 1, 0.5, 1), transform 280ms cubic-bezier(0.16, 1, 0.3, 1);
+                }
+                .sea-join-cta--idea:hover .sea-join-cta-mark {
+                    color: rgba(204, 0, 0, 0.32);
+                    transform: translateX(-6px);
+                }
+                .sea-join-cta-kicker {
+                    font-size: 11px;
+                    font-weight: 800;
+                    letter-spacing: 0.18em;
+                    margin-bottom: 14px;
+                    color: #CC0000;
+                    position: relative;
+                    z-index: 1;
+                }
+                .sea-join-cta--talent .sea-join-cta-kicker {
+                    color: #888;
+                }
+                .sea-join-cta-title {
+                    font-size: ${isMobile ? '26px' : '34px'};
+                    font-weight: 900;
+                    line-height: 0.95;
+                    letter-spacing: -0.03em;
+                    text-transform: uppercase;
+                    margin-bottom: 12px;
+                    position: relative;
+                    z-index: 1;
+                }
+                .sea-join-cta-sub {
+                    font-size: 14px;
+                    line-height: 1.5;
+                    max-width: 28ch;
+                    color: #666;
+                    margin-bottom: 22px;
+                    position: relative;
+                    z-index: 1;
+                }
+                .sea-join-cta--idea .sea-join-cta-sub {
+                    color: rgba(255,255,255,0.62);
+                }
+                .sea-join-cta--talent .sea-join-cta-go {
+                    margin-top: auto;
+                    font-size: 22px;
+                    color: #CC0000;
+                    transition: transform 180ms cubic-bezier(0.25, 1, 0.5, 1);
+                }
+                .sea-join-cta--talent:hover .sea-join-cta-go {
+                    transform: translateX(5px);
+                }
+                .sea-join-cta-action {
+                    margin-top: auto;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 10px;
+                    font-size: 12px;
+                    font-weight: 800;
+                    letter-spacing: 0.12em;
+                    text-transform: uppercase;
+                    color: #FFF;
+                    position: relative;
+                    z-index: 1;
+                    padding-bottom: 2px;
+                    border-bottom: 2px solid #CC0000;
+                }
+                .sea-join-cta-action .sea-join-cta-go {
+                    transition: transform 180ms cubic-bezier(0.25, 1, 0.5, 1);
+                }
+                .sea-join-cta--idea:hover .sea-join-cta-action .sea-join-cta-go {
+                    transform: translateX(5px);
+                }
+                @media (prefers-reduced-motion: reduce) {
+                    .sea-join-cta,
+                    .sea-join-cta-mark,
+                    .sea-join-cta-go,
+                    .sea-join-cta-action .sea-join-cta-go {
+                        transition: none !important;
+                    }
+                    .sea-join-cta:hover,
+                    .sea-join-cta--idea:hover .sea-join-cta-mark {
+                        transform: none !important;
+                    }
+                }
+            `}</style>
 
             {/* Join Modals */}
             {showJoinModal === 'startup' && <JoinModal type="startup" onClose={() => setShowJoinModal(null)} isMobile={isMobile} />}
@@ -257,7 +422,13 @@ const CohortTicker = () => {
 const JoinModal = ({ type, onClose, isMobile }) => {
     const [formData, setFormData] = useState({ name: '', email: '', extra: '' });
     const [status, setStatus] = useState('idle');
+    const [entered, setEntered] = useState(false);
     const isStartup = type === 'startup';
+
+    useEffect(() => {
+        const id = window.requestAnimationFrame(() => setEntered(true));
+        return () => window.cancelAnimationFrame(id);
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -284,24 +455,283 @@ const JoinModal = ({ type, onClose, isMobile }) => {
         }
     };
 
+    if (isStartup) {
+        return (
+            <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.95)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '20px' }} onClick={onClose}>
+                <div style={{ background: '#000', color: '#FFF', padding: isMobile ? '35px 25px' : '45px', maxWidth: '450px', width: '100%' }} onClick={e => e.stopPropagation()}>
+                    <h2 style={{ fontSize: '11px', letterSpacing: '2px', marginBottom: '8px', opacity: 0.7 }}>TALENT PORTAL</h2>
+                    <h3 style={{ fontSize: isMobile ? '24px' : '28px', fontWeight: '900', marginBottom: '25px' }}>JOIN A STARTUP</h3>
+
+                    {status === 'success' ? (
+                        <div style={{ textAlign: 'center', padding: '30px 0' }}><div style={{ fontSize: '40px', marginBottom: '10px' }}>✓</div><p>Application received!</p></div>
+                    ) : (
+                        <form onSubmit={handleSubmit}>
+                            <input type="text" placeholder="Full Name" required value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} style={{ width: '100%', padding: '14px', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.3)', color: '#FFF', fontSize: '16px', marginBottom: '12px', outline: 'none' }} />
+                            <input type="email" placeholder="Email" required value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} style={{ width: '100%', padding: '14px', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.3)', color: '#FFF', fontSize: '16px', marginBottom: '12px', outline: 'none' }} />
+                            <input type="text" placeholder="Skills (e.g. React, Design)" value={formData.extra} onChange={e => setFormData({ ...formData, extra: e.target.value })} style={{ width: '100%', padding: '14px', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.3)', color: '#FFF', fontSize: '16px', marginBottom: '20px', outline: 'none' }} />
+                            <button type="submit" disabled={status === 'loading'} style={{ width: '100%', background: '#CC0000', color: '#FFF', border: 'none', padding: '16px', fontSize: '13px', fontWeight: '800', cursor: 'pointer' }}>{status === 'loading' ? 'SUBMITTING...' : 'SUBMIT'}</button>
+                        </form>
+                    )}
+                    {status === 'error' && <p style={{ color: '#FF8A8A', fontSize: '13px', marginTop: '12px' }}>Something went wrong. Try again.</p>}
+                    <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.6)', marginTop: '15px', cursor: 'pointer', fontSize: '12px' }}>← Back</button>
+                </div>
+            </div>
+        );
+    }
+
+    // Idea / Cohort 3 application — editorial intake board
     return (
-        <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.95)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '20px' }} onClick={onClose}>
-            <div style={{ background: isStartup ? '#000' : '#CC0000', color: '#FFF', padding: isMobile ? '35px 25px' : '45px', maxWidth: '450px', width: '100%' }} onClick={e => e.stopPropagation()}>
-                <h2 style={{ fontSize: '11px', letterSpacing: '2px', marginBottom: '8px', opacity: 0.7 }}>{isStartup ? 'TALENT PORTAL' : 'B-LABS COHORT 3'}</h2>
-                <h3 style={{ fontSize: isMobile ? '24px' : '28px', fontWeight: '900', marginBottom: '25px' }}>{isStartup ? 'JOIN A STARTUP' : 'JOIN WITH AN IDEA'}</h3>
+        <div
+            className={`sea-idea-overlay${entered ? ' sea-idea-overlay--in' : ''}`}
+            onClick={onClose}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="sea-idea-title"
+        >
+            <div className={`sea-idea-board${entered ? ' sea-idea-board--in' : ''}`} onClick={e => e.stopPropagation()}>
+                <span className="sea-idea-slash" aria-hidden="true" />
+                <span className="sea-idea-watermark" aria-hidden="true">03</span>
+
+                <button type="button" className="sea-idea-close" onClick={onClose} aria-label="Close">×</button>
+
+                <p className="sea-idea-kicker">B-LABS · COHORT 3</p>
+                <h3 id="sea-idea-title" className="sea-idea-title">
+                    Join with
+                    <br />
+                    <em>an idea</em>
+                </h3>
+                <p className="sea-idea-lede">One line is enough to start. We’ll follow up if you’re a fit for the next wave.</p>
 
                 {status === 'success' ? (
-                    <div style={{ textAlign: 'center', padding: '30px 0' }}><div style={{ fontSize: '40px', marginBottom: '10px' }}>{isStartup ? '✓' : '🚀'}</div><p>Application received!</p></div>
+                    <div className="sea-idea-success">
+                        <p className="sea-idea-success-label">Received</p>
+                        <p>Your Cohort 3 application is in. Watch your inbox.</p>
+                    </div>
                 ) : (
-                    <form onSubmit={handleSubmit}>
-                        <input type="text" placeholder="Full Name" required value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} style={{ width: '100%', padding: '14px', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.3)', color: '#FFF', fontSize: '16px', marginBottom: '12px', outline: 'none' }} />
-                        <input type="email" placeholder="Email" required value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} style={{ width: '100%', padding: '14px', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.3)', color: '#FFF', fontSize: '16px', marginBottom: '12px', outline: 'none' }} />
-                        <input type="text" placeholder={isStartup ? 'Skills (e.g. React, Design)' : 'Your idea in one line'} value={formData.extra} onChange={e => setFormData({ ...formData, extra: e.target.value })} style={{ width: '100%', padding: '14px', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.3)', color: '#FFF', fontSize: '16px', marginBottom: '20px', outline: 'none' }} />
-                        <button type="submit" disabled={status === 'loading'} style={{ width: '100%', background: isStartup ? '#CC0000' : '#000', color: '#FFF', border: 'none', padding: '16px', fontSize: '13px', fontWeight: '800', cursor: 'pointer' }}>{status === 'loading' ? 'SUBMITTING...' : 'SUBMIT'}</button>
+                    <form onSubmit={handleSubmit} className="sea-idea-form">
+                        <label className="sea-idea-field">
+                            <span>Full name</span>
+                            <input type="text" required value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} autoComplete="name" />
+                        </label>
+                        <label className="sea-idea-field">
+                            <span>Email</span>
+                            <input type="email" required value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} autoComplete="email" />
+                        </label>
+                        <label className="sea-idea-field">
+                            <span>Your idea in one line</span>
+                            <input type="text" value={formData.extra} onChange={e => setFormData({ ...formData, extra: e.target.value })} placeholder="What are you building?" />
+                        </label>
+                        {status === 'error' && <p className="sea-idea-error">Couldn’t send — check your connection and try again.</p>}
+                        <button type="submit" className="sea-idea-submit" disabled={status === 'loading'}>
+                            {status === 'loading' ? 'Sending…' : 'Submit application'}
+                            {status !== 'loading' && <span aria-hidden="true">→</span>}
+                        </button>
                     </form>
                 )}
-                <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.6)', marginTop: '15px', cursor: 'pointer', fontSize: '12px' }}>← Back</button>
+
+                <button type="button" className="sea-idea-back" onClick={onClose}>← Back</button>
             </div>
+
+            <style>{`
+                .sea-idea-overlay {
+                    position: fixed;
+                    inset: 0;
+                    z-index: 1000;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 20px;
+                    background: rgba(5,5,5,0.82);
+                    backdrop-filter: blur(6px);
+                    -webkit-backdrop-filter: blur(6px);
+                    opacity: 0;
+                    transition: opacity 280ms cubic-bezier(0.16, 1, 0.3, 1);
+                }
+                .sea-idea-overlay--in { opacity: 1; }
+                .sea-idea-board {
+                    position: relative;
+                    width: 100%;
+                    max-width: 460px;
+                    max-height: 90vh;
+                    overflow: auto;
+                    background: #0A0A0A;
+                    color: #FFF;
+                    border: 1px solid rgba(255,255,255,0.12);
+                    padding: ${isMobile ? '28px 22px 24px' : '36px 34px 28px'};
+                    box-shadow: 0 28px 70px rgba(0,0,0,0.5);
+                    opacity: 0;
+                    transform: translate3d(0, 22px, 0) scale(0.98);
+                    transition: opacity 420ms cubic-bezier(0.16, 1, 0.3, 1), transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+                }
+                .sea-idea-board--in {
+                    opacity: 1;
+                    transform: translate3d(0, 0, 0) scale(1);
+                }
+                .sea-idea-slash {
+                    position: absolute;
+                    left: 0; top: 0; bottom: 0;
+                    width: 5px;
+                    background: #CC0000;
+                }
+                .sea-idea-watermark {
+                    position: absolute;
+                    right: -6px;
+                    top: 36%;
+                    transform: translateY(-50%);
+                    font-size: ${isMobile ? '120px' : '150px'};
+                    font-weight: 900;
+                    line-height: 0.8;
+                    letter-spacing: -0.06em;
+                    color: rgba(255,255,255,0.04);
+                    pointer-events: none;
+                }
+                .sea-idea-close {
+                    position: absolute;
+                    top: 10px;
+                    right: 10px;
+                    width: 40px;
+                    height: 40px;
+                    border: 1px solid rgba(255,255,255,0.18);
+                    background: transparent;
+                    color: #FFF;
+                    font-size: 22px;
+                    cursor: pointer;
+                    touch-action: manipulation;
+                }
+                .sea-idea-kicker {
+                    font-size: 11px;
+                    font-weight: 800;
+                    letter-spacing: 0.16em;
+                    color: #CC0000;
+                    margin: 0 0 12px;
+                    padding-right: 40px;
+                }
+                .sea-idea-title {
+                    font-size: ${isMobile ? '30px' : '38px'};
+                    font-weight: 900;
+                    line-height: 0.95;
+                    letter-spacing: -0.03em;
+                    text-transform: uppercase;
+                    margin: 0 0 12px;
+                    position: relative;
+                    z-index: 1;
+                }
+                .sea-idea-title em {
+                    font-style: normal;
+                    color: #CC0000;
+                }
+                .sea-idea-lede {
+                    font-size: 14px;
+                    line-height: 1.55;
+                    color: rgba(255,255,255,0.58);
+                    margin: 0 0 22px;
+                    max-width: 34ch;
+                    position: relative;
+                    z-index: 1;
+                }
+                .sea-idea-form {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 12px;
+                    position: relative;
+                    z-index: 1;
+                }
+                .sea-idea-field {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 6px;
+                }
+                .sea-idea-field span {
+                    font-size: 10px;
+                    font-weight: 800;
+                    letter-spacing: 0.14em;
+                    text-transform: uppercase;
+                    color: rgba(255,255,255,0.45);
+                }
+                .sea-idea-field input {
+                    width: 100%;
+                    padding: 14px 12px;
+                    background: rgba(255,255,255,0.06);
+                    border: 1px solid rgba(255,255,255,0.18);
+                    color: #FFF;
+                    font-size: 16px;
+                    outline: none;
+                    font-family: inherit;
+                    transition: border-color 160ms cubic-bezier(0.25, 1, 0.5, 1), background 160ms cubic-bezier(0.25, 1, 0.5, 1);
+                }
+                .sea-idea-field input::placeholder { color: rgba(255,255,255,0.28); }
+                .sea-idea-field input:focus {
+                    border-color: #CC0000;
+                    background: rgba(204,0,0,0.08);
+                }
+                .sea-idea-submit {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    width: 100%;
+                    min-height: 52px;
+                    margin-top: 8px;
+                    padding: 14px 18px;
+                    border: none;
+                    background: #CC0000;
+                    color: #FFF;
+                    font-size: 13px;
+                    font-weight: 800;
+                    letter-spacing: 0.08em;
+                    text-transform: uppercase;
+                    cursor: pointer;
+                    touch-action: manipulation;
+                    font-family: inherit;
+                    transition: background 160ms cubic-bezier(0.25, 1, 0.5, 1), transform 160ms cubic-bezier(0.25, 1, 0.5, 1);
+                }
+                .sea-idea-submit:hover:not(:disabled) {
+                    background: #E00000;
+                    transform: translateY(-1px);
+                }
+                .sea-idea-submit:disabled { opacity: 0.7; cursor: wait; }
+                .sea-idea-error {
+                    color: #FF8A8A;
+                    font-size: 13px;
+                    margin: 0;
+                }
+                .sea-idea-success {
+                    position: relative;
+                    z-index: 1;
+                    padding: 18px 0 8px;
+                }
+                .sea-idea-success-label {
+                    font-size: 11px;
+                    font-weight: 800;
+                    letter-spacing: 0.16em;
+                    color: #CC0000;
+                    margin: 0 0 8px;
+                }
+                .sea-idea-back {
+                    background: none;
+                    border: none;
+                    color: rgba(255,255,255,0.45);
+                    margin-top: 16px;
+                    cursor: pointer;
+                    font-size: 12px;
+                    font-family: inherit;
+                    padding: 8px 0;
+                    touch-action: manipulation;
+                }
+                .sea-idea-back:hover { color: rgba(255,255,255,0.85); }
+                @media (prefers-reduced-motion: reduce) {
+                    .sea-idea-overlay,
+                    .sea-idea-board,
+                    .sea-idea-field input,
+                    .sea-idea-submit {
+                        transition: none !important;
+                    }
+                    .sea-idea-overlay,
+                    .sea-idea-board {
+                        opacity: 1 !important;
+                        transform: none !important;
+                    }
+                }
+            `}</style>
         </div>
     );
 };

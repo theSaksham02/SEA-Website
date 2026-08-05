@@ -20,16 +20,21 @@ function prefersReducedMotion() {
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
-/** Opens the same Join modal as the B-Labs “JOIN A STARTUP” CTA. */
-export function openJoinStartupModal() {
+/** Opens the same Join modal as the B-Labs “JOIN WITH AN IDEA” CTA. */
+export function openJoinIdeaModal() {
     window.dispatchEvent(
-        new CustomEvent('sea-open-join-modal', { detail: { type: 'startup' } })
+        new CustomEvent('sea-open-join-modal', { detail: { type: 'idea' } })
     );
+}
+
+/** @deprecated use openJoinIdeaModal — Cohort 3 routes to the idea application */
+export function openJoinStartupModal() {
+    openJoinIdeaModal();
 }
 
 /**
  * Staging-only Cohort 3 opening experience — editorial intake board.
- * Delayed modal → dismiss keeps a sharp floating launcher → opens Join a Startup.
+ * Delayed modal → dismiss keeps a sharp floating launcher → opens Join with an Idea.
  */
 const OpeningNotification = ({ ready = true }) => {
     const [enabled, setEnabled] = useState(false);
@@ -100,7 +105,7 @@ const OpeningNotification = ({ ready = true }) => {
             setShowPopup(false);
             setShowLauncher(true);
             setLauncherIn(true);
-            window.setTimeout(() => openJoinStartupModal(), 40);
+            window.setTimeout(() => openJoinIdeaModal(), 40);
         };
         if (reduceMotion) {
             open();
@@ -158,12 +163,12 @@ const OpeningNotification = ({ ready = true }) => {
                         </h2>
 
                         <p className="sea-c3-copy sea-c3-stagger" style={{ '--d': '160ms' }}>
-                            The next B-Labs wave is open. Join a founding team — or reopen this anytime from the launcher on the page.
+                            The next B-Labs wave is open. Bring your venture idea — or reopen this anytime from the launcher on the page.
                         </p>
 
                         <div className="sea-c3-actions sea-c3-stagger" style={{ '--d': '230ms' }}>
                             <button type="button" className="sea-c3-cta" onClick={applyNow}>
-                                <span>Join a startup</span>
+                                <span>Join with an idea</span>
                                 <span className="sea-c3-cta-arrow" aria-hidden="true">→</span>
                             </button>
                             <button type="button" className="sea-c3-ghost" onClick={dismissPopup}>
@@ -179,7 +184,7 @@ const OpeningNotification = ({ ready = true }) => {
                     type="button"
                     className={`sea-c3-launcher${launcherIn ? ' sea-c3-launcher--in' : ''}${reduceMotion ? ' sea-c3--static' : ''}`}
                     onClick={applyNow}
-                    aria-label="Cohort 3 applications — Join a Startup"
+                    aria-label="Cohort 3 applications — Join with an Idea"
                     style={{
                         bottom: isNarrow ? '88px' : '28px',
                         right: isNarrow ? '14px' : '22px',
