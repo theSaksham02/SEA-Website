@@ -118,7 +118,12 @@ const Partners = () => {
             {/* CSS Animation - pause only on desktop hover, not on mobile touch */}
             <style>{`
                 .marquee-track {
-                    animation: marquee 25s linear infinite;
+                    animation: marquee 12s linear infinite;
+                }
+                @media (max-width: 768px) {
+                    .marquee-track {
+                        animation-duration: 10s;
+                    }
                 }
                 @media (hover: hover) and (pointer: fine) {
                     .marquee-container:hover .marquee-track {
