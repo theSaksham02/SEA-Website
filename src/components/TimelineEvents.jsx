@@ -137,65 +137,90 @@ const TimelineEvents = () => {
             <div style={{
                 display: 'grid',
                 gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : `repeat(${Math.max(events.length, 1)}, 1fr)`,
-                gap: isMobile ? '12px' : '15px'
+                gap: isMobile ? '12px' : '15px',
+                alignItems: 'stretch'
             }}>
                 {events.map((ev, i) => (
                     <div
                         key={ev.id}
                         style={{
                             background: ev.status === 'upcoming' ? '#CC0000' : '#111',
-                            padding: isMobile ? '20px 15px' : '25px 20px',
+                            padding: isMobile ? '18px 14px' : '25px 20px',
                             opacity: isVisible ? (ev.status === 'past' ? 0.55 : 1) : 0,
                             transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
                             transition: `all 0.5s ease ${0.1 + (i * 0.08)}s`,
                             border: ev.status === 'upcoming' ? 'none' : '1px solid #222',
                             display: 'flex',
-                            flexDirection: 'column'
+                            flexDirection: 'column',
+                            minHeight: isMobile ? '210px' : '220px',
+                            height: '100%',
+                            boxSizing: 'border-box'
                         }}
                     >
                         <div style={{ fontSize: isMobile ? '10px' : '11px', color: ev.status === 'upcoming' ? '#FFF' : '#CC0000', fontWeight: '700', marginBottom: '8px', opacity: ev.status === 'upcoming' ? 0.8 : 1 }}>
                             {ev.date}
                         </div>
-                        <h3 style={{ fontSize: isMobile ? '14px' : '15px', fontWeight: '800', marginBottom: '6px', lineHeight: '1.2' }}>
+                        <h3 style={{
+                            fontSize: isMobile ? '13px' : '15px',
+                            fontWeight: '800',
+                            marginBottom: '6px',
+                            lineHeight: 1.25,
+                            minHeight: isMobile ? '49px' : '38px',
+                            display: '-webkit-box',
+                            WebkitLineClamp: 3,
+                            WebkitBoxOrient: 'vertical',
+                            overflow: 'hidden'
+                        }}>
                             {ev.title.toUpperCase()}
                         </h3>
-                        <div style={{ fontSize: isMobile ? '11px' : '12px', color: ev.status === 'upcoming' ? 'rgba(255,255,255,0.7)' : '#555', marginBottom: 'auto' }}>
+                        <div style={{
+                            fontSize: isMobile ? '11px' : '12px',
+                            color: ev.status === 'upcoming' ? 'rgba(255,255,255,0.7)' : '#555',
+                            marginBottom: '12px',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis'
+                        }}>
                             {ev.loc}
                         </div>
-                        <div style={{ marginTop: '14px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                        <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                             <button
                                 type="button"
                                 onClick={() => openDetail(ev)}
                                 style={{
                                     background: 'transparent',
-                                    border: ev.status === 'upcoming' ? '1px solid rgba(255,255,255,0.7)' : '1px solid #333',
-                                    color: ev.status === 'upcoming' ? '#FFF' : '#CCC',
+                                    border: ev.status === 'upcoming' ? '1px solid rgba(255,255,255,0.85)' : '1px solid #444',
+                                    color: ev.status === 'upcoming' ? '#FFF' : '#EEE',
                                     padding: '8px 10px',
                                     fontSize: '10px',
                                     fontWeight: '700',
                                     cursor: 'pointer',
-                                    letterSpacing: '0.5px'
+                                    letterSpacing: '0.5px',
+                                    width: '100%'
                                 }}
                             >
                                 VIEW MORE →
                             </button>
-                            {ev.status !== 'past' && (
+                            {ev.status !== 'past' ? (
                                 <button
                                     type="button"
                                     onClick={() => openRegister(ev)}
                                     style={{
                                         background: 'transparent',
                                         border: 'none',
-                                        padding: 0,
+                                        padding: '4px 0',
                                         fontSize: '10px',
                                         fontWeight: '700',
                                         color: ev.status === 'upcoming' ? '#FFF' : '#CC0000',
                                         cursor: 'pointer',
-                                        textAlign: 'left'
+                                        textAlign: 'left',
+                                        minHeight: '18px'
                                     }}
                                 >
                                     REGISTER →
                                 </button>
+                            ) : (
+                                <div style={{ minHeight: '18px' }} aria-hidden="true" />
                             )}
                         </div>
                     </div>
