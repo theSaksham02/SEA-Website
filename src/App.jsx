@@ -5,6 +5,7 @@ import LoadingScreen from './components/LoadingScreen';
 import CursorTrail from './components/CursorTrail';
 import BackToTop from './components/BackToTop';
 import Navbar from './components/Navbar';
+import OpeningNotification from './components/OpeningNotification';
 import SwissHero from './components/SwissHero';
 import ProcessAbout from './components/ProcessAbout';
 import FoundersNote from './components/FoundersNote';
@@ -24,6 +25,7 @@ const HomePage = () => {
       {/* Skip to content link for accessibility */}
       <a href="#about" className="skip-link">Skip to content</a>
 
+      <OpeningNotification />
       <Navbar />
       <main>
         <SwissHero />
