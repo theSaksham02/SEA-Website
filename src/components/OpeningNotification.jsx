@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
 
 const POPUP_DISMISSED_KEY = 'sea-cohort3-popup-dismissed';
-const LAUNCHER_KEY = 'sea-cohort3-launcher';
 const OPEN_DELAY_MS = 2500;
 
 function isStagingHost() {
     if (typeof window === 'undefined') return false;
     const host = window.location.hostname;
-    return host.includes('staging') || host === 'localhost' || host === '127.0.0.1';
+    return (
+        host.includes('staging') ||
+        host.includes('git-staging') ||
+        host === 'localhost' ||
+        host === '127.0.0.1'
+    );
 }
 
 /** Opens the same Join modal as the B-Labs “JOIN A STARTUP” CTA. */
@@ -24,11 +28,13 @@ export function openJoinStartupModal() {
  * 3) CTA opens the Join a Startup application modal
  */
 const OpeningNotification = ({ ready = true }) => {
+    const [enabled, setEnabled] = useState(false);
     const [showPopup, setShowPopup] = useState(false);
     const [showLauncher, setShowLauncher] = useState(false);
     const [isNarrow, setIsNarrow] = useState(false);
 
     useEffect(() => {
+        setEnabled(isStagingHost());
         const check = () => setIsNarrow(window.innerWidth < 768);
         check();
         window.addEventListener('resize', check);
@@ -36,39 +42,34 @@ const OpeningNotification = ({ ready = true }) => {
     }, []);
 
     useEffect(() => {
-        if (!isStagingHost() || !ready) return;
+        if (!enabled || !ready) return undefined;
+
+        // Always keep the floating launcher available on staging once ready
+        setShowLauncher(true);
 
         const dismissed = sessionStorage.getItem(POPUP_DISMISSED_KEY) === '1';
-        const keepLauncher = sessionStorage.getItem(LAUNCHER_KEY) === '1' || dismissed;
-
-        if (keepLauncher) {
-            setShowLauncher(true);
-            return undefined;
-        }
+        if (dismissed) return undefined;
 
         const timer = window.setTimeout(() => {
             setShowPopup(true);
-            sessionStorage.setItem(LAUNCHER_KEY, '1');
         }, OPEN_DELAY_MS);
 
         return () => window.clearTimeout(timer);
-    }, [ready]);
+    }, [enabled, ready]);
 
-    if (!isStagingHost()) return null;
+    if (!enabled) return null;
 
     const dismissPopup = () => {
         sessionStorage.setItem(POPUP_DISMISSED_KEY, '1');
-        sessionStorage.setItem(LAUNCHER_KEY, '1');
         setShowPopup(false);
         setShowLauncher(true);
     };
 
     const applyNow = () => {
         sessionStorage.setItem(POPUP_DISMISSED_KEY, '1');
-        sessionStorage.setItem(LAUNCHER_KEY, '1');
         setShowPopup(false);
         setShowLauncher(true);
-        openJoinStartupModal();
+        window.setTimeout(() => openJoinStartupModal(), 50);
     };
 
     return (
@@ -81,7 +82,7 @@ const OpeningNotification = ({ ready = true }) => {
                     style={{
                         position: 'fixed',
                         inset: 0,
-                        zIndex: 1200,
+                        zIndex: 12000,
                         background: 'rgba(0,0,0,0.72)',
                         display: 'flex',
                         alignItems: 'center',
@@ -199,7 +200,7 @@ const OpeningNotification = ({ ready = true }) => {
                     aria-label="Cohort 3 applications — Join a Startup"
                     style={{
                         position: 'fixed',
-                        zIndex: 1090,
+                        zIndex: 11000,
                         right: isNarrow ? '14px' : '22px',
                         bottom: isNarrow ? '88px' : '28px',
                         left: 'auto',
