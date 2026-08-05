@@ -125,7 +125,35 @@ const CohortTicker = () => {
         },
     ];
 
-    const data = activeTab === 'COHORT 1' ? cohort1 : activeTab === 'COHORT 2' ? cohort2 : exclusive;
+    const cohort3 = [
+        {
+            ticker: "C3-01",
+            name: "Coming Soon",
+            tagline: "B-Labs Cohort 3 — Upcoming",
+            desc: "Cohort 3 startups will be announced here. Apply with an idea or join a founding team to be part of the next B-Labs wave.",
+            founders: "B-Labs Cohort 3",
+            stage: "Upcoming",
+            problem: "Applications for the next cohort are opening soon",
+            solution: "Watch this space — or join via the CTAs below"
+        },
+        {
+            ticker: "C3-02",
+            name: "Your Startup?",
+            tagline: "Build with SEA",
+            desc: "Have a venture idea or skills to join a founding team? Cohort 3 is the next intake for B-Labs incubation.",
+            founders: "B-Labs Cohort 3",
+            stage: "Recruiting",
+            problem: "Student founders need structure, mentorship, and a peer cohort",
+            solution: "B-Labs Cohort 3 — Educate, Incubate, Accelerate"
+        },
+    ];
+
+    const tabs = ['COHORT 1', 'COHORT 2', 'COHORT 3', 'EXCLUSIVE'];
+    const data =
+        activeTab === 'COHORT 1' ? cohort1 :
+        activeTab === 'COHORT 2' ? cohort2 :
+        activeTab === 'COHORT 3' ? cohort3 :
+        exclusive;
 
     useEffect(() => {
         const observer = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) setIsVisible(true); }, { threshold: 0.1 });
@@ -140,13 +168,18 @@ const CohortTicker = () => {
                 <span style={{ fontSize: '11px', color: '#CC0000', fontWeight: 'bold', letterSpacing: '2px' }}>B-LABS INCUBATOR</span>
                 <h1 style={{ fontSize: isMobile ? '28px' : 'clamp(36px, 5vw, 56px)', fontWeight: '900', marginTop: '12px' }}>THE <span style={{ color: '#CC0000' }}>PORTFOLIO.</span></h1>
 
-                <div style={{ display: 'flex', gap: '20px', marginTop: '20px' }}>
-                    {['COHORT 1', 'COHORT 2', 'EXCLUSIVE'].map(tab => (
+                <div style={{ display: 'flex', gap: isMobile ? '12px' : '20px', marginTop: '20px', flexWrap: 'wrap' }}>
+                    {tabs.map(tab => (
                         <button key={tab} onClick={() => { setActiveTab(tab); setSelectedStartup(null); }}
-                            style={{ background: 'transparent', border: 'none', borderBottom: activeTab === tab ? '3px solid #CC0000' : '3px solid transparent', paddingBottom: '8px', fontSize: isMobile ? '13px' : '14px', fontWeight: '800', color: activeTab === tab ? '#000' : '#888', cursor: 'pointer' }}
+                            style={{ background: 'transparent', border: 'none', borderBottom: activeTab === tab ? '3px solid #CC0000' : '3px solid transparent', paddingBottom: '8px', fontSize: isMobile ? '12px' : '14px', fontWeight: '800', color: activeTab === tab ? '#000' : '#888', cursor: 'pointer', whiteSpace: 'nowrap' }}
                         >{tab}</button>
                     ))}
                 </div>
+                {activeTab === 'COHORT 3' && (
+                    <p style={{ marginTop: '14px', fontSize: '13px', color: '#888', fontWeight: '600' }}>
+                        Upcoming cohort — startups will be announced as they join B-Labs.
+                    </p>
+                )}
             </div>
 
             {/* Startup Cards */}
