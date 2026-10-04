@@ -13,20 +13,20 @@ const MasonryTeam = () => {
     }, []);
 
     const team = [
-        { name: "Merna Meligy", role: "President", img: "/team/President.png", linkedin: "https://www.linkedin.com/in/mernameligy/" },
-        { name: "Saksham Mishra", role: "Vice President", img: "/team/Vice-President.png", linkedin: "https://www.linkedin.com/in/saksham-mishra-7b1930345/" },
-        { name: "Amir Hossein K.", role: "Head of Community", img: "/team/Head-of-community.png", linkedin: "https://www.linkedin.com/in/amir-hossein-kazemkhani-/" },
-        { name: "Nirmal Sudhir", role: "Chief of Staff", img: "/team/Chief_of_Staff.png", linkedin: "https://www.linkedin.com/in/nirmalsudhir/" },
-        { name: "Adham Sameh", role: "Chair", img: "/team/Chair.png", linkedin: "https://www.linkedin.com/in/adham-sameh/" },
-        { name: "Ameer Alhashemi", role: "Co-Chair", img: "/team/Co-Chair.png", linkedin: "https://www.linkedin.com/in/ameer-alhashemi/" },
-        { name: "Ryaan Khan", role: "Co-Head B-Labs", img: "/team/Co-head-Blabs.png", linkedin: "https://www.linkedin.com/in/ryaan-khan-014a01249/" },
-        { name: "Hamza El Gindy", role: "Co-Head B-Labs", img: "/team/Co-head-BLabs123.png", linkedin: "https://www.linkedin.com/in/hamzagindy/" },
-        { name: "Nidal Al Jabi", role: "B-Labs Head of Outreach", img: "/team/Nidal.png", linkedin: "https://www.linkedin.com/in/nidal-al-jabi-8695101b8/" },
-        { name: "Smrithi Seshachalam", role: "B-Labs Sr. Analyst", img: "/team/Smrithi.png", linkedin: "https://www.linkedin.com/in/smrithiseshachalam/" },
-        { name: "Shahad Al Shebli", role: "Head of Events", img: "/team/Head-of-Events.png", linkedin: "https://www.linkedin.com/in/shahad-al-shebli-06a2b6311/" },
-        { name: "Zainab Ali", role: "Head of Events", img: "/team/head-of-events123.png", linkedin: "https://www.linkedin.com/in/zainab-ali-286058260/" },
-        { name: "Diyora Mirzaeva", role: "Event Coordinator", img: "/team/Event-coordinator.png", linkedin: "https://www.linkedin.com/in/diyora-mirzaeva-9b05b8249/" },
-        { name: "Hams Abouelela", role: "Head of Marketing", img: "/team/Head-of-markerting.png", linkedin: "https://www.linkedin.com/in/hamsabouelela/" },
+        { name: "Saksham Mishra", role: "President", img: "/team/Prez-§-Saksham.jpeg", linkedin: "" },
+        { name: "Hiva Vadoodi", role: "Vice President", img: "/team/Hiva.png", linkedin: "" },
+        { name: "Dev Malhotra", role: "Chief of Staff", img: "/team/Dev.png", linkedin: "" },
+        { name: "Roza Dehestany", role: "B-Labs Chair", img: "/team/Roza.png", linkedin: "" },
+        { name: "Simran Patidar", role: "Sr. B-Labs Analyst", img: "/team/Simran.png", linkedin: "" },
+        { name: "Marufjon Isomadinov", role: "Jr. B-Labs Analyst", img: "/team/Maruf.png", linkedin: "" },
+        { name: "Abdulmumin Dagazau", role: "Chief of Marketing", img: "/team/Abdul.png", linkedin: "" },
+        { name: "Lakshya Arora", role: "Creative Brand Director", img: "/team/Lakshya.png", linkedin: "" },
+        { name: "Hayaa Pardasani", role: "Co-Chair Event", img: "/team/Hayaa.png", linkedin: "" },
+        { name: "Manasi", role: "Events Coordinator", img: "/team/Manasi.png", linkedin: "" },
+        { name: "Bhavika Grover", role: "Co-Chair Partnership and Outreach", img: "/team/Bhavika.png", linkedin: "" },
+        { name: "Shrey Baherwani", role: "Brand & Outreach Coordinator", img: "/team/Shrey.png", linkedin: "" },
+        { name: "Kartik Gupta", role: "Chief of Technology", img: "/team/Kartik.png", linkedin: "" },
+        { name: "Hunaid", role: "Technical Coordinator", img: "/team/Hunaid.png", linkedin: "" }
     ];
 
     useEffect(() => {
