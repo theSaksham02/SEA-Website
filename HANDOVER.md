@@ -10,7 +10,7 @@
 | Stack | Vite 7 + React 19 SPA, plain CSS, React Router 7 |
 | Backend | Supabase (forms + blog CMS) via anon key + Auth for `/admin` |
 | Hosting | Vercel project `sea-uobd` (`vercel.json` SPA rewrite) |
-| **Production** | https://seauobd.vercel.app/ |
+| **Production** | https://seauobd.me/ |
 | **Staging (testing site)** | https://sea-uobd-staging.vercel.app/ |
 | Repo | https://github.com/theSaksham02/SEA-Website.git |
 | Branches | `main` = production · `staging` = shared testing |
@@ -158,7 +158,7 @@ Mistakes stay in **PRs and staging**. Production only updates from protected `ma
 | Local | any | `localhost:5173` |
 | PR Preview | every PR | Unique `*.vercel.app` on the PR |
 | **Staging** | `staging` | **https://sea-uobd-staging.vercel.app/** |
-| **Production** | `main` | **https://seauobd.vercel.app/** |
+| **Production** | `main` | **https://seauobd.me/** |
 
 ### Team workflow
 

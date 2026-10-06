@@ -6,7 +6,7 @@ Marketing site for the **Student Entrepreneurship Association (SEA)** at the Uni
 
 | | |
 |---|---|
-| Live preview | https://seauobd.vercel.app/ |
+| Live site | https://seauobd.me/ |
 | Stack | Vite 7 · React 19 · React Router 7 · plain CSS |
 | Backend | Supabase (forms + blog CMS) |
 | Host | Vercel |

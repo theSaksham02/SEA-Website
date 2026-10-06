@@ -127,8 +127,8 @@ const TerminalFooter = () => {
                     gap: isMobile ? '25px' : '20px',
                     textAlign: 'center'
                 }}>
-                    <div style={{ fontSize: '12px', color: '#555', letterSpacing: '1px' }}>© 2026 SEA</div>
-                    <div style={{ fontSize: '12px', color: '#555', letterSpacing: '1px' }}>University of Birmingham</div>
+                    <div style={{ fontSize: '12px', color: '#555', letterSpacing: '1px' }}>© 2026 SEA · seauobd.me</div>
+                    <div style={{ fontSize: '12px', color: '#555', letterSpacing: '1px' }}>University of Birmingham Dubai · Est. 2024</div>
 
                     {/* Social Icons - Larger */}
                     <div style={{ display: 'flex', gap: '20px' }}>

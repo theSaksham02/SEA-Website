@@ -72,7 +72,7 @@ const SwissHero = () => {
                         opacity: loaded ? 1 : 0,
                         transition: 'opacity 1s ease 0.5s'
                     }}>
-                        The premier ecosystem for student founders at the University of Birmingham.
+                        The Student Entrepreneurship Association for student founders at the University of Birmingham Dubai.
                     </p>
                 </div>
 
