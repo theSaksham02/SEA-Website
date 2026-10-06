@@ -7,6 +7,7 @@ import BackToTop from './components/BackToTop';
 import Navbar from './components/Navbar';
 import OpeningNotification from './components/OpeningNotification';
 import SwissHero from './components/SwissHero';
+import WhatIsSea from './components/WhatIsSea';
 import ProcessAbout from './components/ProcessAbout';
 import FoundersNote from './components/FoundersNote';
 import MasonryTeam from './components/MasonryTeam';
@@ -28,6 +29,7 @@ const HomePage = () => {
       <Navbar />
       <main>
         <SwissHero />
+        <WhatIsSea />
         <ProcessAbout />
         <FoundersNote />
         <MasonryTeam />
