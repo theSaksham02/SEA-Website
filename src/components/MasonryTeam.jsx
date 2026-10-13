@@ -17,6 +17,7 @@ const MasonryTeam = () => {
         { name: "Hiva Vadoodi", role: "Vice President", img: "/team/Hiva.png", linkedin: "" },
         { name: "Roza Dehestany", role: "B-Labs Chair", img: "/team/Roza.png", linkedin: "" },
         { name: "Dev Malhotra", role: "Chief of Staff", img: "/team/Dev.jpg", linkedin: "" },
+        { name: "Janakk Nandwani", role: "Head of Community", img: "/team/Janakk.jpg", linkedin: "" },
         { name: "Simran Patidar", role: "Sr. B-Labs Analyst", img: "/team/Simran.png", linkedin: "" },
         { name: "Marufjon Isomadinov", role: "Jr. B-Labs Analyst", img: "/team/Maruf.png", linkedin: "" },
         { name: "Abdulmumin Dagazau", role: "Chief of Marketing", img: "/team/Abdul.png", linkedin: "" },
