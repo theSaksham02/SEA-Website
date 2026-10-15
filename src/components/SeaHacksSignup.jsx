@@ -23,30 +23,6 @@ const THEMES = [
   'Fintech/business',
 ];
 
-const inputStyle = {
-  width: '100%',
-  boxSizing: 'border-box',
-  minHeight: '44px',
-  padding: '11px 12px',
-  border: '1px solid #444',
-  borderRadius: 0,
-  background: '#151515',
-  color: '#fff',
-  fontSize: '14px',
-  fontFamily: 'inherit',
-  outlineOffset: '2px',
-};
-
-const labelStyle = {
-  display: 'block',
-  marginBottom: '6px',
-  color: 'rgba(255,255,255,0.78)',
-  fontSize: '11px',
-  fontWeight: 800,
-  letterSpacing: '0.08em',
-  textTransform: 'uppercase',
-};
-
 function FormField({ label, name, value, onChange, type = 'text', placeholder, required = true }) {
   return (
     <div className="sea-hacks-field">
