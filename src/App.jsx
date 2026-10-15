@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
@@ -5,7 +6,8 @@ import LoadingScreen from './components/LoadingScreen';
 import CursorTrail from './components/CursorTrail';
 import BackToTop from './components/BackToTop';
 import Navbar from './components/Navbar';
-import OpeningNotification from './components/OpeningNotification';
+// import OpeningNotification from './components/OpeningNotification';
+import SeaHacksSignup from './components/SeaHacksSignup';
 import SwissHero from './components/SwissHero';
 import WhatIsSea from './components/WhatIsSea';
 import ProcessAbout from './components/ProcessAbout';
@@ -57,6 +59,7 @@ function App() {
   // Intersection Observer for scroll animations
   useEffect(() => {
     if (isLoading) return;
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach(entry => {
@@ -67,20 +70,35 @@ function App() {
       },
       { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
     );
-    setTimeout(() => {
-      document.querySelectorAll('.section-animate, .fade-in-section').forEach(el => observer.observe(el));
+
+    const timer = setTimeout(() => {
+      document
+        .querySelectorAll('.section-animate, .fade-in-section')
+        .forEach(el => observer.observe(el));
     }, 100);
-    return () => observer.disconnect();
+
+    return () => {
+      clearTimeout(timer);
+      observer.disconnect();
+    };
   }, [isLoading]);
 
   return (
     <ThemeProvider>
-      {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
+      {isLoading && (
+        <LoadingScreen onComplete={() => setIsLoading(false)} />
+      )}
 
-      {/* Outside opacity wrapper so the popup is never stuck at opacity 0 */}
-      {!isLoading && <OpeningNotification ready />}
+      {/* Old opening popup disabled; new SEA HACKS signup popup */}
+      {!isLoading && <SeaHacksSignup ready />}
 
-      <div style={{ opacity: isLoading ? 0 : 1, transition: 'opacity 0.5s ease', minHeight: '100vh' }}>
+      <div
+        style={{
+          opacity: isLoading ? 0 : 1,
+          transition: 'opacity 0.5s ease',
+          minHeight: '100vh',
+        }}
+      >
         <Router>
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -89,14 +107,13 @@ function App() {
           </Routes>
         </Router>
 
-        {/* Back to top button */}
         <BackToTop />
 
         {/* Cursor trail - desktop only */}
         {!isMobile && <CursorTrail />}
       </div>
 
-      {/* Analytics: add a real measurement ID in index.html or a dedicated loader when ready. */}
+      {/* Analytics: add a real measurement ID when ready. */}
     </ThemeProvider>
   );
 }
