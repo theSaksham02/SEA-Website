@@ -89,6 +89,28 @@ export default function SeaHacksSignup({ ready = true }) {
     setEnabled(isStagingHost());
   }, []);
 
+  // Allow the SEA HACKATHON banner button to open this same signup popup.
+  // The staging-host check keeps this trigger disabled on production.
+  useEffect(() => {
+    function handleOpenSignup() {
+      if (!isStagingHost()) return;
+
+      // A manual button click should work even if the visitor dismissed
+      // the automatic popup earlier in this session.
+      try {
+        sessionStorage.removeItem(DISMISSED_KEY);
+      } catch {
+        // The popup can still be opened if session storage is unavailable.
+      }
+
+      setEnabled(true);
+      setVisible(true);
+    }
+
+    window.addEventListener('sea-hacks-open-signup', handleOpenSignup);
+    return () => window.removeEventListener('sea-hacks-open-signup', handleOpenSignup);
+  }, []);
+
   useEffect(() => {
     if (!enabled || !ready) return undefined;
 

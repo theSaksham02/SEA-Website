@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { submitEventRegistration } from '../lib/supabase';
 
 const FEATURED_EVENT = {
     id: 'sea-hackathon',
@@ -19,9 +18,6 @@ const UPCOMING_EVENTS = [
 
 const TimelineEvents = () => {
     const [isVisible, setIsVisible] = useState(false);
-    const [showModal, setShowModal] = useState(false);
-    const [formData, setFormData] = useState({ name: '', email: '' });
-    const [formStatus, setFormStatus] = useState('idle');
     const sectionRef = useRef(null);
 
     useEffect(() => {
@@ -42,36 +38,6 @@ const TimelineEvents = () => {
         return () => observer.disconnect();
     }, []);
 
-    useEffect(() => {
-        if (!showModal) return undefined;
-        const onKeyDown = (event) => {
-            if (event.key === 'Escape' && formStatus !== 'loading') setShowModal(false);
-        };
-        window.addEventListener('keydown', onKeyDown);
-        return () => window.removeEventListener('keydown', onKeyDown);
-    }, [showModal, formStatus]);
-
-    const handleRegister = async (event) => {
-        event.preventDefault();
-        if (formStatus === 'loading') return;
-        setFormStatus('loading');
-
-        try {
-            await submitEventRegistration({
-                name: formData.name.trim(),
-                email: formData.email.trim(),
-                eventName: FEATURED_EVENT.title,
-            });
-            setFormStatus('success');
-            window.setTimeout(() => {
-                setShowModal(false);
-                setFormData({ name: '', email: '' });
-                setFormStatus('idle');
-            }, 2200);
-        } catch {
-            setFormStatus('error');
-        }
-    };
 
     return (
         <section
@@ -117,11 +83,11 @@ const TimelineEvents = () => {
                             <button
                                 className="sea-events__cta"
                                 type="button"
-                                onClick={() => { setShowModal(true); setFormStatus('idle'); }}
+                                onClick={() => window.dispatchEvent(new Event('sea-hacks-open-signup'))}
                             >
                                 REGISTER INTEREST <span aria-hidden="true">↗</span>
                             </button>
-                            <p className="sea-events__action-note">Leave your details to register your interest.</p>
+                            <p className="sea-events__action-note">Register your team for SEA HACKS 2026.</p>
                         </div>
                     </div>
                     <div className="sea-events__featured-footer">
@@ -153,58 +119,6 @@ const TimelineEvents = () => {
                 </footer>
             </div>
 
-            {showModal && (
-                <div className="sea-events__modal-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget && formStatus !== 'loading') setShowModal(false); }}>
-                    <section className="sea-events__modal" role="dialog" aria-modal="true" aria-labelledby="sea-events-modal-title">
-                        <div className="sea-events__modal-topline">
-                            <span>SEA HACKATHON / REGISTER INTEREST</span>
-                            <button type="button" className="sea-events__modal-close" onClick={() => setShowModal(false)} disabled={formStatus === 'loading'} aria-label="Close registration form">×</button>
-                        </div>
-                        <h3 id="sea-events-modal-title">BE PART<br />OF THE BUILD.</h3>
-                        {formStatus === 'success' ? (
-                            <div className="sea-events__success" role="status">
-                                <span aria-hidden="true">✓</span>
-                                <p>Thanks — your interest has been received.</p>
-                            </div>
-                        ) : (
-                            <>
-                                <p className="sea-events__modal-copy">Leave your details and the SEA team can follow up with event information.</p>
-                                <form onSubmit={handleRegister} className="sea-events__form">
-                                    <label>
-                                        <span>FULL NAME</span>
-                                        <input
-                                            type="text"
-                                            name="name"
-                                            autoComplete="name"
-                                            placeholder="Your name"
-                                            required
-                                            value={formData.name}
-                                            onChange={(event) => setFormData({ ...formData, name: event.target.value })}
-                                        />
-                                    </label>
-                                    <label>
-                                        <span>EMAIL ADDRESS</span>
-                                        <input
-                                            type="email"
-                                            name="email"
-                                            autoComplete="email"
-                                            placeholder="you@example.com"
-                                            required
-                                            value={formData.email}
-                                            onChange={(event) => setFormData({ ...formData, email: event.target.value })}
-                                        />
-                                    </label>
-                                    {formStatus === 'error' && <p className="sea-events__form-error" role="alert">Something went wrong. Please try again.</p>}
-                                    <button className="sea-events__cta sea-events__cta--form" type="submit" disabled={formStatus === 'loading'}>
-                                        {formStatus === 'loading' ? 'SENDING…' : 'REGISTER INTEREST'} <span aria-hidden="true">↗</span>
-                                    </button>
-                                </form>
-                            </>
-                        )}
-                        <p className="sea-events__modal-footnote">SEA · UNIVERSITY OF BIRMINGHAM DUBAI</p>
-                    </section>
-                </div>
-            )}
 
             <style>{`
                 .sea-events {
@@ -227,8 +141,7 @@ const TimelineEvents = () => {
                 .sea-events--visible .sea-events__header { opacity: 1; transform: translateY(0); }
                 .sea-events__eyebrow, .sea-events__micro-label, .sea-events__number, .sea-events__status,
                 .sea-events__index, .sea-events__list-heading p, .sea-events__row-number,
-                .sea-events__coming-soon, .sea-events__featured-footer, .sea-events__footer,
-                .sea-events__modal-topline, .sea-events__form label > span, .sea-events__modal-footnote {
+                .sea-events__coming-soon, .sea-events__featured-footer, .sea-events__footer {
                     font-size: 10px; font-weight: 800; letter-spacing: .13em; line-height: 1.4;
                 }
                 .sea-events__eyebrow { display: flex; align-items: center; gap: 10px; color: #D5D5D5; margin: 0 0 18px; }
@@ -255,7 +168,7 @@ const TimelineEvents = () => {
                 .sea-events__orbit { display: flex; align-items: center; justify-content: center; width: 100px; height: 100px; border: 1px solid rgba(255,255,255,.65); border-radius: 50%; font-size: 9px; font-weight: 900; letter-spacing: .1em; line-height: 1.35; text-align: center; transform: rotate(-9deg); margin-bottom: 18px; }
                 .sea-events__cta { min-height: 48px; min-width: 190px; display: inline-flex; align-items: center; justify-content: space-between; gap: 28px; padding: 0 17px; border: 1px solid #fff; background: #fff; color: #080808; font: inherit; font-size: 10px; font-weight: 900; letter-spacing: .08em; cursor: pointer; text-align: left; transition: background .18s ease, color .18s ease; }
                 .sea-events__cta:hover { background: #080808; color: #fff; }
-                .sea-events__cta:focus-visible, .sea-events__footer a:focus-visible, .sea-events__modal-close:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+                .sea-events__cta:focus-visible, .sea-events__footer a:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
                 .sea-events__action-note { margin: 0; max-width: 220px; font-size: 11px; line-height: 1.5; color: rgba(255,255,255,.78); }
                 .sea-events__featured-footer { display: flex; justify-content: space-between; gap: 16px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,.38); }
                 .sea-events__list-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; margin: clamp(44px, 7vw, 82px) 0 12px; }
@@ -272,26 +185,6 @@ const TimelineEvents = () => {
                 .sea-events__footer { display: flex; justify-content: space-between; gap: 20px; padding-top: 25px; color: #777; }
                 .sea-events__footer a { color: #D5D5D5; text-decoration: none; }
                 .sea-events__footer a:hover { color: var(--sea-red); }
-                .sea-events__modal-backdrop { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(0,0,0,.88); }
-                .sea-events__modal { width: min(100%, 480px); max-height: min(90vh, 760px); overflow-y: auto; padding: clamp(24px, 5vw, 42px); background: #F7F7F7; color: #080808; }
-                .sea-events__modal-topline { display: flex; align-items: center; justify-content: space-between; gap: 18px; color: var(--sea-red); }
-                .sea-events__modal-close { width: 44px; height: 44px; border: 1px solid #D5D5D5; background: transparent; color: #111; font-size: 28px; line-height: 1; cursor: pointer; }
-                .sea-events__modal-close:disabled { opacity: .45; cursor: not-allowed; }
-                .sea-events__modal h3 { margin: 30px 0 16px; font-size: clamp(38px, 8vw, 58px); line-height: .88; letter-spacing: -.07em; font-weight: 950; }
-                .sea-events__modal-copy { color: #555; font-size: 13px; line-height: 1.6; margin: 0 0 24px; }
-                .sea-events__form { display: flex; flex-direction: column; gap: 17px; }
-                .sea-events__form label { display: flex; flex-direction: column; gap: 8px; }
-                .sea-events__form label > span { color: #555; }
-                .sea-events__form input { width: 100%; min-height: 48px; padding: 12px 13px; border: 1px solid #CFCFCF; border-radius: 0; background: #fff; color: #111; font: inherit; font-size: 16px; }
-                .sea-events__form input:focus { outline: 2px solid var(--sea-red); outline-offset: 1px; }
-                .sea-events__cta--form { width: 100%; margin-top: 5px; border-color: var(--sea-red); background: var(--sea-red); color: #fff; }
-                .sea-events__cta--form:hover { background: #111; border-color: #111; }
-                .sea-events__cta--form:disabled { opacity: .65; cursor: wait; }
-                .sea-events__form-error { margin: 0; color: var(--sea-red); font-size: 13px; }
-                .sea-events__success { display: flex; align-items: center; gap: 14px; padding: 20px 0; }
-                .sea-events__success > span { display: grid; place-items: center; width: 40px; height: 40px; background: var(--sea-red); color: #fff; font-size: 22px; }
-                .sea-events__success p { margin: 0; font-size: 14px; line-height: 1.5; }
-                .sea-events__modal-footnote { margin: 28px 0 0; padding-top: 16px; border-top: 1px solid #DDD; color: #777; }
                 @media (max-width: 640px) {
                     .sea-events__header { align-items: flex-start; }
                     .sea-events__index { padding-top: 5px; }
