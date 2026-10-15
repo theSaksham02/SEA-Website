@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { submitHackathonSignup } from '../lib/supabase';
 
 const DISMISSED_KEY = 'sea-hacks-2026-signup-dismissed';
 
@@ -17,9 +18,9 @@ function isStagingHost() {
 
 const THEMES = [
   'Biomed',
-  'Computer Science (CS)',
+  'CS',
   'Robotics',
-  'Fintech / Business',
+  'Fintech/business',
 ];
 
 const inputStyle = {
@@ -149,13 +150,29 @@ export default function SeaHacksSignup({ ready = true }) {
     }
   }
 
-  function handleSubmit(event) {
-    event.preventDefault();
-    setMessage(
-      'The form design is ready, but registration is not connected yet. Your details have not been submitted.'
-    );
-  }
+  async function handleSubmit(event) {
+  event.preventDefault();
 
+  try {
+    setMessage('Submitting...');
+
+    await submitHackathonSignup({
+      name: form.leaderName,
+      email: form.leaderEmail,
+      phoneNumber: form.phone,
+      university: form.university,
+      teamSize,
+      teamName: form.teamName,
+      teamParticipants: participants,
+      theme,
+    });
+
+    setMessage('Registration submitted successfully!');
+  } catch (error) {
+    console.error('Hackathon signup error:', error);
+    setMessage('Something went wrong. Please try again.');
+  }
+}
   if (!enabled || !visible) return null;
 
   const validTeamSize =

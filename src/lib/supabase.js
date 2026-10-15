@@ -81,3 +81,22 @@ export const submitNewsletterSubscription = async (email) => {
     }
     return { success: true };
 };
+
+export const submitHackathonSignup = async (data) => {
+    const { error } = await supabase
+        .from('hackathon_signups')
+        .insert([{
+            name: data.name,
+            email: data.email,
+            phone_number: data.phoneNumber,
+            university: data.university,
+            team_size: Number(data.teamSize),
+            team_name: data.teamName,
+            team_participants: data.teamParticipants,
+            theme: data.theme
+        }]);
+
+    if (error) throw error;
+
+    return { success: true };
+};
