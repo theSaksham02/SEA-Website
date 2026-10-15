@@ -12,7 +12,9 @@ function isStagingHost() {
     hostname.includes('staging') ||
     hostname.includes('git-staging') ||
     hostname === 'localhost' ||
-    hostname === '127.0.0.1'
+    hostname === '127.0.0.1' ||
+    hostname === 'seauobd.me' ||
+    hostname === 'www.seauobd.me'
   );
 }
 
