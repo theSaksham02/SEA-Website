@@ -90,7 +90,14 @@ export default function SeaHacksSignup({ ready = true }) {
   }, []);
 
   useEffect(() => {
-    if (!enabled || !ready) return undefined;
+    if (!enabled || !ready) 
+      return undefined;
+    const params = new URLSearchParams(window.location.search);
+    const directSignup = params.get('signup') === 'seahacks';
+    if (directSignup) {
+      setVisible(true);
+      return undefined;
+     }
 
     try {
       if (sessionStorage.getItem(DISMISSED_KEY) === '1') return undefined;

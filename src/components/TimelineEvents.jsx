@@ -80,13 +80,9 @@ const TimelineEvents = () => {
                         </div>
                         <div className="sea-events__featured-action">
                             <span className="sea-events__orbit" aria-hidden="true">SEA<br />BUILD<br />TOGETHER</span>
-                            <button
-                                className="sea-events__cta"
-                                type="button"
-                                onClick={() => window.dispatchEvent(new Event('sea-hacks-open-signup'))}
-                            >
+                            <a className="sea-events__cta" href="/?signup=seahacks">
                                 REGISTER INTEREST <span aria-hidden="true">↗</span>
-                            </button>
+                            </a>
                             <p className="sea-events__action-note">Register your team for SEA HACKS 2026.</p>
                         </div>
                     </div>
@@ -166,7 +162,7 @@ const TimelineEvents = () => {
                 .sea-events__featured-description { margin: 24px 0 0; max-width: 420px; font-size: 14px; line-height: 1.65; color: rgba(255,255,255,.86); }
                 .sea-events__featured-action { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; min-width: 200px; }
                 .sea-events__orbit { display: flex; align-items: center; justify-content: center; width: 100px; height: 100px; border: 1px solid rgba(255,255,255,.65); border-radius: 50%; font-size: 9px; font-weight: 900; letter-spacing: .1em; line-height: 1.35; text-align: center; transform: rotate(-9deg); margin-bottom: 18px; }
-                .sea-events__cta { min-height: 48px; min-width: 190px; display: inline-flex; align-items: center; justify-content: space-between; gap: 28px; padding: 0 17px; border: 1px solid #fff; background: #fff; color: #080808; font: inherit; font-size: 10px; font-weight: 900; letter-spacing: .08em; cursor: pointer; text-align: left; transition: background .18s ease, color .18s ease; }
+                .sea-events__cta { text-decoration: none; min-height: 48px; min-width: 190px; display: inline-flex; align-items: center; justify-content: space-between; gap: 28px; padding: 0 17px; border: 1px solid #fff; background: #fff; color: #080808; font: inherit; font-size: 10px; font-weight: 900; letter-spacing: .08em; cursor: pointer; text-align: left; transition: background .18s ease, color .18s ease; }
                 .sea-events__cta:hover { background: #080808; color: #fff; }
                 .sea-events__cta:focus-visible, .sea-events__footer a:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
                 .sea-events__action-note { margin: 0; max-width: 220px; font-size: 11px; line-height: 1.5; color: rgba(255,255,255,.78); }
