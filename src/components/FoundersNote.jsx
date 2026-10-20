@@ -15,6 +15,7 @@ const FoundersNote = () => {
     const founders = [
         { name: "Ameer Alhashemi", role: "Co-Founder", img: "/team/Co-Chair.png" },
         { name: "Adham Sameh", role: "Co-Founder", img: "/team/Chair.png" },
+        { name: "Amir Kazemkhani", role: "Co-Founder", img: "/team/Amir.png" }
     ];
 
     useEffect(() => {
