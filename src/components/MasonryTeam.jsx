@@ -15,6 +15,7 @@ const MasonryTeam = () => {
     const team = [
         { name: "Saksham Mishra", role: "President", img: "/team/Prez-§-Saksham.jpeg", linkedin: "" },
         { name: "Hiva Vadoodi", role: "Vice President", img: "/team/Hiva.png", linkedin: "" },
+        {name :"Amir Kazemkhani", role: "Co-founder", img: "/team/Amir.png", linkedin: ""},
         { name: "Roza Dehestany", role: "B-Labs Chair", img: "/team/Roza.png", linkedin: "" },
         { name: "Dev Malhotra", role: "Chief of Staff", img: "/team/Dev.jpg", linkedin: "" },
         { name: "Janakk Nandwani", role: "Head of Community", img: "/team/Janakk.jpg", linkedin: "" },

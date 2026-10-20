@@ -106,12 +106,12 @@ export default function SeaHacksSignup({ ready = true }) {
     }
 
     const timer = window.setTimeout(() => setVisible(true), 1000);
-    return () => window.clearTimeout(timer);
-  }, [enabled, ready]);
+     return () => window.clearTimeout(timer);
+      }, [enabled, ready]);
 
   useEffect(() => {
     const number = Number(teamSize);
-    const additionalMembers = Number.isInteger(number) && number >= 1 && number <= 4
+    const additionalMembers = Number.isInteger(number) && number >= 1 && number <= 5
       ? number - 1
       : 0;
 
@@ -186,7 +186,7 @@ export default function SeaHacksSignup({ ready = true }) {
     teamSize.trim() !== '' &&
     Number.isInteger(Number(teamSize)) &&
     Number(teamSize) >= 1 &&
-    Number(teamSize) <= 4;
+    Number(teamSize) <= 5;
 
   return (
     <>
@@ -269,7 +269,7 @@ export default function SeaHacksSignup({ ready = true }) {
 
             <div className="sea-hacks-field">
               <label className="sea-hacks-label" htmlFor="teamSize">
-                Number of people (1–4 max) *
+                Number of people (1–5 max) *
               </label>
               <input
                 className="sea-hacks-input"
@@ -277,7 +277,7 @@ export default function SeaHacksSignup({ ready = true }) {
                 name="teamSize"
                 type="number"
                 min="1"
-                max="4"
+                max="5"
                 step="1"
                 inputMode="numeric"
                 value={teamSize}
@@ -289,10 +289,10 @@ export default function SeaHacksSignup({ ready = true }) {
                 aria-describedby="team-size-help"
               />
               <p className="sea-hacks-help" id="team-size-help">
-                Includes you, the team leader. Maximum 4 people per team.
+                Includes you, the team leader. Maximum 5 people per team.
               </p>
               {!validTeamSize && (
-                <p className="sea-hacks-error">Enter a whole number from 1 to 4.</p>
+                <p className="sea-hacks-error">Enter a whole number from 1 to 5.</p>
               )}
             </div>
 
