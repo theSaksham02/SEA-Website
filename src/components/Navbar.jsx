@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
     const [scrolled, setScrolled] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
+    const location = useLocation();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -25,6 +28,7 @@ const Navbar = () => {
         { label: 'About', href: '#about' },
         { label: 'Team', href: '#team' },
         { label: 'Events', href: '#events' },
+        { label: 'Hackathon', href: '/hackathon', live: true },
         { label: 'B-Labs', href: '#ventures' },
         { label: 'Partners', href: '#partners' },
         { label: 'News', href: '#news' },
@@ -32,9 +36,18 @@ const Navbar = () => {
 
     const scrollToSection = (e, href) => {
         e.preventDefault();
+        setMobileOpen(false);
+        if (href.startsWith('/')) {
+            if (location.pathname === href) window.scrollTo({ top: 0, behavior: 'smooth' });
+            else navigate(href);
+            return;
+        }
+        if (location.pathname !== '/') {
+            navigate(`/${href}`);
+            return;
+        }
         const el = document.querySelector(href);
         if (el) el.scrollIntoView({ behavior: 'smooth' });
-        setMobileOpen(false);
     };
 
     return (
@@ -54,7 +67,12 @@ const Navbar = () => {
                     {/* Logo - smoother transition */}
                     <a
                         href="#"
-                        onClick={e => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); setMobileOpen(false); }}
+                        onClick={e => {
+                            e.preventDefault();
+                            setMobileOpen(false);
+                            if (location.pathname !== '/') navigate('/');
+                            else window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }}
                         style={{ display: 'flex', alignItems: 'center' }}
                         aria-label="Go to top"
                     >
@@ -75,6 +93,7 @@ const Navbar = () => {
                             <a
                                 key={link.label}
                                 href={link.href}
+                                className={link.live ? 'sea-nav-hack' : undefined}
                                 onClick={e => scrollToSection(e, link.href)}
                                 style={{
                                     color: '#FFF',
@@ -91,6 +110,7 @@ const Navbar = () => {
                                 onFocus={e => { e.target.style.opacity = 1; e.target.style.borderBottomColor = '#CC0000'; }}
                                 onBlur={e => { e.target.style.opacity = 0.8; e.target.style.borderBottomColor = 'transparent'; }}
                             >
+                                {link.live && <span className="sea-nav-hack-dot" aria-hidden="true" />}
                                 {link.label.toUpperCase()}
                             </a>
                         ))}
@@ -152,6 +172,7 @@ const Navbar = () => {
                         <a
                             key={link.label}
                             href={link.href}
+                            className={link.live ? 'sea-nav-hack' : undefined}
                             onClick={e => scrollToSection(e, link.href)}
                             style={{
                                 color: '#FFF',
@@ -162,6 +183,7 @@ const Navbar = () => {
                                 animation: `slideUp 0.4s ease ${i * 0.1}s forwards`
                             }}
                         >
+                            {link.live && <span className="sea-nav-hack-dot" aria-hidden="true" />}
                             {link.label.toUpperCase()}
                         </a>
                     ))}

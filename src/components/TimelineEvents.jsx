@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import HackathonRegister from './hackathon/HackathonRegister';
 
 const FEATURED_EVENT = {
     id: 'sea-hackathon',
@@ -18,6 +20,7 @@ const UPCOMING_EVENTS = [
 
 const TimelineEvents = () => {
     const [isVisible, setIsVisible] = useState(false);
+    const [showRegister, setShowRegister] = useState(false);
     const sectionRef = useRef(null);
 
     useEffect(() => {
@@ -72,25 +75,36 @@ const TimelineEvents = () => {
                     </div>
                     <div className="sea-events__featured-content">
                         <div className="sea-events__featured-copy">
-                            <p className="sea-events__micro-label">SEA UOBD PRESENTS</p>
-                            <h3 id="sea-hackathon-title">SEA<br />HACKATHON</h3>
+                            <p className="sea-events__micro-label">SEA UOBD PRESENTS · BUILD TO PITCH</p>
+                            <h3 id="sea-hackathon-title">SEA<br />HACKS 2026</h3>
                             <p className="sea-events__featured-description">
-                                Bring a problem. Build with a team. Turn an idea into something real.
+                                Build a working product in 24 hours. Pitch it to industry judges. AED 8,000+ in awards.
                             </p>
+                            <ul className="sea-events__facts">
+                                <li>FRI 23 – SAT 24 OCT</li>
+                                <li>16:30</li>
+                                <li>UoB DUBAI, DIAC</li>
+                                <li>FREE</li>
+                            </ul>
                         </div>
                         <div className="sea-events__featured-action">
                             <div  className="sea-events__orbit-row" aria-hidden="true">
                                 <span className="sea-events__orbit" aria-hidden="true">SEA<br />BUILD<br />TOGETHER</span>
                                 <span className="sea-events__orbit sea-events__orbit--prize">AED<br />8,000+<br />UP FOR GRABS</span>
                             </div>
-                            <a className="sea-events__cta" href="/?signup=seahacks">
-                                REGISTER INTEREST <span aria-hidden="true">↗</span>
-                            </a>
+                            <div className="sea-events__cta-row">
+                                <button type="button" className="sea-events__cta" onClick={() => setShowRegister(true)}>
+                                    REGISTER <span aria-hidden="true">↗</span>
+                                </button>
+                                <Link className="sea-events__cta sea-events__cta--ghost" to="/hackathon">
+                                    VIEW DETAILS <span aria-hidden="true">→</span>
+                                </Link>
+                            </div>
                             <p className="sea-events__action-note">Register your team for SEA HACKS 2026.</p>
                         </div>
                     </div>
                     <div className="sea-events__featured-footer">
-                        <span>IDEAS INTO ACTION</span>
+                        <span>OPEN TO ALL UAE UNIVERSITIES</span>
                         <span>UNIVERSITY OF BIRMINGHAM DUBAI</span>
                     </div>
                 </article>
@@ -118,6 +132,7 @@ const TimelineEvents = () => {
                 </footer>
             </div>
 
+            <HackathonRegister open={showRegister} onClose={() => setShowRegister(false)} />
 
             <style>{`
                 .sea-events {

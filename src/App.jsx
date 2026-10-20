@@ -20,9 +20,19 @@ import BlogNews from './components/BlogNews';
 import TerminalFooter from './components/TerminalFooter';
 import NotFound from './components/NotFound';
 import AdminDashboard from './components/AdminDashboard';
+import HackathonPage from './components/hackathon/HackathonPage';
 import './styles/index.css';
 
 const HomePage = () => {
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (!hash) return undefined;
+    const timer = window.setTimeout(() => {
+      document.querySelector(hash)?.scrollIntoView();
+    }, 80);
+    return () => window.clearTimeout(timer);
+  }, []);
+
   return (
     <>
       {/* Skip to content link for accessibility */}
@@ -102,6 +112,7 @@ function App() {
         <Router>
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/hackathon" element={<HackathonPage />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

@@ -22,7 +22,10 @@ export const submitEventRegistration = async (data) => {
             name: data.name,
             email: data.email,
             student_id: data.studentId,
-            event_name: data.eventName
+            event_name: data.eventName,
+            university: data.university || null,
+            participation: data.participation || null,
+            track: data.track || null
         }]);
     if (error) throw error;
     return { success: true };
