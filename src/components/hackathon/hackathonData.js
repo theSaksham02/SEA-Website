@@ -50,7 +50,7 @@ export const TRACKS = [
     },
     {
         number: '04',
-        title: 'noon Bounty',
+        title: 'Noon Bounty',
         by: 'noon',
         body: 'Challenge details are shared at kickoff.',
         prize: null,
@@ -104,35 +104,35 @@ export const PLATFORMS = [
 export const PARTNER_TIERS = [
     {
         tier: 'Lead Partner',
-        partners: [{ name: 'Klui', logo: '/partners/hackathon/klui.png', dark: true, lead: true }],
+        partners: [{ name: 'Klui', logo: '/partners/hackathon/klui.png', url: 'https://klui.ai', dark: true, lead: true }],
     },
     {
         tier: 'Hackathon & Bounty Partner',
-        partners: [{ name: 'SkyTrack', logo: '/partners/hackathon/skytrack.png', dark: true }],
+        partners: [{ name: 'SkyTrack', logo: '/partners/hackathon/skytrack.png', url: 'https://getskytrack.com/', dark: true }],
     },
     {
         tier: 'Bounty Partner',
-        partners: [{ name: 'noon', logo: '/partners/hackathon/noon.png', dark: false }],
+        partners: [{ name: 'noon', logo: '/partners/hackathon/noon.png',url: 'https://www.noon.com', dark: false }],
     },
     {
         tier: 'Partners',
         partners: [
-            { name: 'IntevaAI', logo: '/partners/hackathon/inteva.png', dark: false },
-            { name: 'ChatQLM', logo: '/partners/hackathon/chatqlm.png', dark: true },
-            { name: 'ArcScale Labs', logo: '/partners/hackathon/arcscale.png', dark: true },
-            { name: 'Rabbitron Labs', logo: '/partners/hackathon/rabbitron.png', dark: false },
+            { name: 'IntevaAI', logo: '/partners/hackathon/inteva.png',url: 'https://www.inteva.ai/', dark: false },
+            { name: 'ChatQLM', logo: '/partners/hackathon/chatqlm.png', url: 'https://www.chatqlm.com/', dark: true },
+            { name: 'ArcScale Labs', logo: '/partners/hackathon/arcscale.png', url: 'https://arcscalelabs.com/', dark: true },
+            { name: 'Rabbitron Labs', logo: '/partners/hackathon/rabbitron.png', url: 'https://www.rabbitronlab.com/', dark: false },
         ],
     },
     {
         tier: 'Student Partners',
         partners: [
-            { name: 'Odoo Tech Club', logo: '/partners/hackathon/odoo-tech-club.png', dark: false },
-            { name: 'Biomedical Science Society', logo: '/partners/hackathon/bss.png', dark: true },
+            { name: 'Odoo Tech Club', logo: '/partners/hackathon/odoo-tech-club.png',url: null, dark: false },
+            { name: 'Biomedical Science Society', logo: '/partners/hackathon/bss.png', url: null, dark: true },
         ],
     },
     {
         tier: 'Host',
-        partners: [{ name: 'University of Birmingham Dubai', logo: '/partners/hackathon/uobd.png', dark: true }],
+        partners: [{ name: 'University of Birmingham Dubai', logo: '/partners/hackathon/uobd.png', url: null, dark: true }],
     },
 ];
 

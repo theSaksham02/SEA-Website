@@ -2,6 +2,7 @@
   --hack-red: #cc0000;
   --hack-line: #e5e5e5;
   --hack-ease: cubic-bezier(0.16, 1, 0.3, 1);
+
   background: var(--color-bg);
   color: var(--color-text);
   overflow-x: hidden;
@@ -9,6 +10,50 @@
 
 [data-theme='dark'] .sea-hack {
   --hack-line: #2a2a2a;
+}
+
+.sea-hack__faq-question {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.sea-hack__faq-number {
+    color: var(--hack-red);
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+}
+
+.sea-hack__faq-icon {
+    color: var(--hack-red);
+    font-size: 28px;
+    line-height: 1;
+    transition:
+        transform 0.35s var(--hack-ease),
+        color 0.35s var(--hack-ease);
+}
+
+.sea-hack__faq-item button {
+    transition:
+        padding 0.35s var(--hack-ease),
+        background 0.35s var(--hack-ease);
+}
+
+.sea-hack__faq-item button:hover {
+    padding-left: 14px;
+}
+
+.sea-hack__faq-item.is-open {
+    border-left: 3px solid var(--hack-red);
+}
+
+.sea-hack__faq-item.is-open button {
+    padding-left: 16px;
+}
+
+.sea-hack__faq-item.is-open .sea-hack__faq-icon {
+    transform: rotate(45deg);
 }
 
 .sea-hack__section {

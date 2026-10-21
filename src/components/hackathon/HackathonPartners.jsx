@@ -1,9 +1,15 @@
 import { PARTNER_LOGOS, PARTNER_TIERS } from './hackathonData';
 
 const Logo = ({ partner, lead }) => (
-    <div className={`sea-hack__logo${partner.dark ? ' sea-hack__logo--dark' : ''}${lead ? ' sea-hack__logo--lead' : ''}`}>
+    <a
+        href={partner.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`sea-hack__logo${partner.dark ? ' sea-hack__logo--dark' : ''}${lead ? ' sea-hack__logo--lead' : ''}`}
+        aria-label={`Visit ${partner.name}`}
+    >
         <img src={partner.logo} alt={partner.name} />
-    </div>
+    </a>
 );
 
 const HackathonPartners = () => (

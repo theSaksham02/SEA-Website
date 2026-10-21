@@ -8,20 +8,40 @@ const HackathonFaq = () => {
         <section className="sea-hack__section section-animate" aria-labelledby="hack-faq-title">
             <div className="sea-hack__inner">
                 <p className="sea-hack__index">11 / FAQ</p>
-                <h2 id="hack-faq-title" className="sea-hack__h2">BEFORE YOU ASK.</h2>
+                <h2 id="hack-faq-title" className="sea-hack__h2">
+                    BEFORE YOU ASK.
+                </h2>
+
                 <div className="sea-hack__faq" style={{ marginTop: 28 }}>
                     {FAQ.map((item, index) => {
                         const isOpen = open === index;
+
                         return (
-                            <div className={`sea-hack__faq-item${isOpen ? ' is-open' : ''}`} key={item.q}>
+                            <div
+                                className={`sea-hack__faq-item${isOpen ? ' is-open' : ''}`}
+                                key={item.q}
+                            >
                                 <button
                                     type="button"
                                     aria-expanded={isOpen}
                                     onClick={() => setOpen(isOpen ? null : index)}
                                 >
-                                    <span>{item.q}</span>
-                                    <span aria-hidden="true">{isOpen ? '–' : '+'}</span>
+                                    <span className="sea-hack__faq-question">
+                                        <span className="sea-hack__faq-number">
+                                            {String(index + 1).padStart(2, '0')}
+                                        </span>
+
+                                        <span>{item.q}</span>
+                                    </span>
+
+                                    <span
+                                        className="sea-hack__faq-icon"
+                                        aria-hidden="true"
+                                    >
+                                        +
+                                    </span>
                                 </button>
+
                                 {isOpen && (
                                     <div className="sea-hack__faq-panel">
                                         <p>{item.a}</p>
