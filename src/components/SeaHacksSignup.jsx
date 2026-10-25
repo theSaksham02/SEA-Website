@@ -4,6 +4,7 @@ import { submitHackathonSignup } from '../lib/supabase';
 const DISMISSED_KEY = 'sea-hacks-2026-signup-dismissed';
 
 function isStagingHost() {
+  return false; // Disable the popup for now. It will be re-enabled when the hackathon is ready to accept registrations.
   if (typeof window === 'undefined') return false;
 
   const { hostname } = window.location;
