@@ -25,7 +25,6 @@ const MasonryTeam = () => {
         { name: "Venya Mongia", role: "Marketing & Creative Coordinator", img: "/team/Venya.jpg", linkedin: "" },
         { name: "Hayaa Pardasani", role: "Co-Chair Event", img: "/team/Hayaa.png", linkedin: "" },
         { name: "Manasi", role: "Co-Chair Events", img: "/team/Manasi.png", linkedin: "" },
-        { name: "Bhavika Grover", role: "Co-Chair Partnership and Outreach", img: "/team/Bhavika.png", linkedin: "" },
         { name: "Harbandan Kaur", role: "Outreach Co-ordinator", img: "/team/Harbandan.jpg", linkedin: "" },
         { name: "Shrey Baherwani", role: "Brand & Outreach Coordinator", img: "/team/Shrey.png", linkedin: "" },
         { name: "Kartik Gupta", role: "Chief of Technology", img: "/team/Kartik.png", linkedin: "" },

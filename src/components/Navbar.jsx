@@ -28,8 +28,7 @@ const Navbar = () => {
         { label: 'About', href: '#about' },
         { label: 'Team', href: '#team' },
         { label: 'Events', href: '#events' },
-        { label: 'Hackathon', href: '/hackathon', live: true },
-        { label: 'B-Labs', href: '#ventures' },
+        { label: 'B-Labs', href: '#ventures',live: true },
         { label: 'Partners', href: '#partners' },
         { label: 'News', href: '#news' },
     ];

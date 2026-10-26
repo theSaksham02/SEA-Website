@@ -3,17 +3,17 @@ import { Link } from 'react-router-dom';
 import HackathonRegister from './hackathon/HackathonRegister';
 
 const FEATURED_EVENT = {
-    id: 'sea-hackathon',
-    title: 'SEA Hackathon',
-    number: '01',
+    id: 'blabs-workshops',
+    title: 'BLabs Workshops',
+    number: '02',
     status: 'featured',
 };
 
 const UPCOMING_EVENTS = [
-    { id: 'fashion-founders-expo', title: 'Fashion Founders Expo', number: '02' },
-    { id: 'doers-summit', title: 'Doers Summit', number: '03' },
-    { id: 'career-expo-collab', title: 'Career Expo Collab', number: '04' },
-    { id: 'blabs-workshops', title: 'BLabs Workshops', number: '05' },
+    {id: 'sea-hacks', title: 'SEA HACKS 2026', number: '01' },
+    { id: 'fashion-founders-expo', title: 'Fashion Founders Expo', number: '03' },
+    { id: 'doers-summit', title: 'Doers Summit', number: '04' },
+    { id: 'career-expo-collab', title: 'Career Expo Collab', number: '05' },
     { id: 'revive-me', title: 'Revive ME', number: '06' },
     { id: 'sea-expo-2026', title: 'SEA Expo 2026', number: '07' },
 ];
@@ -66,45 +66,69 @@ const TimelineEvents = () => {
                     </div>
                 </header>
 
-                <article className="sea-events__featured" aria-labelledby="sea-hackathon-title">
+                <article className="sea-events__featured" aria-labelledby="blabs-title">
                     <div className="sea-events__featured-topline">
-                        <span className="sea-events__number">{FEATURED_EVENT.number} / FEATURED EVENT</span>
+                        <span className="sea-events__number">
+                            {FEATURED_EVENT.number} / FEATURED EVENT
+                         </span>
+                         
                         <span className="sea-events__status sea-events__status--featured">
-                            <span className="sea-events__status-dot" /> FEATURED
+                        <span className="sea-events__status-dot" /> FEATURED
                         </span>
                     </div>
+
                     <div className="sea-events__featured-content">
                         <div className="sea-events__featured-copy">
-                            <p className="sea-events__micro-label">SEA UOBD PRESENTS · BUILD TO PITCH</p>
-                            <h3 id="sea-hackathon-title">SEA<br />HACKS 2026</h3>
-                            <p className="sea-events__featured-description">
-                                Build a working product in 24 hours. Pitch it to industry judges. AED 8,000+ in awards.
+                            <p className="sea-events__micro-label">
+                                SEA UOBD PRESENTS · BUILD · LEARN · LAUNCH
                             </p>
+
+                            <h3 id="blabs-title">
+                                B.LABS<br />WORKSHOPS
+                             </h3>
+
+                             <p className="sea-events__featured-description">
+                                Practical workshops designed to help students build skills,
+                                explore ideas and turn them into something real.
+                            </p>
+
                             <ul className="sea-events__facts">
-                                <li>FRI 23 – SAT 24 OCT</li>
-                                <li>16:30</li>
-                                <li>UoB DUBAI, DIAC</li>
-                                <li>FREE</li>
+                                <li>COMING SOON</li>
+                                <li>UOB DUBAI</li>
+                                <li>STUDENT-LED</li>
                             </ul>
                         </div>
+
                         <div className="sea-events__featured-action">
-                            <div  className="sea-events__orbit-row" aria-hidden="true">
-                                <span className="sea-events__orbit" aria-hidden="true">SEA<br />BUILD<br />TOGETHER</span>
-                                <span className="sea-events__orbit sea-events__orbit--prize">AED<br />8,000+<br />UP FOR GRABS</span>
+                            <div className="sea-events__orbit-row" aria-hidden="true">
+                                <span className="sea-events__orbit">
+                                    BUILD<br />LEARN<br />CREATE
+                                </span>
                             </div>
-                            <div className="sea-events__cta-row">
-                                <button type="button" className="sea-events__cta" onClick={() => setShowRegister(true)}>
-                                    REGISTER <span aria-hidden="true">↗</span>
-                                </button>
-                                <Link className="sea-events__cta sea-events__cta--ghost" to="/hackathon">
-                                    VIEW DETAILS <span aria-hidden="true">→</span>
-                                </Link>
-                            </div>
-                            <p className="sea-events__action-note">Register your team for SEA HACKS 2026.</p>
+
+                        <div className="sea-events__cta-row">
+                            <a
+                                className="sea-events__cta"
+                                href="#ventures"
+                                onClick={(event) => {
+                                    event.preventDefault();
+                                    document.querySelector('#ventures')?.scrollIntoView({
+                                        behavior: 'smooth',
+                                    });
+                                }}
+                            >
+                                EXPLORE B.LABS <span aria-hidden="true">↗</span>
+                            </a>
+                        </div>
+
+                         <p className="sea-events__action-note">
+                            New workshops and opportunities coming soon.
+                         </p>
                         </div>
                     </div>
+
                     <div className="sea-events__featured-footer">
-                        <span>OPEN TO ALL UAE UNIVERSITIES</span>
+                        <span>BUILT FOR STUDENT FOUNDERS</span>
                         <span>UNIVERSITY OF BIRMINGHAM DUBAI</span>
                     </div>
                 </article>
@@ -116,11 +140,24 @@ const TimelineEvents = () => {
 
                 <div className="sea-events__list">
                     {UPCOMING_EVENTS.map((event) => (
-                        <article className="sea-events__row" key={event.id}>
-                            <span className="sea-events__row-number">{event.number}</span>
-                            <h4>{event.title}</h4>
-                            <span className="sea-events__coming-soon">COMING SOON <span aria-hidden="true">↗</span></span>
-                        </article>
+                    <article className="sea-events__row" key={event.id}>
+                        <span className="sea-events__row-number">{event.number}</span>
+                        <h4>{event.title}</h4>
+
+                        {event.id === 'sea-hacks' ? (
+                        <Link
+                            className="sea-events__coming-soon"
+                            to="/hackathon"
+                            style={{ textDecoration: 'none' }}
+                        >
+                            VIEW DETAILS <span aria-hidden="true">↗</span>
+                        </Link>
+                         ) : (
+                        <span className="sea-events__coming-soon">
+                            COMING SOON <span aria-hidden="true">↗</span>
+                        </span>
+                        )}
+                 </article>
                     ))}
                 </div>
 
