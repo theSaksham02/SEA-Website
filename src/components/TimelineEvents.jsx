@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import HackathonRegister from './hackathon/HackathonRegister';
 import { heroEvents, hasRealUrl } from '../data/heroEvents';
+import { COHORT, getCohortProgress } from './blabs/blabsData';
 
 const FEATURED_EVENT = {
     id: 'blabs-workshops',
@@ -66,6 +67,7 @@ const TimelineEvents = () => {
     const [isVisible, setIsVisible] = useState(false);
     const [showRegister, setShowRegister] = useState(false);
     const sectionRef = useRef(null);
+    const blabs = getCohortProgress();
 
     useEffect(() => {
         const element = sectionRef.current;
@@ -117,7 +119,7 @@ const TimelineEvents = () => {
                          </span>
                          
                         <span className="sea-events__status sea-events__status--featured">
-                        <span className="sea-events__status-dot" /> FEATURED
+                        <span className="sea-events__status-dot" /> {blabs.done === blabs.total ? 'COMPLETED' : 'LIVE'} · {blabs.done} OF {blabs.total} DONE
                         </span>
                     </div>
 
@@ -137,7 +139,7 @@ const TimelineEvents = () => {
                             </p>
 
                             <ul className="sea-events__facts">
-                                <li>COMING SOON</li>
+                                <li>{COHORT.window.toUpperCase()}</li>
                                 <li>UOB DUBAI</li>
                                 <li>STUDENT-LED</li>
                             </ul>
@@ -153,10 +155,10 @@ const TimelineEvents = () => {
                         <div className="sea-events__cta-row">
                             <a
                                 className="sea-events__cta"
-                                href="#ventures"
+                                href="#blabs-cohort3"
                                 onClick={(event) => {
                                     event.preventDefault();
-                                    document.querySelector('#ventures')?.scrollIntoView({
+                                    document.querySelector('#blabs-cohort3')?.scrollIntoView({
                                         behavior: 'smooth',
                                     });
                                 }}
@@ -166,7 +168,9 @@ const TimelineEvents = () => {
                         </div>
 
                          <p className="sea-events__action-note">
-                            New workshops and opportunities coming soon.
+                            {blabs.next
+                                ? `Next: Session ${blabs.next.n}, ${blabs.next.title} · ${blabs.next.dateLabel}`
+                                : 'All six sessions are done. Recaps below.'}
                          </p>
                         </div>
                     </div>

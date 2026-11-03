@@ -14,6 +14,7 @@ import ProcessAbout from './components/ProcessAbout';
 import FoundersNote from './components/FoundersNote';
 import MasonryTeam from './components/MasonryTeam';
 import TimelineEvents from './components/TimelineEvents';
+import BLabsSessions from './components/blabs/BLabsSessions';
 import CohortTicker from './components/CohortTicker';
 import Partners from './components/Partners';
 import TerminalFooter from './components/TerminalFooter';
@@ -40,7 +41,8 @@ const HomePage = () => {
     const hash = window.location.hash;
     if (!hash) return undefined;
     const timer = window.setTimeout(() => {
-      document.querySelector(hash)?.scrollIntoView();
+      // getElementById, not querySelector: deep links like #blabs-cohort3/session-2 aren't valid selectors.
+      document.getElementById(decodeURIComponent(hash.slice(1)))?.scrollIntoView();
     }, 80);
     return () => window.clearTimeout(timer);
   }, []);
@@ -58,6 +60,7 @@ const HomePage = () => {
         <FoundersNote />
         <MasonryTeam />
         <TimelineEvents />
+        <BLabsSessions />
         <CohortTicker />
         <Partners />
       </main>

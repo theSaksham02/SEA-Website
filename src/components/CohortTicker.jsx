@@ -252,24 +252,27 @@ const CohortTicker = () => {
                     <span className="sea-join-cta-go" aria-hidden="true">→</span>
                 </button>
 
-                <button
-                    type="button"
+                <a
+                    href="#blabs-cohort3"
                     className="sea-join-cta sea-join-cta--idea"
-                    onClick={() => setShowJoinModal('idea')}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        document.querySelector('#blabs-cohort3')?.scrollIntoView({ behavior: 'smooth' });
+                    }}
                 >
                     <span className="sea-join-cta-mark" aria-hidden="true">03</span>
-                    <span className="sea-join-cta-kicker">COHORT 3 · OPEN</span>
+                    <span className="sea-join-cta-kicker">COHORT 3 · IN SESSION</span>
                     <span className="sea-join-cta-title">
-                        Join with
+                        Six sessions.
                         <br />
-                        an idea
+                        Ten startups.
                     </span>
-                    <span className="sea-join-cta-sub">Pitch your venture into the next B-Labs wave.</span>
+                    <span className="sea-join-cta-sub">10 startups building now. Cohort 4 opens later this year.</span>
                     <span className="sea-join-cta-action">
-                        Apply now
+                        Follow the sessions
                         <span className="sea-join-cta-go" aria-hidden="true">→</span>
                     </span>
-                </button>
+                </a>
             </div>
 
             <style>{`

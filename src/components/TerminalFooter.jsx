@@ -38,7 +38,7 @@ const TerminalFooter = () => {
     ];
 
     return (
-        <section style={{
+        <section id="subscribe" style={{
             minHeight: isMobile ? '60vh' : '70vh',
             background: '#000',
             color: '#FFF',
@@ -71,6 +71,8 @@ const TerminalFooter = () => {
                     }}>
                         {!isMobile && <span style={{ fontSize: '18px', color: '#CC0000' }}>➜</span>}
                         <input
+                            id="subscribe-email"
+                            aria-label="University email"
                             type="email"
                             value={email}
                             onChange={(e) => { setEmail(e.target.value); setStatus('idle'); }}
