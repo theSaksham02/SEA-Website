@@ -1,12 +1,14 @@
-// Event slides shown first in the home hero carousel.
-// Each slide hides itself after `endDate` (absolute time, Asia/Dubai offset),
-// so nothing needs editing once an event is over. Order here = order on screen.
+// Partner events: shown first in the home hero carousel and as detailed rows in
+// the Events section. Each hero slide hides itself after `endDate` (absolute time,
+// Asia/Dubai offset), so nothing needs editing once an event is over.
+// Order here = order in the carousel.
 export const heroEvents = [
     {
         id: "revive-me-2026",
         name: "Revive ME",
         title: "REVIVE ME 2026",
-        subtitle: "Longevity & Health Tech Summit",
+        subtitle: "Global Longevity & Health Tech Summit",
+        description: "Rejuvenate. Restore. Revive. Two days on longevity and health tech, where the future of health starts now.",
         dateLabel: "11–12 NOV 2026",
         location: "ADNEC Hall 5, Abu Dhabi",
         badge: "SEA · Official Community Partner",
@@ -22,7 +24,8 @@ export const heroEvents = [
         id: "doers-summit-2026",
         name: "Doers Summit",
         title: "DOERS SUMMIT DUBAI",
-        subtitle: "Founders, operators and investors",
+        subtitle: "Founders, investors, operators & decision-makers",
+        description: "Founders, investors, operators and corporate decision-makers from Europe, the GCC, Asia and the Global South, there to forge partnerships, raise capital and scale. By The Doers Company, with strategic partner Dubai Silicon Oasis.",
         dateLabel: "25–26 NOV 2026",
         location: "Dubai Digital Park, Dubai Silicon Oasis",
         badge: "SEA · Official Community Partner",

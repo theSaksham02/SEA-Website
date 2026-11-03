@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import HackathonRegister from './hackathon/HackathonRegister';
+import { heroEvents, hasRealUrl } from '../data/heroEvents';
 
 const FEATURED_EVENT = {
     id: 'blabs-workshops',
@@ -12,11 +13,54 @@ const FEATURED_EVENT = {
 const UPCOMING_EVENTS = [
     {id: 'sea-hacks', title: 'SEA HACKS 2026', number: '01' },
     { id: 'fashion-founders-expo', title: 'Fashion Founders Expo', number: '03' },
-    { id: 'doers-summit', title: 'Doers Summit', number: '04' },
+    { id: 'doers-summit', title: 'Doers Summit', number: '04', partnerEventId: 'doers-summit-2026' },
     { id: 'career-expo-collab', title: 'Career Expo Collab', number: '05' },
-    { id: 'revive-me', title: 'Revive ME', number: '06' },
+    { id: 'revive-me', title: 'Revive ME', number: '06', partnerEventId: 'revive-me-2026' },
     { id: 'sea-expo-2026', title: 'SEA Expo 2026', number: '07' },
 ];
+
+const isOver = (partner) => new Date(partner.endDate).getTime() <= Date.now();
+
+const PartnerEventRow = ({ event, partner }) => (
+    <article className="sea-events__row sea-events__row--partner">
+        <span className="sea-events__row-number">{event.number}</span>
+        <div className="sea-events__row-main">
+            <h4>{event.title}</h4>
+            <p className="sea-events__row-meta">
+                {partner.dateLabel} · {partner.location}
+                <span>SEA · COMMUNITY PARTNER</span>
+            </p>
+            <p className="sea-events__row-desc">{partner.description}</p>
+        </div>
+
+        {isOver(partner) ? (
+            <span className="sea-events__coming-soon">COMPLETED</span>
+        ) : (
+            <div className="sea-events__row-actions">
+                <a
+                    className="sea-events__coming-soon sea-events__row-link"
+                    href={partner.ticketsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Buy tickets for ${partner.name} (opens in a new tab)`}
+                >
+                    BUY TICKETS <span aria-hidden="true">↗</span>
+                </a>
+                {hasRealUrl(partner.volunteerUrl) && (
+                    <a
+                        className="sea-events__coming-soon sea-events__row-link"
+                        href={partner.volunteerUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`Volunteer for ${partner.name} (opens in a new tab)`}
+                    >
+                        VOLUNTEER <span aria-hidden="true">↗</span>
+                    </a>
+                )}
+            </div>
+        )}
+    </article>
+);
 
 const TimelineEvents = () => {
     const [isVisible, setIsVisible] = useState(false);
@@ -139,7 +183,10 @@ const TimelineEvents = () => {
                 </div>
 
                 <div className="sea-events__list">
-                    {UPCOMING_EVENTS.map((event) => (
+                    {UPCOMING_EVENTS.map((event) => {
+                    const partner = heroEvents.find(item => item.id === event.partnerEventId);
+                    if (partner) return <PartnerEventRow key={event.id} event={event} partner={partner} />;
+                    return (
                     <article className="sea-events__row" key={event.id}>
                         <span className="sea-events__row-number">{event.number}</span>
                         <h4>{event.title}</h4>
@@ -158,7 +205,8 @@ const TimelineEvents = () => {
                         </span>
                         )}
                  </article>
-                    ))}
+                    );
+                    })}
                 </div>
 
                 <footer className="sea-events__footer">
@@ -235,6 +283,15 @@ const TimelineEvents = () => {
                 .sea-events__row h4 { margin: 0; font-size: clamp(19px, 2.7vw, 32px); line-height: 1.1; letter-spacing: -.045em; font-weight: 850; }
                 .sea-events__coming-soon { color: #A5A5A5; display: inline-flex; align-items: center; gap: 18px; white-space: nowrap; }
                 .sea-events__coming-soon span { color: var(--sea-red); font-size: 15px; }
+                .sea-events__row--partner { align-items: start; padding: 26px 0; }
+                .sea-events__row--partner .sea-events__row-number { padding-top: 10px; }
+                .sea-events__row-meta { margin: 10px 0 0; font-size: 10px; font-weight: 800; letter-spacing: .13em; line-height: 1.6; color: #D5D5D5; text-transform: uppercase; }
+                .sea-events__row-meta span { color: var(--sea-red); margin-left: 12px; }
+                .sea-events__row-desc { margin: 10px 0 0; max-width: 620px; font-size: 14px; line-height: 1.6; color: #A5A5A5; }
+                .sea-events__row-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; padding-top: 10px; }
+                .sea-events__row-link { color: #F7F7F7; text-decoration: none; min-height: 24px; transition: color .18s ease; }
+                .sea-events__row-link:hover { color: var(--sea-red); }
+                .sea-events__row-link:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
                 .sea-events__footer { display: flex; justify-content: space-between; gap: 20px; padding-top: 25px; color: #777; }
                 .sea-events__footer a { color: #D5D5D5; text-decoration: none; }
                 .sea-events__footer a:hover { color: var(--sea-red); }
@@ -256,6 +313,12 @@ const TimelineEvents = () => {
                     .sea-events__row { grid-template-columns: 34px minmax(0, 1fr); gap: 10px 12px; padding: 18px 0; min-height: 0; }
                     .sea-events__row h4 { font-size: clamp(19px, 5.5vw, 25px); }
                     .sea-events__coming-soon { grid-column: 2; font-size: 9px; }
+                    .sea-events__row--partner { padding: 22px 0; }
+                    .sea-events__row--partner .sea-events__row-number { padding-top: 6px; }
+                    .sea-events__row-meta span { display: block; margin: 4px 0 0; }
+                    .sea-events__row-desc { font-size: 13px; }
+                    .sea-events__row-actions { grid-column: 2; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 8px 24px; padding-top: 4px; }
+                    .sea-events__row-link { min-height: 44px; }
                     .sea-events__row:hover { padding-left: 8px; padding-right: 8px; }
                     .sea-events__footer { flex-direction: column; gap: 12px; font-size: 9px; }
                 }
