@@ -30,7 +30,6 @@ const Navbar = () => {
         { label: 'Events', href: '#events' },
         { label: 'B-Labs', href: '#ventures',live: true },
         { label: 'Partners', href: '#partners' },
-        { label: 'News', href: '#news' },
     ];
 
     const scrollToSection = (e, href) => {

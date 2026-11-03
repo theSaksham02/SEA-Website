@@ -52,7 +52,7 @@ Configure the same variables in the Vercel project dashboard. Redeploy after env
 
 ## Content updates
 
-- **Blog & form submissions** — `/admin` (backed by Supabase)
+- **Form submissions** (and the now-unused Blog CMS) — `/admin` (backed by Supabase)
 - **Team, events, cohorts, partners, hero** — hardcoded in React components under `src/components/` plus assets in `public/`
 
 ## Deploy

@@ -193,9 +193,8 @@ const TimelineEvents = () => {
 
                         {event.id === 'sea-hacks' ? (
                         <Link
-                            className="sea-events__coming-soon"
+                            className="sea-events__coming-soon sea-events__row-link"
                             to="/hackathon"
-                            style={{ textDecoration: 'none' }}
                         >
                             VIEW DETAILS <span aria-hidden="true">↗</span>
                         </Link>

@@ -39,7 +39,7 @@ Browser → Vite SPA on Vercel → Supabase
 | RLS policies (apply in Supabase) | `supabase/migrations/20260729120000_rls_policies.sql` |
 | RLS checklist | `docs/supabase-rls.md` |
 
-**Landing sections:** Navbar → SwissHero → ProcessAbout → FoundersNote → MasonryTeam → TimelineEvents → CohortTicker → Partners → BlogNews → TerminalFooter.
+**Landing sections:** Navbar → SwissHero → ProcessAbout → FoundersNote → MasonryTeam → TimelineEvents → CohortTicker → Partners → TerminalFooter. (The public News/Blog section was removed in Nov 2026; the `/admin` Blog CMS and `blog_posts` table are still there but nothing on the site reads them.)
 
 **Supabase tables:** `event_registrations`, `startup_team_applications`, `startup_applications`, `sponsor_inquiries`, `newsletter_subscribers`, `blog_posts`.
 

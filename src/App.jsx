@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, useNavigationType } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import LoadingScreen from './components/LoadingScreen';
 import CursorTrail from './components/CursorTrail';
@@ -16,12 +16,24 @@ import MasonryTeam from './components/MasonryTeam';
 import TimelineEvents from './components/TimelineEvents';
 import CohortTicker from './components/CohortTicker';
 import Partners from './components/Partners';
-import BlogNews from './components/BlogNews';
 import TerminalFooter from './components/TerminalFooter';
 import NotFound from './components/NotFound';
 import AdminDashboard from './components/AdminDashboard';
 import HackathonPage from './components/hackathon/HackathonPage';
 import './styles/index.css';
+
+// Open each new page at the top instead of keeping the previous page's scroll
+// position. Back/forward (POP) is left alone so the browser can restore it.
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  const navigationType = useNavigationType();
+
+  useEffect(() => {
+    if (navigationType !== 'POP') window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, [pathname, navigationType]);
+
+  return null;
+};
 
 const HomePage = () => {
   useEffect(() => {
@@ -48,7 +60,6 @@ const HomePage = () => {
         <TimelineEvents />
         <CohortTicker />
         <Partners />
-        <BlogNews />
       </main>
       <TerminalFooter />
     </>
@@ -110,6 +121,7 @@ function App() {
         }}
       >
         <Router>
+          <ScrollToTop />
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/hackathon" element={<HackathonPage />} />
