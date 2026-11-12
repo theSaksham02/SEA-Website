@@ -107,12 +107,16 @@ const SessionDetails = ({ session, status, today, hasOpened }) => {
 const BLabsSessions = () => {
     const [today] = useState(resolveToday);
     const { statuses, done, total } = useMemo(() => getCohortProgress(today), [today]);
-    const latestDone = useMemo(() => {
+    // Open the latest finished session that already has photos, so a session that
+    // has just happened (recap still coming) doesn't hide every collage.
+    const defaultOpen = useMemo(() => {
         const finished = SESSIONS.filter((_, i) => statuses[i] === 'done');
-        return finished.length ? finished[finished.length - 1].n : SESSIONS[0].n;
+        const withPhotos = finished.filter(session => session.images?.length);
+        const pick = withPhotos.length ? withPhotos : finished;
+        return pick.length ? pick[pick.length - 1].n : SESSIONS[0].n;
     }, [statuses]);
 
-    const [open, setOpen] = useState(() => new Set([sessionFromUrl() ?? latestDone]));
+    const [open, setOpen] = useState(() => new Set([sessionFromUrl() ?? defaultOpen]));
     const [opened, setOpened] = useState(open);
     const [isVisible, setIsVisible] = useState(false);
     const [isDesktop, setIsDesktop] = useState(() => window.matchMedia('(min-width: 1024px)').matches);
