@@ -21,6 +21,16 @@ const Partners = () => {
         { name: "SOSV", type: "VC Partner", logo: "/partners/SOSV.png" },
         { name: "Lenovo", type: "Corporate", logo: "/partners/Lenovo.png" },
         { name: "Plug and Play Africa", type: "Accelerator", logo: "/partners/Plug and Play Africa.png" },
+        // B-Labs 26/27: organisations behind this year's speakers. `mono` marks white-only logos,
+        // drawn in black so they show on the white cards.
+        { name: "in5", type: "B-Labs Partner", logo: "/partners/in5.png" },
+        { name: "Klui", type: "B-Labs Partner", logo: "/partners/hackathon/klui.png" },
+        { name: "ArcScale Labs", type: "B-Labs Partner", logo: "/partners/arcscale-labs.png", mono: true },
+        { name: "Samt Health", type: "B-Labs Partner", logo: "/partners/samt-health.svg" },
+        { name: "CreditPool", type: "B-Labs Partner" },
+        { name: "Asteria Space", type: "B-Labs Partner", logo: "/partners/asteria-space.png", mono: true },
+        { name: "MirZyme", type: "B-Labs Partner", logo: "/partners/mirzyme.png", mono: true },
+        { name: "British Asian Trust", type: "B-Labs Partner", logo: "/partners/british-asian-trust.svg", mono: true },
     ];
 
     useEffect(() => {
@@ -118,11 +128,11 @@ const Partners = () => {
             {/* CSS Animation - pause only on desktop hover, not on mobile touch */}
             <style>{`
                 .marquee-track {
-                    animation: marquee 12s linear infinite;
+                    animation: marquee 28s linear infinite;
                 }
                 @media (max-width: 768px) {
                     .marquee-track {
-                        animation-duration: 10s;
+                        animation-duration: 23s;
                     }
                 }
                 @media (hover: hover) and (pointer: fine) {
@@ -170,18 +180,33 @@ const PartnerCard = ({ partner, isVisible, isMobile }) => {
                 justifyContent: 'center',
                 marginBottom: '20px'
             }}>
-                <img
-                    src={partner.logo}
-                    alt={partner.name}
-                    style={{
-                        maxWidth: '100%',
-                        maxHeight: '100%',
-                        objectFit: 'contain',
-                        filter: isHovered ? 'grayscale(0%) brightness(1)' : 'grayscale(100%) brightness(0.7)',
+                {partner.logo ? (
+                    <img
+                        src={partner.logo}
+                        alt={partner.name}
+                        style={{
+                            maxWidth: '100%',
+                            maxHeight: '100%',
+                            objectFit: 'contain',
+                            filter: partner.mono
+                                ? `brightness(0) opacity(${isHovered ? 1 : 0.7})`
+                                : isHovered ? 'grayscale(0%) brightness(1)' : 'grayscale(100%) brightness(0.7)',
+                            transform: isHovered ? 'scale(1.15)' : 'scale(1)',
+                            transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
+                        }}
+                    />
+                ) : (
+                    <span style={{
+                        fontSize: isMobile ? '20px' : '26px',
+                        fontWeight: '900',
+                        letterSpacing: '-0.04em',
+                        color: isHovered ? '#000' : '#555',
                         transform: isHovered ? 'scale(1.15)' : 'scale(1)',
                         transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
-                    }}
-                />
+                    }}>
+                        {partner.name}
+                    </span>
+                )}
             </div>
             <div style={{
                 fontSize: '10px',

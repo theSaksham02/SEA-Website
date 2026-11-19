@@ -46,6 +46,20 @@ const SessionDetails = ({ session, status, today, hasOpened }) => {
                             ))}
                         </ul>
                     )}
+                    {session.partners?.length > 0 && (
+                        <div className="sea-blabs-panel__partners">
+                            <span>With</span>
+                            <ul aria-label="Partner organisations">
+                                {session.partners.map(partner => (
+                                    <li key={partner.name}>
+                                        {partner.logo
+                                            ? <img src={partner.logo} alt={partner.name} loading="lazy" decoding="async" />
+                                            : <span className="sea-blabs-panel__partner-name">{partner.name}</span>}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
                 </div>
                 {session.images?.length ? (
                     // Mounted on first open, so photos in closed panels never download early.
