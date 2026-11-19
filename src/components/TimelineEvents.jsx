@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import HackathonRegister from './hackathon/HackathonRegister';
 import { heroEvents, hasRealUrl } from '../data/heroEvents';
 import { COHORT, getCohortProgress } from './blabs/blabsData';
+import { EXPO, REGISTER_URL, PITCH_URL } from '../data/fashionExpo';
 
 const FEATURED_EVENT = {
     id: 'blabs-workshops',
@@ -13,7 +14,7 @@ const FEATURED_EVENT = {
 
 const UPCOMING_EVENTS = [
     {id: 'sea-hacks', title: 'SEA HACKS 2026', number: '01' },
-    { id: 'fashion-founders-expo', title: 'Fashion Founders Expo', number: '03' },
+    { id: 'fashion-founder-expo', title: 'Fashion Founder Expo', number: '03' },
     { id: 'doers-summit', title: 'Doers Summit', number: '04', partnerEventId: 'doers-summit-2026' },
     { id: 'career-expo-collab', title: 'Career Expo Collab', number: '05' },
     { id: 'revive-me', title: 'Revive ME', number: '06', partnerEventId: 'revive-me-2026' },
@@ -60,6 +61,42 @@ const PartnerEventRow = ({ event, partner }) => (
                 )}
             </div>
         )}
+    </article>
+);
+
+const ExternalRowLink = ({ href, label, children }) => (
+    <a
+        className="sea-events__coming-soon sea-events__row-link"
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`${label} (opens in a new tab)`}
+    >
+        {children} <span aria-hidden="true">↗</span>
+    </a>
+);
+
+const FashionExpoRow = ({ event }) => (
+    <article className="sea-events__row sea-events__row--partner">
+        <span className="sea-events__row-number">{event.number}</span>
+        <div className="sea-events__row-main">
+            <h4>{event.title}</h4>
+            <p className="sea-events__row-meta">
+                {EXPO.dateLabel} · {EXPO.venue} · {EXPO.partners}
+            </p>
+            <p className="sea-events__row-desc">{EXPO.description}</p>
+        </div>
+        <div className="sea-events__row-actions">
+            <Link className="sea-events__coming-soon sea-events__row-link" to={EXPO.path}>
+                DETAILS <span aria-hidden="true">→</span>
+            </Link>
+            {hasRealUrl(REGISTER_URL) && (
+                <ExternalRowLink href={REGISTER_URL} label="Register for the Fashion Founder Expo">REGISTER</ExternalRowLink>
+            )}
+            {hasRealUrl(PITCH_URL) && (
+                <ExternalRowLink href={PITCH_URL} label="Apply to pitch at the Fashion Founder Expo">APPLY TO PITCH</ExternalRowLink>
+            )}
+        </div>
     </article>
 );
 
@@ -190,6 +227,7 @@ const TimelineEvents = () => {
                     {UPCOMING_EVENTS.map((event) => {
                     const partner = heroEvents.find(item => item.id === event.partnerEventId);
                     if (partner) return <PartnerEventRow key={event.id} event={event} partner={partner} />;
+                    if (event.id === 'fashion-founder-expo') return <FashionExpoRow key={event.id} event={event} />;
                     return (
                     <article className="sea-events__row" key={event.id}>
                         <span className="sea-events__row-number">{event.number}</span>

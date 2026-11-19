@@ -21,6 +21,7 @@ import TerminalFooter from './components/TerminalFooter';
 import NotFound from './components/NotFound';
 import AdminDashboard from './components/AdminDashboard';
 import HackathonPage from './components/hackathon/HackathonPage';
+import FashionExpoPage from './components/fashion-expo/FashionExpoPage';
 import './styles/index.css';
 
 // Open each new page at the top instead of keeping the previous page's scroll
@@ -128,6 +129,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/hackathon" element={<HackathonPage />} />
+            <Route path="/fashion-founder-expo" element={<FashionExpoPage />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
