@@ -82,9 +82,9 @@ const FashionExpoRow = ({ event }) => (
         <div className="sea-events__row-main">
             <h4>{event.title}</h4>
             <p className="sea-events__row-meta">
-                {EXPO.dateLabel} · {EXPO.venue} · {EXPO.partners}
+                {EXPO.rowMeta}
             </p>
-            <p className="sea-events__row-desc">{EXPO.description}</p>
+            <p className="sea-events__row-desc">{EXPO.rowDescription}</p>
         </div>
         <div className="sea-events__row-actions">
             <Link className="sea-events__coming-soon sea-events__row-link" to={EXPO.path}>

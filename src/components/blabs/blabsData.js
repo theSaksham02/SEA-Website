@@ -24,7 +24,7 @@ export const SESSIONS = [
         ],
         partners: [
             { name: 'Samt Health', logo: '/partners/samt-health.svg' },
-            { name: 'CreditPool' },
+            { name: 'CreditPool', logo: '/partners/creditpool.png', mono: true },
         ],
         summary: 'Cohort 3 opened with the question every startup has to answer first: is this a real problem, and for whom? Two founders led the session on customer discovery and mapping a target audience, and teams left with a clearer picture of who they are building for.',
         takeaways: ['Separating a real problem from an assumed one', 'Defining and mapping a target audience', 'How to run early customer discovery'],

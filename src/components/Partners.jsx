@@ -27,7 +27,7 @@ const Partners = () => {
         { name: "Klui", type: "B-Labs Partner", logo: "/partners/hackathon/klui.png" },
         { name: "ArcScale Labs", type: "B-Labs Partner", logo: "/partners/arcscale-labs.png", mono: true },
         { name: "Samt Health", type: "B-Labs Partner", logo: "/partners/samt-health.svg" },
-        { name: "CreditPool", type: "B-Labs Partner" },
+        { name: "CreditPool", type: "B-Labs Partner", logo: "/partners/creditpool.png", mono: true },
         { name: "Asteria Space", type: "B-Labs Partner", logo: "/partners/asteria-space.png", mono: true },
         { name: "MirZyme", type: "B-Labs Partner", logo: "/partners/mirzyme.png", mono: true },
         { name: "British Asian Trust", type: "B-Labs Partner", logo: "/partners/british-asian-trust.svg", mono: true },
